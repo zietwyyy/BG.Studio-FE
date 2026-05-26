@@ -1,1 +1,1 @@
-function showView(id) { console.log('show', id); } async function login() { }
+function showView(id) { console.log('show', id); } async function login() { } function initCanvas() { }
