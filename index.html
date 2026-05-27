@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
         :root {
@@ -1536,7 +1537,14 @@
                         </div>
                         <div class="form-group">
                             <label for="regEmail">Email khôi phục</label>
-                            <input type="email" id="regEmail" class="form-control" required placeholder="Nhập email...">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="email" id="regEmail" class="form-control" required placeholder="Nhập email..." style="flex: 1;">
+                                <button type="button" id="btnSendRegCode" onclick="sendRegisterCode()" style="background: var(--accent); color: var(--bg-dark); border: none; padding: 0 15px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.85rem; min-width: 90px; transition: all 0.2s; white-space: nowrap;">Gửi mã</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="regCode">Mã xác minh (6 số)</label>
+                            <input type="text" id="regCode" class="form-control" required placeholder="Nhập mã xác minh từ Email..." maxlength="6">
                         </div>
                         <div class="form-group">
                             <label for="regPass">Mật khẩu</label>
@@ -2223,10 +2231,61 @@
             }
         }
 
+        async function sendRegisterCode() {
+            const username = document.getElementById('regUser').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+
+            if (!username) {
+                showToast("Vui lòng nhập tên đăng nhập trước.", "error");
+                return;
+            }
+            if (!email || !email.includes("@")) {
+                showToast("Vui lòng nhập email hợp lệ.", "error");
+                return;
+            }
+
+            const btn = document.getElementById('btnSendRegCode');
+            btn.disabled = true;
+            btn.textContent = "Đang gửi...";
+
+            try {
+                const response = await fetch('https://bg-studio-be.onrender.com/api/auth/send-register-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email })
+                });
+
+                if (!response.ok) {
+                    const errorMsg = await response.text();
+                    throw new Error(errorMsg || "Gửi mã thất bại.");
+                }
+
+                showToast("Mã xác minh đã được gửi qua email của bạn.");
+                
+                let countdown = 60;
+                const interval = setInterval(() => {
+                    countdown--;
+                    if (countdown <= 0) {
+                        clearInterval(interval);
+                        btn.disabled = false;
+                        btn.textContent = "Gửi mã";
+                    } else {
+                        btn.textContent = `${countdown}s`;
+                    }
+                }, 1000);
+
+            } catch (err) {
+                showToast(err.message, 'error');
+                btn.disabled = false;
+                btn.textContent = "Gửi mã";
+            }
+        }
+
         async function handleRegister(e) {
             e.preventDefault();
             const username = document.getElementById('regUser').value;
             const email = document.getElementById('regEmail').value;
+            const verificationCode = document.getElementById('regCode').value;
             const password = document.getElementById('regPass').value;
             const confirm = document.getElementById('regConfirm').value;
 
@@ -2239,7 +2298,7 @@
                 const response = await fetch('https://bg-studio-be.onrender.com/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password })
+                    body: JSON.stringify({ username, email, password, verificationCode })
                 });
 
                 if (!response.ok) {
@@ -2252,6 +2311,7 @@
                 document.getElementById('loginUser').value = username;
                 document.getElementById('regUser').value = '';
                 document.getElementById('regEmail').value = '';
+                document.getElementById('regCode').value = '';
                 document.getElementById('regPass').value = '';
                 document.getElementById('regConfirm').value = '';
             } catch (err) {
@@ -2804,7 +2864,7 @@
                 
                 const totalAI = data.localImages + data.cloudImages;
                 const localPct = totalAI > 0 ? Math.round((data.localImages / totalAI) * 100) : 0;
-                adminStatRatio.textContent = `${localPct}% Local / ${100 - localPct}% Cloud`;
+                document.getElementById('adminRatio').textContent = `${localPct}% Local / ${100 - localPct}% Cloud`;
 
                 // 10 Recent activities
                 adminRecentTableBody.innerHTML = '';
@@ -3011,6 +3071,72 @@
             }
         } else {
             showView('landing');
+        }
+
+        window.onload = function() {
+            if (window.google) {
+                google.accounts.id.initialize({
+                    client_id: '870719812429-c8hks8npl4u441a27e3d1p83b4ok769b.apps.googleusercontent.com',
+                    callback: handleGoogleCredentialResponse
+                });
+            }
+        };
+
+        function decodeJwtResponse(token) {
+            let base64Url = token.split('.')[1];
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        async function handleGoogleCredentialResponse(response) {
+            try {
+                const payload = decodeJwtResponse(response.credential);
+                const email = payload.email;
+                const name = payload.name;
+                
+                const res = await fetch('https://bg-studio-be.onrender.com/api/auth/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ IdToken: response.credential, Email: email, DisplayName: name })
+                });
+
+                if (!res.ok) {
+                    const errorMsg = await res.text();
+                    throw new Error(errorMsg || "Đăng nhập Google thất bại.");
+                }
+                
+                const data = await res.json();
+                token = data.token;
+                loggedInUser = data.username;
+                loggedInUserPro = data.isPro;
+                subscriptionExpiresAt = data.subscriptionExpiresAt || '';
+
+                localStorage.setItem('token', token);
+                localStorage.setItem('username', loggedInUser);
+                localStorage.setItem('isPro', loggedInUserPro);
+                localStorage.setItem('subscriptionExpiresAt', subscriptionExpiresAt);
+
+                showToast(`Chào mừng trở lại, ${loggedInUser}!`);
+                updateAuthUI();
+                if (loggedInUser.toLowerCase() === 'admin') {
+                    showView('admin');
+                } else {
+                    showView('workspace');
+                }
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        function handleGoogleLogin() {
+            if (window.google) {
+                google.accounts.id.prompt();
+            } else {
+                showToast("Google Login chưa sẵn sàng.", "error");
+            }
         }
         // ================= FORGOT PASSWORD =================
         function openForgotPasswordModal() {
