@@ -2232,15 +2232,10 @@
         }
 
         async function sendRegisterCode() {
-            const username = document.getElementById('regUser').value.trim();
             const email = document.getElementById('regEmail').value.trim();
 
-            if (!username) {
-                showToast("Vui lòng nhập tên đăng nhập trước.", "error");
-                return;
-            }
             if (!email || !email.includes("@")) {
-                showToast("Vui lòng nhập email hợp lệ.", "error");
+                showToast("Vui lòng nhập email hợp lệ trước.", "error");
                 return;
             }
 
@@ -2252,7 +2247,7 @@
                 const response = await fetch('https://bg-studio-be.onrender.com/api/auth/send-register-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email })
+                    body: JSON.stringify({ email })
                 });
 
                 if (!response.ok) {
@@ -2260,7 +2255,7 @@
                     throw new Error(errorMsg || "Gửi mã thất bại.");
                 }
 
-                showToast("Mã xác minh đã được gửi qua email của bạn.");
+                showToast("✅ Mã xác minh đã được gửi qua email của bạn.");
                 
                 let countdown = 60;
                 const interval = setInterval(() => {
@@ -3048,37 +3043,38 @@
         btnUpgradeProNav.addEventListener('click', () => showPaymentModal());
 
         /* ================= INITIALIZATION ================= */
-        // Xử lý callback tự động từ trang thanh toán PayOS thật
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('payment') === 'success') {
-            loggedInUserPro = true;
-            localStorage.setItem('isPro', 'true');
-            showToast("Giao dịch PayOS thành công! Cảm ơn bạn đã nâng cấp gói PRO 👑", "success");
-            window.history.replaceState({}, document.title, window.location.pathname);
-            if (token) updateUserUsageDisplay();
-        } else if (urlParams.get('payment') === 'cancel') {
-            showToast("Bạn đã hủy giao dịch thanh toán PayOS.", "error");
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-
-        // Check local storage for session and redirect appropriately
-        if (token && loggedInUser) {
-            updateAuthUI();
-            if (loggedInUser.toLowerCase() === 'admin') {
-                showView('admin');
-            } else {
-                showView('workspace');
-            }
-        } else {
-            showView('landing');
-        }
-
         window.onload = function() {
-            if (window.google) {
+            // Initialize Google Identity Services
+            if (window.google && window.google.accounts) {
                 google.accounts.id.initialize({
                     client_id: '870719812429-c8hks8npl4u441a27e3d1p83b4ok769b.apps.googleusercontent.com',
                     callback: handleGoogleCredentialResponse
                 });
+            }
+
+            // Xử lý callback tự động từ trang thanh toán PayOS thật
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('payment') === 'success') {
+                loggedInUserPro = true;
+                localStorage.setItem('isPro', 'true');
+                showToast("Giao dịch PayOS thành công! Cảm ơn bạn đã nâng cấp gói PRO 👑", "success");
+                window.history.replaceState({}, document.title, window.location.pathname);
+                if (token) updateUserUsageDisplay();
+            } else if (urlParams.get('payment') === 'cancel') {
+                showToast("Bạn đã hủy giao dịch thanh toán PayOS.", "error");
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            // Check local storage for session and redirect appropriately
+            if (token && loggedInUser) {
+                updateAuthUI();
+                if (loggedInUser.toLowerCase() === 'admin') {
+                    showView('admin');
+                } else {
+                    showView('workspace');
+                }
+            } else {
+                showView('landing');
             }
         };
 
