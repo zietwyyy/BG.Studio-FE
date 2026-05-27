@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>BG.Studio - AI Background Remover & Generator</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1972,6 +1975,7 @@
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         // State variables
+        const API_URL = 'https://bg-studio-be.onrender.com/api';
         let selectedFile = null;
         let processedBlobUrl = null;
         let originalBlobUrl = null;
@@ -2218,10 +2222,10 @@
                 }
 
                 const data = await response.json();
-                token = data.token;
-                loggedInUser = data.username;
-                loggedInUserPro = data.isPro;
-                subscriptionExpiresAt = data.subscriptionExpiresAt || '';
+                token = data.token || data.Token || '';
+                loggedInUser = data.username || data.Username || '';
+                loggedInUserPro = data.isPro || data.IsPro || false;
+                subscriptionExpiresAt = data.subscriptionExpiresAt || data.SubscriptionExpiresAt || '';
 
                 localStorage.setItem('token', token);
                 localStorage.setItem('username', loggedInUser);
@@ -3157,10 +3161,10 @@
                 }
                 
                 const data = await res.json();
-                token = data.token;
-                loggedInUser = data.username;
-                loggedInUserPro = data.isPro;
-                subscriptionExpiresAt = data.subscriptionExpiresAt || '';
+                token = data.token || data.Token || '';
+                loggedInUser = data.username || data.Username || '';
+                loggedInUserPro = data.isPro || data.IsPro || false;
+                subscriptionExpiresAt = data.subscriptionExpiresAt || data.SubscriptionExpiresAt || '';
 
                 localStorage.setItem('token', token);
                 localStorage.setItem('username', loggedInUser);
