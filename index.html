@@ -1524,10 +1524,25 @@
                         <button type="submit" class="btn-form">Đăng nhập</button>
                         
                         <div style="text-align: center; margin: 15px 0; color: var(--text-muted); font-size: 0.85rem;">HOẶC</div>
-                        <button type="button" class="btn-form" onclick="handleGoogleLogin()" style="background: #fff; color: #333; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" style="width: 18px; height: 18px;">
-                            Đăng nhập bằng Google
-                        </button>
+                        
+                        <!-- Google Sign-In Button (official rendered button) -->
+                        <div id="g_id_onload"
+                             data-client_id="870719812429-c8hks8npl4u441a27e3d1p83b4ok769b.apps.googleusercontent.com"
+                             data-context="signin"
+                             data-ux_mode="popup"
+                             data-callback="handleGoogleCredentialResponse"
+                             data-auto_prompt="false">
+                        </div>
+                        <div class="g_id_signin"
+                             data-type="standard"
+                             data-shape="rectangular"
+                             data-theme="outline"
+                             data-text="signin_with"
+                             data-size="large"
+                             data-locale="vi"
+                             data-width="360"
+                             style="display: flex; justify-content: center; margin-top: 5px;">
+                        </div>
                     </form>
 
                     <!-- Register Form -->
@@ -3041,37 +3056,76 @@
         // Event listener cho nút Nâng cấp PRO trên thanh Nav (dùng onclick inline, nên không cần addEventListener ở đây)
 
         /* ================= INITIALIZATION ================= */
-        window.onload = function() {
-            // Initialize Google Identity Services
-            if (window.google && window.google.accounts) {
-                google.accounts.id.initialize({
-                    client_id: '870719812429-c8hks8npl4u441a27e3d1p83b4ok769b.apps.googleusercontent.com',
-                    callback: handleGoogleCredentialResponse
-                });
-            }
-
-            // Xử lý callback tự động từ trang thanh toán PayOS thật
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('payment') === 'success') {
-                loggedInUserPro = true;
-                localStorage.setItem('isPro', 'true');
-                showToast("Giao dịch PayOS thành công! Cảm ơn bạn đã nâng cấp gói PRO 👑", "success");
-                window.history.replaceState({}, document.title, window.location.pathname);
-                if (token) updateUserUsageDisplay();
-            } else if (urlParams.get('payment') === 'cancel') {
-                showToast("Bạn đã hủy giao dịch thanh toán PayOS.", "error");
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-
-            // Check local storage for session and redirect appropriately
-            if (token && loggedInUser) {
-                updateAuthUI();
-                if (loggedInUser.toLowerCase() === 'admin') {
-                    showView('admin');
-                } else {
-                    showView('workspace');
+        // *** KHÔI PHỤC SESSION NGAY KHI SCRIPT LOAD (không chờ window.onload) ***
+        // Điều này đảm bảo session luôn được khôi phục dù có lỗi nào đó trong window.onload
+        (function restoreSessionEarly() {
+            try {
+                const savedToken = localStorage.getItem('token');
+                const savedUser = localStorage.getItem('username');
+                if (savedToken && savedUser) {
+                    // Đánh dấu cần restore sau khi DOM sẵn sàng
+                    window._needsSessionRestore = true;
                 }
-            } else {
+            } catch(e) { /* ignore */ }
+        })();
+
+        window.onload = function() {
+            try {
+                // Initialize Google Identity Services (rendered button)
+                if (window.google && window.google.accounts) {
+                    google.accounts.id.initialize({
+                        client_id: '870719812429-c8hks8npl4u441a27e3d1p83b4ok769b.apps.googleusercontent.com',
+                        callback: handleGoogleCredentialResponse,
+                        ux_mode: 'popup'
+                    });
+                    // Render tất cả div có class g_id_signin
+                    google.accounts.id.renderButton(
+                        document.querySelector('.g_id_signin'),
+                        { theme: 'outline', size: 'large', text: 'signin_with', locale: 'vi', width: 360 }
+                    );
+                }
+            } catch(e) {
+                console.warn('[Google Init Error]', e);
+            }
+
+            try {
+                // Xử lý callback tự động từ trang thanh toán PayOS thật
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('payment') === 'success') {
+                    loggedInUserPro = true;
+                    localStorage.setItem('isPro', 'true');
+                    showToast("Giao dịch PayOS thành công! Cảm ơn bạn đã nâng cấp gói PRO 👑", "success");
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    if (token) updateUserUsageDisplay();
+                } else if (urlParams.get('payment') === 'cancel') {
+                    showToast("Bạn đã hủy giao dịch thanh toán PayOS.", "error");
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            } catch(e) {
+                console.warn('[PayOS Callback Error]', e);
+            }
+
+            // *** KHÔI PHỤC SESSION - LUÔN CHẠY DÙ CÓ LỖI Ở TRÊN ***
+            try {
+                const savedToken = localStorage.getItem('token');
+                const savedUser = localStorage.getItem('username');
+                const savedIsPro = localStorage.getItem('isPro') === 'true';
+
+                if (savedToken && savedUser) {
+                    token = savedToken;
+                    loggedInUser = savedUser;
+                    loggedInUserPro = savedIsPro;
+                    updateAuthUI();
+                    if (savedUser.toLowerCase() === 'admin') {
+                        showView('admin');
+                    } else {
+                        showView('workspace');
+                    }
+                } else {
+                    showView('landing');
+                }
+            } catch(e) {
+                console.error('[Session Restore Error]', e);
                 showView('landing');
             }
         };
