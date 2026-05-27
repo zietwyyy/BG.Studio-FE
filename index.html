@@ -18,14 +18,14 @@
             --bg-dark: #090d16;
             --bg-card: #131926;
             --bg-card-hover: #1c2538;
-            --primary: #8b5cf6;
-            --primary-glow: rgba(139, 92, 246, 0.4);
-            --accent: #06b6d4;
-            --accent-glow: rgba(6, 182, 212, 0.4);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --border: rgba(255, 255, 255, 0.08);
-            --border-glow: rgba(139, 92, 246, 0.2);
+            --primary: #a855f7;
+            --primary-glow: rgba(168, 85, 247, 0.4);
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.4);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.12);
+            --border-glow: rgba(168, 85, 247, 0.2);
             --danger: #ef4444;
             --success: #10b981;
         }
@@ -70,34 +70,51 @@
 
         /* Generic classes & buttons */
         .btn {
-            padding: 10px 22px;
-            border-radius: 10px;
+            padding: 12px 24px;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
             border: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.3px;
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #fff;
+            color: #ffffff;
             box-shadow: 0 4px 15px var(--primary-glow);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.5s ease;
+        }
+        .btn-primary:hover::after {
+            left: 100%;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--primary-glow);
+            box-shadow: 0 8px 25px var(--primary-glow);
         }
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--border);
             color: var(--text-main);
+            backdrop-filter: blur(10px);
         }
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
         }
 
         /* Navigation Bar */
@@ -492,95 +509,101 @@
             position: relative;
         }
         .auth-box {
-            background: var(--bg-card);
+            background: rgba(19, 25, 38, 0.7);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: 24px;
+            padding: 45px;
             width: 100%;
-            max-width: 440px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
+            max-width: 460px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
         }
         .auth-tabs {
             display: flex;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255,255,255,0.05);
+            margin-bottom: 35px;
         }
         .auth-tab {
             flex: 1;
             text-align: center;
-            padding: 12px;
+            padding: 14px;
             color: var(--text-muted);
             cursor: pointer;
             font-weight: 600;
             border-bottom: 2px solid transparent;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            margin-bottom: -2px;
         }
         .auth-tab.active {
-            color: var(--primary);
+            color: var(--text-main);
             border-bottom-color: var(--primary);
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
         .form-group label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: var(--text-muted);
         }
         .form-control {
             width: 100%;
-            background: rgba(9, 13, 22, 0.6);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 18px;
             color: #fff;
-            font-size: 0.95rem;
+            font-size: 1rem;
             outline: none;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
         .form-control:focus {
+            background: rgba(0, 0, 0, 0.4);
             border-color: var(--primary);
-            box-shadow: 0 0 8px var(--primary-glow);
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
         }
         .password-wrapper {
             position: relative;
             width: 100%;
         }
         .password-wrapper .form-control {
-            padding-right: 40px;
+            padding-right: 45px;
         }
         .password-toggle {
             position: absolute;
-            right: 12px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            font-size: 0.95rem;
-            opacity: 0.6;
+            font-size: 1rem;
+            opacity: 0.5;
             user-select: none;
             display: flex;
             align-items: center;
+            transition: opacity 0.2s;
         }
         .password-toggle:hover {
             opacity: 1;
         }
         .btn-form {
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 600;
-            margin-top: 15px;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 20px;
             cursor: pointer;
             border: none;
             background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #fff;
-            transition: all 0.2s;
+            color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px var(--primary-glow);
         }
         .btn-form:hover {
-            box-shadow: 0 0 15px var(--primary-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--primary-glow);
         }
 
         /* ---------------- VIEW 3: WORKSPACE & HISTORY ---------------- */
@@ -619,13 +642,18 @@
             }
         }
         .panel-card {
-            background: var(--bg-card);
+            background: rgba(19, 25, 38, 0.5);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            backdrop-filter: blur(12px);
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
+        }
+        .panel-card:hover {
+            border-color: rgba(255,255,255,0.15);
         }
         .panel-card h3 {
             font-size: 1.25rem;
@@ -2066,9 +2094,13 @@
         }
 
         /* ================= SPA VIEW ROUTING ================= */
-        function showView(viewId) {
+        function showView(viewId, isRestore = false) {
             document.querySelectorAll('.app-view').forEach(el => el.style.display = 'none');
             appHeader.style.display = 'none';
+
+            if (!isRestore) {
+                localStorage.setItem('activeView', viewId);
+            }
 
             if (viewId === 'landing') {
                 document.getElementById('view-landing').style.display = 'block';
@@ -2077,7 +2109,9 @@
             } else if (viewId === 'workspace') {
                 appHeader.style.display = 'block';
                 document.getElementById('view-workspace').style.display = 'block';
-                switchWorkspaceTab('workspace');
+                if (!isRestore) {
+                    switchWorkspaceTab('workspace');
+                }
             } else if (viewId === 'admin') {
                 document.getElementById('view-admin').style.display = 'block';
                 loadAdminStats();
@@ -2095,7 +2129,11 @@
         }
 
         /* ================= WORKSPACE TAB SYSTEM ================= */
-        function switchWorkspaceTab(tabName) {
+        function switchWorkspaceTab(tabName, isRestore = false) {
+            if (!isRestore) {
+                localStorage.setItem('activeWorkspaceTab', tabName);
+            }
+            
             linkWorkspace.classList.remove('active');
             linkHistory.classList.remove('active');
             
@@ -3300,16 +3338,25 @@
                 const savedToken = localStorage.getItem('token');
                 const savedUser = localStorage.getItem('username');
                 const savedIsPro = localStorage.getItem('isPro') === 'true';
+                const savedView = localStorage.getItem('activeView');
+                const savedTab = localStorage.getItem('activeWorkspaceTab') || 'workspace';
 
                 if (savedToken && savedUser) {
                     token = savedToken;
                     loggedInUser = savedUser;
                     loggedInUserPro = savedIsPro;
                     updateAuthUI();
+                    
                     if (savedUser.toLowerCase() === 'admin') {
-                        showView('admin');
+                        if (savedView === 'workspace') {
+                            showView('workspace', true);
+                            switchWorkspaceTab(savedTab, true);
+                        } else {
+                            showView('admin', true);
+                        }
                     } else {
-                        showView('workspace');
+                        showView('workspace', true);
+                        switchWorkspaceTab(savedTab, true);
                     }
                 } else {
                     showView('landing');
