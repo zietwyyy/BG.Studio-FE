@@ -1535,6 +1535,10 @@
                             <input type="text" id="regUser" class="form-control" required placeholder="Tối thiểu 3 ký tự...">
                         </div>
                         <div class="form-group">
+                            <label for="regEmail">Email khôi phục</label>
+                            <input type="email" id="regEmail" class="form-control" required placeholder="Nhập email...">
+                        </div>
+                        <div class="form-group">
                             <label for="regPass">Mật khẩu</label>
                             <div class="password-wrapper">
                                 <input type="password" id="regPass" class="form-control" required placeholder="Tối thiểu 6 ký tự...">
@@ -2222,6 +2226,7 @@
         async function handleRegister(e) {
             e.preventDefault();
             const username = document.getElementById('regUser').value;
+            const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPass').value;
             const confirm = document.getElementById('regConfirm').value;
 
@@ -2234,7 +2239,7 @@
                 const response = await fetch('https://bg-studio-be.onrender.com/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
+                    body: JSON.stringify({ username, email, password })
                 });
 
                 if (!response.ok) {
@@ -2246,6 +2251,7 @@
                 switchAuthTab('login');
                 document.getElementById('loginUser').value = username;
                 document.getElementById('regUser').value = '';
+                document.getElementById('regEmail').value = '';
                 document.getElementById('regPass').value = '';
                 document.getElementById('regConfirm').value = '';
             } catch (err) {
@@ -2262,8 +2268,11 @@
             
             showToast("Đã đăng xuất tài khoản.");
             showView('landing');
+            updateAuthUI();
         }
-        btnLogout.addEventListener('click', logout);
+        function handleLogout() {
+            logout();
+        }
 
         function togglePasswordVisibility(inputId, toggleEl) {
             const input = document.getElementById(inputId);
