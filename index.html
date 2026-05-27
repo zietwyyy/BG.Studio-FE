@@ -2089,27 +2089,29 @@
         /* ================= USER INTERFACE UPDATE ================= */
         function updateAuthUI() {
             if (token && loggedInUser) {
-                userDisplayName.textContent = loggedInUser;
-                document.getElementById('usageProgressBox').style.display = 'flex';
+                document.getElementById('displayUsername').textContent = loggedInUser;
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('btnShowAuth').style.display = 'none';
                 
                 if (loggedInUser.toLowerCase() === 'admin') {
-                    linkAdmin.style.display = 'block';
+                    document.getElementById('navAdmin').style.display = 'block';
                 } else {
-                    linkAdmin.style.display = 'none';
+                    document.getElementById('navAdmin').style.display = 'none';
                 }
                 updateUserUsageDisplay();
             } else {
-                document.getElementById('usageProgressBox').style.display = 'none';
-                linkAdmin.style.display = 'none';
+                document.getElementById('userInfo').style.display = 'none';
+                document.getElementById('btnShowAuth').style.display = 'inline-flex';
+                if (document.getElementById('navAdmin')) document.getElementById('navAdmin').style.display = 'none';
             }
         }
 
         async function updateUserUsageDisplay() {
             if (!token) return;
             
-            const badgeEl = document.getElementById('userProBadge');
-            const limitBarEl = document.getElementById('limitProgressBar');
-            const limitTextEl = document.getElementById('limitProgressText');
+            const badgeEl = document.getElementById('userBadge');
+            const limitBarEl = document.getElementById('usageBarFill');
+            const limitTextEl = document.getElementById('usageValue');
             
             let limit = loggedInUserPro ? 30 : 10;
             
@@ -2128,24 +2130,32 @@
             }
             
             if (loggedInUserPro) {
-                badgeEl.textContent = "PRO 👑";
-                badgeEl.className = "user-badge pro";
-                btnUpgradeProNav.style.display = 'none';
+                if (badgeEl) {
+                    badgeEl.textContent = "PRO 👑";
+                    badgeEl.className = "user-badge pro";
+                }
+                const btnPro = document.getElementById('btnUpgradeProNav');
+                if (btnPro) btnPro.style.display = 'none';
             } else {
-                badgeEl.textContent = "FREE";
-                badgeEl.className = "user-badge free";
-                btnUpgradeProNav.style.display = 'inline-flex';
+                if (badgeEl) {
+                    badgeEl.textContent = "FREE";
+                    badgeEl.className = "user-badge free";
+                }
+                const btnPro = document.getElementById('btnUpgradeProNav');
+                if (btnPro) btnPro.style.display = 'inline-flex';
             }
             
-            limitTextEl.textContent = `Lượt dùng: ${todayCount}/${limit}`;
-            const pct = Math.min((todayCount / limit) * 100, 100);
-            limitBarEl.style.width = `${pct}%`;
-            if (pct >= 100) {
-                limitBarEl.style.backgroundColor = 'var(--danger)';
-            } else if (pct >= 80) {
-                limitBarEl.style.backgroundColor = '#f59e0b';
-            } else {
-                limitBarEl.style.backgroundColor = 'var(--accent)';
+            if (limitTextEl) limitTextEl.textContent = `${todayCount}/${limit}`;
+            if (limitBarEl) {
+                const pct = Math.min((todayCount / limit) * 100, 100);
+                limitBarEl.style.width = `${pct}%`;
+                if (pct >= 100) {
+                    limitBarEl.style.backgroundColor = 'var(--danger)';
+                } else if (pct >= 80) {
+                    limitBarEl.style.backgroundColor = '#f59e0b';
+                } else {
+                    limitBarEl.style.backgroundColor = 'var(--accent)';
+                }
             }
         }
 
