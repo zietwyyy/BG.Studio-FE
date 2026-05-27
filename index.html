@@ -1348,10 +1348,11 @@
                             <div class="usage-bar-fill" id="usageBarFill"></div>
                         </div>
                     </div>
+                    <button class="btn btn-secondary" id="btnUpgradeProNav" onclick="showPaymentModal()" style="font-size:0.8rem; padding: 6px 14px;">Nâng cấp PRO 👑</button>
                     <span class="user-badge" id="userBadge">FREE</span>
                     <span class="username-display" id="displayUsername"></span>
                     <a class="profile-link" onclick="openProfileModal()">Hồ sơ</a>
-                    <button class="btn-logout" onclick="handleLogout()">Đăng xuất</button>
+                    <button class="btn-logout" id="btnLogout" onclick="handleLogout()">Đăng xuất</button>
                 </div>
             </div>
         </div>
@@ -2006,8 +2007,6 @@
         // Auth & User Header elements
         const btnUpgradeProNav = document.getElementById('btnUpgradeProNav');
         const userInfo = document.getElementById('userInfo');
-        const userDisplayName = document.getElementById('userDisplayName');
-        const btnLogout = document.getElementById('btnLogout');
         const tabLogin = document.getElementById('tabLogin');
         const tabRegister = document.getElementById('tabRegister');
         const formLogin = document.getElementById('formLogin');
@@ -3039,8 +3038,7 @@
             });
         });
 
-        // Event listener cho nút Nâng cấp PRO trên thanh Nav
-        btnUpgradeProNav.addEventListener('click', () => showPaymentModal());
+        // Event listener cho nút Nâng cấp PRO trên thanh Nav (dùng onclick inline, nên không cần addEventListener ở đây)
 
         /* ================= INITIALIZATION ================= */
         window.onload = function() {
