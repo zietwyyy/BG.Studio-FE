@@ -166,6 +166,16 @@
             align-items: center;
             gap: 15px;
         }
+        .profile-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .profile-link:hover {
+            color: var(--accent);
+        }
         .user-info {
             display: flex;
             align-items: center;
@@ -1320,22 +1330,27 @@
             <nav>
                 <div class="nav-link active" id="linkWorkspace">Tách nền ảnh</div>
                 <div class="nav-link" id="linkHistory">Lịch sử của bạn</div>
-                <div class="nav-link" id="linkAdmin" style="display: none;">Báo cáo Admin</div>
+                <a class="nav-link" id="navAdmin" style="display: none;" onclick="showView('admin')">Quản trị</a>
             </nav>
             <div class="user-auth-area">
-                <div class="usage-container" id="usageProgressBox">
-                    <div class="usage-text">
-                        <span id="limitProgressText">Lượt dùng: 0/10</span>
-                        <span id="userProBadge" class="user-badge free">FREE</span>
+                <!-- Unauthenticated -->
+                <button class="btn btn-secondary" id="btnShowAuth" onclick="showView('auth')">Đăng nhập</button>
+                
+                <!-- Authenticated -->
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="usage-container" id="usageContainer">
+                        <div class="usage-text">
+                            <span id="usageLabel">Lượt dùng:</span>
+                            <span id="usageValue">0/30</span>
+                        </div>
+                        <div class="usage-bar-bg">
+                            <div class="usage-bar-fill" id="usageBarFill"></div>
+                        </div>
                     </div>
-                    <div class="usage-bar-bg">
-                        <div class="usage-bar-fill" id="limitProgressBar"></div>
-                    </div>
-                </div>
-                <button class="btn btn-primary" id="btnUpgradeProNav" style="padding: 6px 14px; font-size: 0.8rem; background: linear-gradient(135deg, #eab308, #ca8a04); border:none; box-shadow: 0 4px 10px rgba(234,179,8,0.3); color:#000;">⚡ LÊN PRO (20K)</button>
-                <div class="user-info">
-                    <span class="username-display" id="userDisplayName">User</span>
-                    <button class="btn-logout" id="btnLogout">Đăng xuất</button>
+                    <span class="user-badge" id="userBadge">FREE</span>
+                    <span class="username-display" id="displayUsername"></span>
+                    <a class="profile-link" onclick="openProfileModal()">Hồ sơ</a>
+                    <button class="btn-logout" onclick="handleLogout()">Đăng xuất</button>
                 </div>
             </div>
         </div>
@@ -1500,8 +1515,17 @@
                                 <input type="password" id="loginPass" class="form-control" required placeholder="Nhập mật khẩu...">
                                 <span class="password-toggle" onclick="togglePasswordVisibility('loginPass', this)">👁️</span>
                             </div>
+                            <div style="text-align: right; margin-top: 5px;">
+                                <a href="#" onclick="openForgotPasswordModal()" style="color: var(--accent); font-size: 0.8rem; text-decoration: none;">Quên mật khẩu?</a>
+                            </div>
                         </div>
                         <button type="submit" class="btn-form">Đăng nhập</button>
+                        
+                        <div style="text-align: center; margin: 15px 0; color: var(--text-muted); font-size: 0.85rem;">HOẶC</div>
+                        <button type="button" class="btn-form" onclick="handleGoogleLogin()" style="background: #fff; color: #333; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" style="width: 18px; height: 18px;">
+                            Đăng nhập bằng Google
+                        </button>
                     </form>
 
                     <!-- Register Form -->
@@ -1727,22 +1751,22 @@
                 <div class="admin-stat-card">
                     <div class="icon">👥</div>
                     <div class="label">Tổng số Tài khoản</div>
-                    <div class="num" id="adminStatUsers">0</div>
+                    <div class="num" id="adminTotalUsers">0</div>
                 </div>
                 <div class="admin-stat-card">
                     <div class="icon">🖼️</div>
                     <div class="label">Tổng ảnh đã xử lý</div>
-                    <div class="num" id="adminStatImages">0</div>
+                    <div class="num" id="adminTotalImages">0</div>
                 </div>
                 <div class="admin-stat-card">
                     <div class="icon">💰</div>
-                    <div class="label">Tiết kiệm nhờ AI Cục Bộ</div>
-                    <div class="num" id="adminStatSavings">$0.00</div>
+                    <div class="label">Tổng Doanh Thu</div>
+                    <div class="num" id="adminTotalRevenue">0đ</div>
                 </div>
                 <div class="admin-stat-card">
                     <div class="icon">⚙️</div>
                     <div class="label">Tỷ lệ AI Cục Bộ / Cloud API</div>
-                    <div class="num" id="adminStatRatio">0 / 0</div>
+                    <div class="num" id="adminRatio" style="font-size: 1.4rem;">0% / 0%</div>
                 </div>
             </div>
 
@@ -1779,6 +1803,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Username</th>
+                                    <th>Trạng thái</th>
                                 </tr>
                             </thead>
                             <tbody id="adminUsersTableBody">
@@ -1844,6 +1869,71 @@
                 <button class="btn btn-primary" id="btnConfirmMockPayment" style="width: 100%; justify-content: center; background: linear-gradient(135deg, var(--success), #059669);">
                     ✓ Xác nhận đã chuyển khoản thành công (DEMO)
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= FORGOT PASSWORD MODAL ================= -->
+    <div class="modal" id="forgotPasswordModal">
+        <div class="modal-card" style="max-width: 400px;">
+            <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+            <h3 style="margin-bottom: 15px;">Khôi phục mật khẩu</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Nhập email của bạn để nhận mã khôi phục.</p>
+            
+            <div id="forgotPasswordStep1">
+                <input type="email" id="forgotEmail" class="form-control" placeholder="Email đã đăng ký..." style="margin-bottom: 15px;">
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="sendResetCode()">Gửi mã khôi phục</button>
+            </div>
+            
+            <div id="forgotPasswordStep2" style="display: none;">
+                <input type="text" id="resetCode" class="form-control" placeholder="Nhập mã xác nhận (6 số)..." style="margin-bottom: 10px;">
+                <input type="password" id="resetNewPass" class="form-control" placeholder="Mật khẩu mới..." style="margin-bottom: 15px;">
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="confirmResetPassword()">Đặt lại mật khẩu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PROFILE MODAL ================= -->
+    <div class="modal" id="profileModal">
+        <div class="modal-card" style="max-width: 400px;">
+            <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+            <h3 style="margin-bottom: 20px;">Hồ sơ của tôi</h3>
+            
+            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <p><strong>Tên người dùng:</strong> <span id="profileUsername"></span></p>
+                <p style="margin-top: 10px;"><strong>Trạng thái:</strong> <span id="profileProStatus"></span></p>
+            </div>
+            
+            <h4 style="margin-bottom: 15px; font-size: 1rem;">Đổi mật khẩu</h4>
+            <input type="password" id="profileOldPass" class="form-control" placeholder="Mật khẩu cũ..." style="margin-bottom: 10px;">
+            <input type="password" id="profileNewPass" class="form-control" placeholder="Mật khẩu mới..." style="margin-bottom: 15px;">
+            <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="updateProfile()">Cập nhật mật khẩu</button>
+        </div>
+    </div>
+
+    <!-- ================= ADMIN USER HISTORY MODAL ================= -->
+    <div class="modal" id="adminUserModal">
+        <div class="modal-card" style="max-width: 800px; max-height: 80vh; display: flex; flex-direction: column;">
+            <button class="modal-close" onclick="closeAdminUserModal()">&times;</button>
+            <h3 style="margin-bottom: 20px;">Lịch sử hoạt động của: <span id="adminUserModalName" style="color: var(--accent);"></span></h3>
+            
+            <div style="overflow-y: auto; flex-grow: 1;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên Ảnh</th>
+                            <th>Thời gian</th>
+                            <th>Công nghệ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUserHistoryList">
+                        <!-- Render here -->
+                    </tbody>
+                </table>
+                <div id="adminUserEmpty" style="display: none; text-align: center; padding: 20px; color: var(--text-muted);">
+                    Người dùng này chưa có hoạt động nào.
+                </div>
             </div>
         </div>
     </div>
@@ -2689,9 +2779,9 @@
                 lastAdminData = data;
 
                 // KPI values
-                adminStatUsers.textContent = data.totalUsers;
-                adminStatImages.textContent = data.totalImages;
-                adminStatSavings.textContent = `$${data.totalSavings.toFixed(2)}`;
+                document.getElementById('adminTotalUsers').textContent = data.totalUsers;
+                document.getElementById('adminTotalImages').textContent = data.totalImages;
+                document.getElementById('adminTotalRevenue').textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.totalRevenue);
                 
                 const totalAI = data.localImages + data.cloudImages;
                 const localPct = totalAI > 0 ? Math.round((data.localImages / totalAI) * 100) : 0;
@@ -2730,7 +2820,8 @@
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
                             <td style="color: var(--text-muted); width: 60px;">#${usr.id}</td>
-                            <td style="font-weight: 600; color: var(--accent);">${usr.username}</td>
+                            <td style="font-weight: 600; color: var(--accent); cursor:pointer;" onclick="showAdminUserDetails(${usr.id}, '${usr.username}')">${usr.username}</td>
+                            <td>${usr.isPro ? '<span style="background: linear-gradient(135deg, #eab308, #ca8a04); color: #000; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">PRO</span>' : '<span style="color: var(--text-muted);">FREE</span>'}</td>
                         `;
                         adminUsersTableBody.appendChild(tr);
                     });
@@ -2901,6 +2992,144 @@
             }
         } else {
             showView('landing');
+        }
+        // ================= FORGOT PASSWORD =================
+        function openForgotPasswordModal() {
+            document.getElementById('forgotPasswordStep1').style.display = 'block';
+            document.getElementById('forgotPasswordStep2').style.display = 'none';
+            document.getElementById('forgotEmail').value = '';
+            document.getElementById('forgotPasswordModal').classList.add('active');
+        }
+
+        function closeForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').classList.remove('active');
+        }
+
+        async function sendResetCode() {
+            const email = document.getElementById('forgotEmail').value;
+            if(!email) return showToast('Vui lòng nhập email', 'error');
+
+            try {
+                const res = await fetch(`${API_URL}/auth/forgot-password`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ Email: email })
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    showToast(data.message, 'success');
+                    document.getElementById('forgotPasswordStep1').style.display = 'none';
+                    document.getElementById('forgotPasswordStep2').style.display = 'block';
+                } else {
+                    showToast(data.message || 'Lỗi gửi mã.', 'error');
+                }
+            } catch(e) {
+                showToast('Lỗi kết nối', 'error');
+            }
+        }
+
+        async function confirmResetPassword() {
+            const token = document.getElementById('resetCode').value;
+            const newPassword = document.getElementById('resetNewPass').value;
+            if(!token || !newPassword) return showToast('Vui lòng điền đủ thông tin', 'error');
+
+            try {
+                const res = await fetch(`${API_URL}/auth/reset-password`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ Token: token, NewPassword: newPassword })
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    showToast(data.message, 'success');
+                    closeForgotPasswordModal();
+                } else {
+                    showToast(data.message || 'Lỗi đặt lại mật khẩu.', 'error');
+                }
+            } catch(e) {
+                showToast('Lỗi kết nối', 'error');
+            }
+        }
+
+        // ================= PROFILE =================
+        function openProfileModal() {
+            document.getElementById('profileUsername').textContent = localStorage.getItem('username');
+            document.getElementById('profileProStatus').innerHTML = localStorage.getItem('isPro') === 'true' 
+                ? '<span style="color: #eab308; font-weight: bold;">PRO</span>' 
+                : 'FREE';
+            document.getElementById('profileOldPass').value = '';
+            document.getElementById('profileNewPass').value = '';
+            document.getElementById('profileModal').classList.add('active');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+
+        async function updateProfile() {
+            const oldPass = document.getElementById('profileOldPass').value;
+            const newPass = document.getElementById('profileNewPass').value;
+            const token = localStorage.getItem('token');
+            if(!oldPass || !newPass) return showToast('Vui lòng nhập mật khẩu', 'error');
+
+            try {
+                const res = await fetch(`${API_URL}/auth/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ OldPassword: oldPass, NewPassword: newPass })
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    showToast(data.message, 'success');
+                    closeProfileModal();
+                } else {
+                    showToast(data.message || 'Lỗi đổi mật khẩu.', 'error');
+                }
+            } catch(e) {
+                showToast('Lỗi kết nối', 'error');
+            }
+        }
+
+        // ================= ADMIN USER DETAILS =================
+        function closeAdminUserModal() {
+            document.getElementById('adminUserModal').classList.remove('active');
+        }
+
+        async function showAdminUserDetails(userId, username) {
+            document.getElementById('adminUserModalName').textContent = username;
+            document.getElementById('adminUserHistoryList').innerHTML = '';
+            document.getElementById('adminUserEmpty').style.display = 'none';
+            document.getElementById('adminUserModal').classList.add('active');
+
+            try {
+                const res = await fetch(`${API_URL}/admin/user/${userId}/history`);
+                const data = await res.json();
+                
+                if(res.ok) {
+                    if(data.length === 0) {
+                        document.getElementById('adminUserEmpty').style.display = 'block';
+                    } else {
+                        let html = '';
+                        data.forEach(item => {
+                            const d = new Date(item.createdAt);
+                            const tStr = `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')} ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+                            html += `
+                            <tr>
+                                <td>#${item.id}</td>
+                                <td>${item.originalFileName || 'image.png'}</td>
+                                <td>${tStr}</td>
+                                <td><span style="background: rgba(6,182,212,0.1); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">${item.source === 'Local' ? 'AI Cục Bộ' : 'Cloud API'}</span></td>
+                            </tr>`;
+                        });
+                        document.getElementById('adminUserHistoryList').innerHTML = html;
+                    }
+                }
+            } catch(e) {
+                showToast('Lỗi lấy lịch sử', 'error');
+            }
         }
     </script>
 </body>
