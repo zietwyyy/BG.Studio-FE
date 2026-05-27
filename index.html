@@ -3060,18 +3060,6 @@
         // Event listener cho nút Nâng cấp PRO trên thanh Nav (dùng onclick inline, nên không cần addEventListener ở đây)
 
         /* ================= INITIALIZATION ================= */
-        // *** KHÔI PHỤC SESSION NGAY KHI SCRIPT LOAD (không chờ window.onload) ***
-        // Điều này đảm bảo session luôn được khôi phục dù có lỗi nào đó trong window.onload
-        (function restoreSessionEarly() {
-            try {
-                const savedToken = localStorage.getItem('token');
-                const savedUser = localStorage.getItem('username');
-                if (savedToken && savedUser) {
-                    // Đánh dấu cần restore sau khi DOM sẵn sàng
-                    window._needsSessionRestore = true;
-                }
-            } catch(e) { /* ignore */ }
-        })();
 
         window.onload = function() {
             try {
@@ -3109,29 +3097,6 @@
                 console.warn('[PayOS Callback Error]', e);
             }
 
-            // *** KHÔI PHỤC SESSION - LUÔN CHẠY DÙ CÓ LỖI Ở TRÊN ***
-            try {
-                const savedToken = localStorage.getItem('token');
-                const savedUser = localStorage.getItem('username');
-                const savedIsPro = localStorage.getItem('isPro') === 'true';
-
-                if (savedToken && savedUser) {
-                    token = savedToken;
-                    loggedInUser = savedUser;
-                    loggedInUserPro = savedIsPro;
-                    updateAuthUI();
-                    if (savedUser.toLowerCase() === 'admin') {
-                        showView('admin');
-                    } else {
-                        showView('workspace');
-                    }
-                } else {
-                    showView('landing');
-                }
-            } catch(e) {
-                console.error('[Session Restore Error]', e);
-                showView('landing');
-            }
         };
 
         function decodeJwtResponse(token) {
@@ -3328,6 +3293,33 @@
                 showToast('Lỗi lấy lịch sử', 'error');
             }
         }
+
+        // ================= KHÔI PHỤC SESSION LẬP TỨC (KHÔNG CHỜ WINDOW.ONLOAD) =================
+        function restoreSession() {
+            try {
+                const savedToken = localStorage.getItem('token');
+                const savedUser = localStorage.getItem('username');
+                const savedIsPro = localStorage.getItem('isPro') === 'true';
+
+                if (savedToken && savedUser) {
+                    token = savedToken;
+                    loggedInUser = savedUser;
+                    loggedInUserPro = savedIsPro;
+                    updateAuthUI();
+                    if (savedUser.toLowerCase() === 'admin') {
+                        showView('admin');
+                    } else {
+                        showView('workspace');
+                    }
+                } else {
+                    showView('landing');
+                }
+            } catch(e) {
+                console.error('[Session Restore Error]', e);
+                showView('landing');
+            }
+        }
+        restoreSession();
     </script>
 </body>
 </html>
