@@ -1,0 +1,25 @@
+{
+  "name": "bg.studio-fe",
+  "version": "1.0.0",
+  "description": "This is the frontend of the BG.Studio SaaS application.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zietwyyy/BG.Studio-FE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zietwyyy/BG.Studio-FE/issues"
+  },
+  "homepage": "https://github.com/zietwyyy/BG.Studio-FE#readme",
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BG.Studio - Cộng đồng</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --bg-card: #131926;
+            --bg-card-hover: #1c2538;
+            --primary: #a855f7;
+            --primary-glow: rgba(168, 85, 247, 0.4);
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.4);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.12);
+            --border-glow: rgba(168, 85, 247, 0.2);
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glow Background */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+            top: -100px;
+            left: -100px;
+        }
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: var(--accent);
+            bottom: -150px;
+            right: -100px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.3px;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #ffffff;
+            box-shadow: 0 4px 15px var(--primary-glow);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--primary-glow);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            backdrop-filter: blur(10px);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Navigation Bar */
+        header {
+            background: rgba(19, 25, 38, 0.7);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 15px 40px;
+        }
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 30%, var(--primary) 70%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .logo-symbol {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1rem;
+            color: #fff !important;
+            -webkit-text-fill-color: #fff !important;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .nav-link.active {
+            border: 1px solid var(--border);
+            color: var(--accent);
+        }
+
+        /* Community Layout */
+        .community-wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .hero-banner {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .hero-banner h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+        .hero-banner p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 25px auto;
+            font-size: 1.1rem;
+        }
+
+        /* Masonry Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .post-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+        .post-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px var(--primary-glow);
+        }
+        .post-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border);
+        }
+        .post-info {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .post-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+            color: #fff;
+        }
+        .username {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .likes {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        .likes:hover {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .likes svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Upload Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 6, 10, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--primary);
+            box-shadow: 0 15px 40px var(--primary-glow);
+            border-radius: 24px;
+            padding: 35px;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: var(--danger);
+        }
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.01);
+        }
+        .upload-area:hover {
+            border-color: var(--accent);
+            background: rgba(6, 182, 212, 0.02);
+        }
+        .file-input {
+            display: none;
+        }
+        #previewArea {
+            display: none;
+            text-align: center;
+        }
+        #previewImg {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-symbol">BG</div> Studio
+            </a>
+            <nav>
+                <a href="index.html" class="nav-link">← Trở về Trang chủ</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="community-wrapper">
+        <div class="hero-banner">
+            <h2>Cộng đồng Sáng tạo</h2>
+            <p>Khám phá và lấy cảm hứng từ những tác phẩm tuyệt vời đã được tách nền và ghép phông AI bởi cộng đồng BG.Studio</p>
+            <button class="btn btn-primary" onclick="openUploadModal()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Đăng tác phẩm của bạn
+            </button>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Mock Posts -->
+            <div class="post-card">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" class="post-img" alt="Post">
+                <div class="post-info">
+                    <div class="post-user">
+                        <div class="avatar">H</div>
+                        <div class="username">Hải Đăng</div>
+                    </div>
+                    <div class="likes" onclick="toggleLike(this)">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>245</span>
+                    </div>
+                </div>
+            </div>
+            <div class="post-card">
+                <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=2574&auto=format&fit=crop" class="post-img" alt="Post">
+                <div class="post-info">
+                    <div class="post-user">
+                        <div class="avatar" style="background: linear-gradient(135deg, #ef4444, #f97316);">T</div>
+                        <div class="username">Tuấn Anh</div>
+                    </div>
+                    <div class="likes" onclick="toggleLike(this)">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>128</span>
+                    </div>
+                </div>
+            </div>
+            <div class="post-card">
+                <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=2574&auto=format&fit=crop" class="post-img" alt="Post">
+                <div class="post-info">
+                    <div class="post-user">
+                        <div class="avatar" style="background: linear-gradient(135deg, #10b981, #3b82f6);">M</div>
+                        <div class="username">Minh Thư</div>
+                    </div>
+                    <div class="likes" onclick="toggleLike(this)">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>342</span>
+                    </div>
+                </div>
+            </div>
+            <div class="post-card">
+                <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2574&auto=format&fit=crop" class="post-img" alt="Post">
+                <div class="post-info">
+                    <div class="post-user">
+                        <div class="avatar" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">Q</div>
+                        <div class="username">Quang Lam</div>
+                    </div>
+                    <div class="likes" onclick="toggleLike(this)">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>89</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal Container -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeUploadModal()">&times;</button>
+            <h3 class="modal-title">Đăng Tác Phẩm</h3>
+            
+            <div class="upload-area" id="dropArea" onclick="document.getElementById('fileInput').click()">
+                <div style="font-size: 3rem; margin-bottom: 15px;">🖼️</div>
+                <h4 style="font-size: 1.1rem; margin-bottom: 8px;">Nhấn để chọn ảnh</h4>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Chỉ hỗ trợ JPG, PNG (Tối đa 5MB)</p>
+                <input type="file" class="file-input" id="fileInput" accept="image/*" onchange="handleFileSelect(event)">
+            </div>
+
+            <div id="previewArea">
+                <img id="previewImg" src="">
+                <button class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 1.1rem;" onclick="publishPost()">
+                    🚀 Đăng tải lên Cộng đồng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.add('active');
+            resetUploadState();
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+        }
+
+        function resetUploadState() {
+            document.getElementById('dropArea').style.display = 'block';
+            document.getElementById('previewArea').style.display = 'none';
+            document.getElementById('fileInput').value = '';
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('dropArea').style.display = 'none';
+                    document.getElementById('previewArea').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function publishPost() {
+            const imgSrc = document.getElementById('previewImg').src;
+            
+            const postHTML = `
+            <div class="post-card" style="animation: slideIn 0.5s forwards;">
+                <img src="${imgSrc}" class="post-img" alt="Post">
+                <div class="post-info">
+                    <div class="post-user">
+                        <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #3b82f6);">U</div>
+                        <div class="username">Bạn (Vừa xong)</div>
+                    </div>
+                    <div class="likes" onclick="toggleLike(this)">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>0</span>
+                    </div>
+                </div>
+            </div>`;
+            
+            document.getElementById('galleryGrid').insertAdjacentHTML('afterbegin', postHTML);
+            closeUploadModal();
+        }
+
+        function toggleLike(element) {
+            const span = element.querySelector('span');
+            let count = parseInt(span.innerText);
+            
+            if (element.style.color === 'var(--danger)') {
+                element.style.color = 'var(--text-muted)';
+                element.style.background = 'rgba(255, 255, 255, 0.05)';
+                span.innerText = count - 1;
+            } else {
+                element.style.color = 'var(--danger)';
+                element.style.background = 'rgba(239, 68, 68, 0.1)';
+                span.innerText = count + 1;
+            }
+        }
+    </script>
+</body>
+</html>
