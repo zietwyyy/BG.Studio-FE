@@ -1645,6 +1645,86 @@
             color: var(--text-muted);
             backdrop-filter: blur(10px);
         }
+
+        /* Lưới kết quả tìm kiếm phông nền & Generator Prompt */
+        .search-results-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+        @media (max-width: 768px) {
+            .search-results-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .search-result-card {
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease-in-out;
+            aspect-ratio: 4 / 3;
+            background: rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .search-result-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .search-result-card:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .search-result-card.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        .prompt-generator-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .prompt-generator-section h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .prompt-input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .prompt-textarea {
+            width: 100%;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+            resize: none;
+            transition: all 0.2s;
+        }
+        .prompt-textarea:focus {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+        }
     </style>
 </head>
 <body>
@@ -2039,9 +2119,21 @@
                             <!-- Search Bg -->
                             <div class="search-bg-section">
                                 <h4>🔍 Tìm hình nền AI khác (Unsplash):</h4>
-                                <div style="display: flex; gap: 8px;">
+                                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
                                     <input type="text" id="inputSearchBg" class="form-control" placeholder="Eiffel Tower, coffee shop, flower garden..." style="margin-bottom: 0;">
                                     <button class="btn btn-primary" onclick="searchCustomBackground()" style="white-space: nowrap; padding: 10px 15px;">Tìm</button>
+                                </div>
+                                <div id="searchBgResults" class="search-results-grid" style="display: none;"></div>
+                            </div>
+
+                            <!-- AI Prompt Generator -->
+                            <div class="prompt-generator-section">
+                                <h4>🎨 Tự tạo phông nền bằng AI Prompt:</h4>
+                                <div class="prompt-input-wrapper">
+                                    <textarea id="inputAiPrompt" class="prompt-textarea" placeholder="Mô tả phông nền bạn muốn tạo (Ví dụ bằng tiếng Anh: 'A beautiful beach at sunset, hyper-realistic, 8k')..."></textarea>
+                                    <button class="btn btn-primary" id="btnGenerateAiBg" onclick="generateAiBackground()" style="width: 100%; background: linear-gradient(135deg, var(--primary), var(--accent));">
+                                        ✨ Tạo phông nền AI
+                                    </button>
                                 </div>
                             </div>
 
@@ -3017,20 +3109,108 @@
             }
 
             showToast("Đang tìm kiếm phông nền AI...");
-            const img = new Image();
-            img.crossOrigin = "anonymous";
-            // Sử dụng loremflickr hỗ trợ CORS đầy đủ
-            img.src = `https://loremflickr.com/800/600/${encodeURIComponent(query)}`;
-            img.onload = () => {
-                bgImage = img;
-                drawCanvas();
-                showToast("Đã tải hình nền AI mới!");
-                // Bỏ active của preset cards
-                document.querySelectorAll('.preset-card').forEach(el => el.classList.remove('active'));
-            };
-            img.onerror = () => {
-                showToast("Lỗi khi tải hình nền. Thử lại từ khóa khác!", "error");
-            };
+            const resultsContainer = document.getElementById('searchBgResults');
+            resultsContainer.innerHTML = '';
+            resultsContainer.style.display = 'grid';
+
+            // Tạo 10 kết quả ảnh ngẫu nhiên với query param khác nhau từ loremflickr
+            for (let i = 1; i <= 10; i++) {
+                const imgUrl = `https://loremflickr.com/800/600/${encodeURIComponent(query)}?random=${i}`;
+                
+                const card = document.createElement('div');
+                card.className = 'search-result-card';
+                card.innerHTML = `<img src="${imgUrl}" alt="Search result ${i}" loading="lazy">`;
+                
+                card.addEventListener('click', () => {
+                    // Xóa class active ở các card khác
+                    document.querySelectorAll('.search-result-card').forEach(el => el.classList.remove('active'));
+                    card.classList.add('active');
+                    
+                    showToast("Đang tải hình nền được chọn...");
+                    const bgImg = new Image();
+                    bgImg.crossOrigin = "anonymous";
+                    bgImg.src = imgUrl;
+                    bgImg.onload = () => {
+                        bgImage = bgImg;
+                        drawCanvas();
+                        showToast("Đã thay đổi hình nền canvas!");
+                        // Bỏ active của preset cards
+                        document.querySelectorAll('.preset-card').forEach(el => el.classList.remove('active'));
+                    };
+                    bgImg.onerror = () => {
+                        showToast("Không thể tải hình nền này, vui lòng chọn hình khác!", "error");
+                    };
+                });
+                
+                resultsContainer.appendChild(card);
+            }
+            showToast("Đã hiển thị 10 gợi ý hình nền bên dưới!");
+        }
+
+        async function generateAiBackground() {
+            if (!token) {
+                showToast("Vui lòng đăng nhập để sử dụng tính năng tạo ảnh bằng AI.", "error");
+                openAuthView('login');
+                return;
+            }
+
+            const promptText = document.getElementById('inputAiPrompt').value.trim();
+            if (!promptText) {
+                showToast("Vui lòng nhập mô tả phông nền cần tạo.", "error");
+                return;
+            }
+
+            const btn = document.getElementById('btnGenerateAiBg');
+            btn.disabled = true;
+            btn.textContent = "✨ Đang tạo phông nền AI...";
+            loaderOverlay.style.display = 'flex';
+            loaderMessage.textContent = "AI đang xử lý sinh ảnh phông nền, vui lòng đợi trong giây lát...";
+
+            try {
+                const response = await fetch(`${API_URL}/Image/generate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ prompt: promptText })
+                });
+
+                if (response.status === 402) {
+                    const data = await response.json();
+                    showToast(data.message || "Đã đạt giới hạn lượt dùng trong ngày!", "error");
+                    showPaymentModal(data.message);
+                    throw new Error("Limit reached");
+                }
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text || "Lỗi khi sinh ảnh phông nền.");
+                }
+
+                const data = await response.json();
+                if (data.url) {
+                    showToast("Tạo phông nền AI thành công!");
+                    const img = new Image();
+                    img.crossOrigin = "anonymous";
+                    img.src = data.url;
+                    img.onload = () => {
+                        bgImage = img;
+                        drawCanvas();
+                        updateUserUsageDisplay();
+                    };
+                } else {
+                    throw new Error("Không nhận được URL ảnh từ server.");
+                }
+            } catch (err) {
+                if (err.message !== "Limit reached") {
+                    showToast(err.message, "error");
+                }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "✨ Tạo phông nền AI";
+                loaderOverlay.style.display = 'none';
+            }
         }
 
         function adjustFgScale(val) {
