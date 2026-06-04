@@ -3074,11 +3074,11 @@
                 const y = (canvas.height - h) + fgY; // align bottom by default
 
                 ctx.drawImage(fgImage, x, y, w, h);
-            } else {
+            } else if (!bgImage.src) {
                 ctx.fillStyle = "rgba(255,255,255,0.4)";
                 ctx.font = "16px Outfit";
                 ctx.textAlign = "center";
-                ctx.fillText("Vui lòng tách nền ảnh trước khi tạo phông nền AI", canvas.width / 2, canvas.height / 2);
+                ctx.fillText("Vui lòng tách nền ảnh hoặc chọn/tạo phông nền AI bên dưới", canvas.width / 2, canvas.height / 2);
             }
         }
 
