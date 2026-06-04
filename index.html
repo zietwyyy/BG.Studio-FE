@@ -3190,14 +3190,17 @@
 
                 const data = await response.json();
                 if (data.url) {
-                    showToast("Tạo phông nền AI thành công!");
+                    showToast("Tạo phông nền AI thành công! Đang tải hình nền lên canvas...");
                     const img = new Image();
                     img.crossOrigin = "anonymous";
-                    img.src = data.url;
+                    img.src = data.url.startsWith('/') ? `${API_URL.replace('/api', '')}${data.url}` : data.url;
                     img.onload = () => {
                         bgImage = img;
                         drawCanvas();
                         updateUserUsageDisplay();
+                    };
+                    img.onerror = () => {
+                        showToast("Không thể hiển thị ảnh AI lên Canvas. Vui lòng thử lại hoặc tải lại trang.", "error");
                     };
                 } else {
                     throw new Error("Không nhận được URL ảnh từ server.");
