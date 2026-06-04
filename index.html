@@ -44,6 +44,35 @@
             overflow-x: hidden;
         }
 
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px var(--primary-glow); }
+            50% { box-shadow: 0 0 30px var(--primary), 0 0 10px var(--accent); }
+            100% { box-shadow: 0 0 15px var(--primary-glow); }
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
+        }
+        .animate-on-scroll.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
         /* Ambient Glow Background */
         .glow-orb {
             position: fixed;
@@ -59,6 +88,7 @@
             background: var(--primary);
             top: -100px;
             left: -100px;
+            animation: float 8s ease-in-out infinite;
         }
         .orb-2 {
             width: 600px;
@@ -66,6 +96,7 @@
             background: var(--accent);
             bottom: -150px;
             right: -100px;
+            animation: float 10s ease-in-out infinite reverse;
         }
 
         /* Generic classes & buttons */
@@ -1405,7 +1436,7 @@
         </div>
 
         <!-- Hero -->
-        <div class="hero">
+        <div class="hero animate-on-scroll">
             <h1>Xóa Nền Ảnh & Ghép Phông AI<br>Chỉ Trong 3 Giây</h1>
             <p>Trải nghiệm công nghệ tách nền tự động thông minh bằng AI Cục Bộ (Local rembg) tích hợp Studio phông nền nghệ thuật. Không cần kỹ năng photoshop, tạo ảnh chuyên nghiệp tức thì.</p>
             <div style="display: flex; gap: 15px; justify-content: center;">
@@ -1413,7 +1444,7 @@
                 <button class="btn btn-secondary" style="font-size: 1.1rem; padding: 14px 30px;" onclick="scrollToSection('landingPricing')">Xem Bảng Giá 💰</button>
             </div>
 
-            <div class="hero-showcase">
+            <div class="hero-showcase animate-on-scroll delay-100">
                 <div class="showcase-card">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop" alt="Original Image">
                     <span>Ảnh gốc của bạn</span>
@@ -1433,8 +1464,8 @@
 
         <!-- Features -->
         <div class="features">
-            <h2 class="section-title">✨ Tại sao chọn BG.Studio?</h2>
-            <div class="features-grid">
+            <h2 class="section-title animate-on-scroll">✨ Tại sao chọn BG.Studio?</h2>
+            <div class="features-grid animate-on-scroll delay-200">
                 <div class="feature-card">
                     <div class="feature-icon">🧠</div>
                     <h3>AI Tách Nền Siêu Việt</h3>
@@ -1455,8 +1486,8 @@
 
         <!-- Pricing -->
         <div class="pricing" id="landingPricing">
-            <h2 class="section-title">💳 Bảng giá dịch vụ</h2>
-            <div class="pricing-grid">
+            <h2 class="section-title animate-on-scroll">💳 Bảng giá dịch vụ</h2>
+            <div class="pricing-grid animate-on-scroll delay-300">
                 <!-- Free Plan -->
                 <div class="pricing-card">
                     <div class="pricing-header">
@@ -3446,6 +3477,33 @@
             }
         }
         restoreSession();
+
+        // ================= ANIMATIONS =================
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+            
+            // Re-trigger observer if view changes (for SPA navigation)
+            const originalShowView = window.showView;
+            window.showView = function(viewId, pushState) {
+                originalShowView(viewId, pushState);
+                if (viewId === 'landing') {
+                    setTimeout(() => {
+                        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                            el.classList.remove('show');
+                            observer.observe(el);
+                        });
+                    }, 50);
+                }
+            };
+        });
     </script>
 </body>
 </html>
