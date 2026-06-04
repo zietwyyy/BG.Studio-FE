@@ -20,6 +20,7 @@
     "url": "https://github.com/zietwyyy/BG.Studio-FE/issues"
   },
   "homepage": "https://github.com/zietwyyy/BG.Studio-FE#readme",
-  "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "vite": "^8.0.16"
+  }
 }
