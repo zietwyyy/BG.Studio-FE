@@ -1,2 +1,2 @@
-# BG.Studio Frontend
-This is the frontend of the BG.Studio SaaS application.
+# FaceIn Frontend
+This is the frontend of the FaceIn SaaS application.

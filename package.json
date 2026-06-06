@@ -1,7 +1,7 @@
 {
-  "name": "bg.studio-fe",
+  "name": "facein-fe",
   "version": "1.0.0",
-  "description": "This is the frontend of the BG.Studio SaaS application.",
+  "description": "This is the frontend of the FaceIn SaaS application.",
   "main": "index.js",
   "type": "module",
   "scripts": {
