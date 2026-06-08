@@ -3656,8 +3656,14 @@
                     showToast("Bạn đã hủy giao dịch thanh toán PayOS.", "error");
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
+
+                // Mở khung đăng nhập nếu có tham số auth=login từ trang khác chuyển qua
+                if (urlParams.get('auth') === 'login') {
+                    openAuthView('login');
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
             } catch(e) {
-                console.warn('[PayOS Callback Error]', e);
+                console.warn('[Callback Error]', e);
             }
 
         };
