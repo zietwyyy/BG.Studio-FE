@@ -2782,6 +2782,9 @@
                 localStorage.setItem('activeView', viewId);
             }
 
+            // Cuộn trang về đầu khi chuyển view
+            window.scrollTo(0, 0);
+
             if (viewId === 'landing') {
                 document.getElementById('view-landing').style.display = 'block';
             } else if (viewId === 'auth') {
@@ -4417,11 +4420,9 @@
             window.showView = function(viewId, pushState) {
                 originalShowView(viewId, pushState);
                 if (viewId === 'landing') {
+                    // Force IntersectionObserver to evaluate visible elements immediately
                     setTimeout(() => {
-                        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-                            el.classList.remove('show');
-                            observer.observe(el);
-                        });
+                        window.dispatchEvent(new Event('scroll'));
                     }, 50);
                 }
             };
