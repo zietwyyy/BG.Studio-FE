@@ -2604,7 +2604,20 @@
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">Bình luận / Góp ý:</label>
-                <textarea id="reviewCommentVal" class="form-control" placeholder="Ứng dụng rất tuyệt vời..." style="height: 100px; resize: none;"></textarea>
+                <textarea id="reviewCommentVal" class="form-control" placeholder="Ứng dụng rất tuyệt vời..." style="height: 80px; resize: none;"></textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">Đính kèm ảnh minh họa (tùy chọn):</label>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="position: relative; display: flex; align-items: center; justify-content: center; border: 1.5px dashed rgba(255, 255, 255, 0.15); border-radius: 12px; height: 100px; cursor: pointer; background: rgba(0,0,0,0.25); overflow: hidden; transition: border-color 0.2s;" onclick="document.getElementById('reviewImgInput').click()" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='rgba(255, 255, 255, 0.15)'">
+                        <span id="reviewImgPlaceholder" style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+                            📷 Chọn ảnh hoặc chụp màn hình
+                        </span>
+                        <img id="reviewImgPreview" style="display: none; height: 100%; width: 100%; object-fit: contain;" alt="Review Preview">
+                    </div>
+                    <input type="file" id="reviewImgInput" accept="image/*" style="display: none;" onchange="handleReviewImageChange(this)">
+                </div>
             </div>
 
             <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="submitUserReview()">Gửi đánh giá</button>
@@ -4091,12 +4104,43 @@
         }
 
         // ================= USER REVIEWS =================
+        function handleReviewImageChange(input) {
+            const preview = document.getElementById('reviewImgPreview');
+            const placeholder = document.getElementById('reviewImgPlaceholder');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+                placeholder.style.display = 'flex';
+            }
+        }
+
         function openReviewModal() {
             if(!token) {
                 showToast("Bạn cần đăng nhập để thực hiện đánh giá.", "error");
                 return;
             }
             document.getElementById('reviewCommentVal').value = '';
+            
+            const imgInput = document.getElementById('reviewImgInput');
+            if (imgInput) imgInput.value = '';
+            
+            const preview = document.getElementById('reviewImgPreview');
+            if (preview) {
+                preview.src = '';
+                preview.style.display = 'none';
+            }
+            
+            const placeholder = document.getElementById('reviewImgPlaceholder');
+            if (placeholder) placeholder.style.display = 'flex';
+
             selectRatingStar(5);
             document.getElementById('reviewModal').classList.add('active');
         }
@@ -4121,17 +4165,24 @@
             const rating = parseInt(document.getElementById('reviewRatingVal').value);
             const comment = document.getElementById('reviewCommentVal').value.trim();
             const token = localStorage.getItem('token');
+            const imgInput = document.getElementById('reviewImgInput');
 
             if(!token) return showToast("Vui lòng đăng nhập lại.", "error");
+
+            const formData = new FormData();
+            formData.append('rating', rating);
+            formData.append('comment', comment);
+            if (imgInput && imgInput.files && imgInput.files[0]) {
+                formData.append('file', imgInput.files[0]);
+            }
 
             try {
                 const res = await fetch(`${API_URL}/admin/review`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ rating, comment })
+                    body: formData
                 });
 
                 if(res.ok) {
@@ -4167,6 +4218,16 @@
                         const d = new Date(r.createdAt);
                         const dateStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
 
+                        let imgHtml = '';
+                        if (r.imageUrl) {
+                            const displayUrl = r.imageUrl.startsWith('http') ? r.imageUrl : `${API_URL.replace('/api', '')}${r.imageUrl}`;
+                            imgHtml = `
+                                <div class="review-image-container" style="margin-top: 12px; margin-bottom: 8px; border-radius: 8px; overflow: hidden; max-height: 120px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2);">
+                                    <img src="${displayUrl}" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" onclick="window.open('${displayUrl}', '_blank')" alt="Review Proof">
+                                </div>
+                            `;
+                        }
+
                         card.innerHTML = `
                             <div>
                                 <div class="review-card-header">
@@ -4174,6 +4235,7 @@
                                     <span class="review-stars">${starsText}</span>
                                 </div>
                                 <p class="review-text">"${r.comment || 'Không có nhận xét.'}"</p>
+                                ${imgHtml}
                             </div>
                             <div class="review-date">${dateStr}</div>
                         `;
