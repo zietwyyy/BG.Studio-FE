@@ -1026,7 +1026,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        const API_URL = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1')
+        const API_URL = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1') || window.location.protocol === 'file:'
             ? 'http://localhost:5096/api'
             : 'https://bg-studio-be.onrender.com/api';
 
