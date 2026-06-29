@@ -1040,7 +1040,7 @@
             window.location.href = 'index.html';
         }
 
-        document.getElementById('adminName').textContent = loggedInUser;
+        document.getElementById('adminName').textContent = loggedInUser.toLowerCase() === 'admin' ? 'Admin' : (loggedInUser.charAt(0).toUpperCase() + loggedInUser.slice(1));
 
         // Active sections state
         function switchTab(tabId) {
