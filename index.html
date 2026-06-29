@@ -151,6 +151,13 @@
             z-index: 1;
             overflow: hidden;
         }
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            pointer-events: none;
+            transform: none !important;
+            box-shadow: none !important;
+        }
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: #ffffff;
@@ -324,6 +331,115 @@
         .btn-logout:hover {
             opacity: 0.8;
             transform: scale(1.02);
+        }
+
+        /* Profile Dropdown Styling */
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-dropdown-trigger {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .profile-dropdown-trigger:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .profile-avatar {
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .dropdown-arrow {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+        }
+        .profile-dropdown-trigger.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        .profile-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(10, 15, 26, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            min-width: 200px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            padding: 8px 0;
+            animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .profile-dropdown-menu.active {
+            display: flex;
+        }
+        @keyframes dropdownFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .dropdown-user-header {
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dropdown-divider {
+            border: 0;
+            height: 1px;
+            background: var(--border);
+            margin: 6px 0;
+        }
+        .dropdown-item {
+            padding: 10px 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            text-align: left;
+            background: none;
+            border: none;
+            width: 100%;
+        }
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+        }
+        .dropdown-item.logout {
+            color: var(--danger);
+        }
+        .dropdown-item.logout:hover {
+            background: rgba(255, 74, 74, 0.08);
+            color: var(--danger);
+        }
+        .item-icon {
+            font-size: 1rem;
         }
 
         /* Daily limits progress bar */
@@ -1758,12 +1874,30 @@
                             <div class="usage-bar-fill" id="usageBarFill"></div>
                         </div>
                     </div>
-                    <button class="btn btn-secondary" id="btnUpgradeProNav" onclick="showPaymentModal()" style="font-size:0.8rem; padding: 6px 14px;">Nâng cấp PRO 👑</button>
-                    <span class="user-badge" id="userBadge">FREE</span>
-                    <span class="username-display" id="displayUsername"></span>
-                    <a class="profile-link" onclick="openProfileModal()">Hồ sơ</a>
-                    <a class="profile-link" onclick="openReviewModal()" style="margin-left: 10px; cursor: pointer; color: var(--accent);">Đánh giá</a>
-                    <button class="btn-logout" id="btnLogout" onclick="handleLogout()">Đăng xuất</button>
+                    <button class="btn btn-secondary" id="btnUpgradeProNav" onclick="showPaymentModal()" style="font-size:0.8rem; padding: 6px 14px; margin-right: 10px; display: inline-flex;">Nâng cấp PRO 👑</button>
+                    <div class="profile-dropdown">
+                        <button class="profile-dropdown-trigger" onclick="toggleProfileDropdown(event)">
+                            <div class="profile-avatar" id="avatarInitials">U</div>
+                            <span class="username-display" id="displayUsername">User</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="profile-dropdown-menu" id="profileDropdownMenu">
+                            <div class="dropdown-user-header">
+                                <span class="user-badge" id="userBadge">FREE</span>
+                            </div>
+                            <hr class="dropdown-divider">
+                            <button class="dropdown-item" onclick="openProfileModal(); closeAllDropdowns();">
+                                <span class="item-icon">👤</span> Hồ sơ của tôi
+                            </button>
+                            <button class="dropdown-item" onclick="openReviewModal(); closeAllDropdowns();" style="color: var(--accent);">
+                                <span class="item-icon">⭐</span> Gửi đánh giá
+                            </button>
+                            <hr class="dropdown-divider">
+                            <button class="dropdown-item logout" onclick="handleLogout(); closeAllDropdowns();">
+                                <span class="item-icon">🚪</span> Đăng xuất
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2690,6 +2824,10 @@
         function updateAuthUI() {
             if (token && loggedInUser) {
                 document.getElementById('displayUsername').textContent = loggedInUser;
+                const avatarEl = document.getElementById('avatarInitials');
+                if (avatarEl) {
+                    avatarEl.textContent = loggedInUser.substring(0, 2).toUpperCase();
+                }
                 document.getElementById('userInfo').style.display = 'flex';
                 document.getElementById('btnShowAuth').style.display = 'none';
                 
@@ -2705,6 +2843,28 @@
                 if (document.getElementById('navAdmin')) document.getElementById('navAdmin').style.display = 'none';
             }
         }
+
+        /* Profile Dropdown Toggle Logic */
+        function toggleProfileDropdown(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('profileDropdownMenu');
+            menu.classList.toggle('active');
+            
+            const trigger = event.currentTarget;
+            trigger.classList.toggle('active');
+        }
+
+        function closeAllDropdowns() {
+            const menu = document.getElementById('profileDropdownMenu');
+            if (menu) menu.classList.remove('active');
+            
+            const trigger = document.querySelector('.profile-dropdown-trigger');
+            if (trigger) trigger.classList.remove('active');
+        }
+
+        window.addEventListener('click', function() {
+            closeAllDropdowns();
+        });
 
         async function updateUserUsageDisplay() {
             if (!token) return;
