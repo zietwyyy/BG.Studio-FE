@@ -976,12 +976,13 @@
                                 <th>Tài khoản</th>
                                 <th>Số sao</th>
                                 <th>Bình luận</th>
+                                <th>Ảnh minh họa</th>
                                 <th>Ngày gửi</th>
                             </tr>
                         </thead>
                         <tbody id="tblAllReviews">
                             <tr>
-                                <td colspan="4" style="text-align: center; color: var(--text-muted);">Đang tải các đánh giá...</td>
+                                <td colspan="5" style="text-align: center; color: var(--text-muted);">Đang tải các đánh giá...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1221,15 +1222,27 @@
                 const tbl = document.getElementById('tblAllReviews');
                 tbl.innerHTML = '';
                 if (data.length === 0) {
-                    tbl.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Chưa có đánh giá nào.</td></tr>`;
+                    tbl.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Chưa có đánh giá nào.</td></tr>`;
                 } else {
                     data.forEach(r => {
                         const tr = document.createElement('tr');
                         const starsText = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                        
+                        let imgHtml = '<span style="color: var(--text-muted); font-size: 0.85rem;">Không có</span>';
+                        if (r.imageUrl) {
+                            const displayUrl = r.imageUrl.startsWith('http') ? r.imageUrl : `${API_URL.replace('/api', '')}${r.imageUrl}`;
+                            imgHtml = `
+                                <a href="${displayUrl}" target="_blank">
+                                    <img src="${displayUrl}" style="height: 40px; width: 60px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;" alt="Review proof">
+                                </a>
+                            `;
+                        }
+
                         tr.innerHTML = `
                             <td style="font-weight: 700; color: var(--primary);">${r.username}</td>
                             <td><span class="stars">${starsText}</span></td>
                             <td style="color: #e2e8f0; font-style: italic;">"${r.comment || 'Không có nhận xét.'}"</td>
+                            <td>${imgHtml}</td>
                             <td style="color: var(--text-muted); font-size: 0.85rem;">${new Date(r.createdAt).toLocaleDateString('vi-VN')}</td>
                         `;
                         tbl.appendChild(tr);
