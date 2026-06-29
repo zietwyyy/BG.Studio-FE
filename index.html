@@ -1762,6 +1762,7 @@
                     <span class="user-badge" id="userBadge">FREE</span>
                     <span class="username-display" id="displayUsername"></span>
                     <a class="profile-link" onclick="openProfileModal()">Hồ sơ</a>
+                    <a class="profile-link" onclick="openReviewModal()" style="margin-left: 10px; cursor: pointer; color: var(--accent);">Đánh giá</a>
                     <button class="btn-logout" id="btnLogout" onclick="handleLogout()">Đăng xuất</button>
                 </div>
             </div>
@@ -1874,13 +1875,91 @@
                         <li>Lưu trữ Cloud đám mây ổn định</li>
                     </ul>
                     <button class="btn btn-primary" style="width: 100%; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--accent));" onclick="openAuthView('login')">Nâng Cấp PRO Ngay</button>
+            </div>
+        </div>
+
+        <!-- Dynamic Customer Reviews -->
+        <style>
+            .reviews-section {
+                margin-top: 100px;
+                padding: 0 20px;
+            }
+            .reviews-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+                max-width: 1200px;
+                margin: 30px auto 0 auto;
+            }
+            .review-card {
+                background: rgba(25, 32, 50, 0.4);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 24px;
+                backdrop-filter: blur(12px);
+                transition: all 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                min-height: 180px;
+            }
+            .review-card:hover {
+                transform: translateY(-4px);
+                border-color: rgba(168, 85, 247, 0.4);
+                box-shadow: 0 10px 25px rgba(168, 85, 247, 0.15);
+            }
+            .review-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+            .review-user {
+                font-weight: 700;
+                color: #fff;
+                font-size: 0.95rem;
+            }
+            .review-stars {
+                color: #eab308;
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+            .review-text {
+                font-size: 0.88rem;
+                color: #e2e8f0;
+                line-height: 1.6;
+                font-style: italic;
+                margin-bottom: 15px;
+            }
+            .review-date {
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                text-align: right;
+            }
+        </style>
+
+        <div class="reviews-section">
+            <h2 class="section-title animate-on-scroll">💬 Đánh giá từ khách hàng</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-top: -15px; margin-bottom: 30px; font-size: 0.9rem;">
+                Ý kiến đóng góp chân thực từ những thành viên đã đồng hành cùng FaceIn.
+            </p>
+            
+            <div id="landingReviewsGrid" class="reviews-grid animate-on-scroll delay-200">
+                <div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">
+                    Đang tải danh sách đánh giá hệ thống...
                 </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;" class="animate-on-scroll delay-300">
+                <button class="btn btn-secondary" onclick="triggerWriteReview()" style="padding: 12px 28px; font-weight: 700; border-radius: 12px; display: inline-flex; align-items: center; gap: 8px; margin: 0 auto;">
+                    ✍️ Viết đánh giá của bạn
+                </button>
             </div>
         </div>
 
         <!-- Landing Footer -->
         <footer style="margin-top: 100px; border-top: 1px solid var(--border); padding: 30px; text-align: center; color: var(--text-muted);">
-            <p>© 2026 FaceIn · Nền tảng thiết kế ảnh AI cho Startup môn EXE201</p>
+            <p>© 2026 FaceIn · Nền tảng tách nền và thiết kế ảnh chuyên nghiệp</p>
         </footer>
     </section>
 
@@ -1904,7 +1983,7 @@
                     </ul>
                 </div>
                 <div style="color: var(--text-muted); font-size: 0.85rem;">
-                    © 2026 FaceIn Việt Nam · Sản phẩm phục vụ môn học EXE201
+                    © 2026 FaceIn Việt Nam · Bản quyền thuộc về FaceIn Group
                 </div>
             </div>
 
@@ -2370,6 +2449,34 @@
         </div>
     </div>
 
+    <!-- ================= RATING / REVIEW MODAL ================= -->
+    <div class="modal" id="reviewModal">
+        <div class="modal-card" style="max-width: 400px;">
+            <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+            <h3 style="margin-bottom: 15px;">Đánh giá & Góp ý</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Chia sẻ trải nghiệm của bạn để giúp FaceIn cải thiện tốt hơn.</p>
+            
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">Số sao đánh giá:</label>
+                <div style="display: flex; gap: 8px; font-size: 1.8rem; cursor: pointer; color: var(--text-muted);" id="ratingStarsSelector">
+                    <span onclick="selectRatingStar(1)" class="rating-star" style="color: #eab308;">★</span>
+                    <span onclick="selectRatingStar(2)" class="rating-star" style="color: #eab308;">★</span>
+                    <span onclick="selectRatingStar(3)" class="rating-star" style="color: #eab308;">★</span>
+                    <span onclick="selectRatingStar(4)" class="rating-star" style="color: #eab308;">★</span>
+                    <span onclick="selectRatingStar(5)" class="rating-star" style="color: #eab308;">★</span>
+                </div>
+                <input type="hidden" id="reviewRatingVal" value="5">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">Bình luận / Góp ý:</label>
+                <textarea id="reviewCommentVal" class="form-control" placeholder="Ứng dụng rất tuyệt vời..." style="height: 100px; resize: none;"></textarea>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="submitUserReview()">Gửi đánh giá</button>
+        </div>
+    </div>
+
     <!-- ================= ADMIN USER HISTORY MODAL ================= -->
     <div class="modal" id="adminUserModal">
         <div class="modal-card" style="max-width: 800px; max-height: 80vh; display: flex; flex-direction: column;">
@@ -2539,8 +2646,7 @@
                     switchWorkspaceTab('workspace');
                 }
             } else if (viewId === 'admin') {
-                document.getElementById('view-admin').style.display = 'block';
-                loadAdminStats();
+                window.location.href = 'admin.html';
             }
         }
 
@@ -3824,6 +3930,112 @@
             }
         }
 
+        // ================= USER REVIEWS =================
+        function openReviewModal() {
+            if(!token) {
+                showToast("Bạn cần đăng nhập để thực hiện đánh giá.", "error");
+                return;
+            }
+            document.getElementById('reviewCommentVal').value = '';
+            selectRatingStar(5);
+            document.getElementById('reviewModal').classList.add('active');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('active');
+        }
+
+        function selectRatingStar(rating) {
+            document.getElementById('reviewRatingVal').value = rating;
+            const stars = document.querySelectorAll('#ratingStarsSelector .rating-star');
+            stars.forEach((star, idx) => {
+                if(idx < rating) {
+                    star.style.color = '#eab308';
+                } else {
+                    star.style.color = '#475569';
+                }
+            });
+        }
+
+        async function submitUserReview() {
+            const rating = parseInt(document.getElementById('reviewRatingVal').value);
+            const comment = document.getElementById('reviewCommentVal').value.trim();
+            const token = localStorage.getItem('token');
+
+            if(!token) return showToast("Vui lòng đăng nhập lại.", "error");
+
+            try {
+                const res = await fetch(`${API_URL}/admin/review`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ rating, comment })
+                });
+
+                if(res.ok) {
+                    showToast("Cảm ơn bạn đã gửi đánh giá! ❤️", "success");
+                    closeReviewModal();
+                    loadLandingReviews();
+                } else {
+                    const txt = await res.text();
+                    showToast(txt || "Lỗi khi gửi đánh giá.", "error");
+                }
+            } catch(e) {
+                showToast("Lỗi kết nối máy chủ.", "error");
+            }
+        }
+
+        async function loadLandingReviews() {
+            try {
+                const res = await fetch(`${API_URL}/admin/reviews`);
+                if(res.ok) {
+                    const reviews = await res.json();
+                    const grid = document.getElementById('landingReviewsGrid');
+                    if (!grid) return;
+                    grid.innerHTML = '';
+                    if(reviews.length === 0) {
+                        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">Chưa có đánh giá nào. Hãy là người đầu tiên!</div>`;
+                        return;
+                    }
+                    reviews.slice(0, 6).forEach(r => {
+                        const starsText = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                        const card = document.createElement('div');
+                        card.className = 'review-card';
+                        
+                        const d = new Date(r.createdAt);
+                        const dateStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+
+                        card.innerHTML = `
+                            <div>
+                                <div class="review-card-header">
+                                    <span class="review-user">${r.username}</span>
+                                    <span class="review-stars">${starsText}</span>
+                                </div>
+                                <p class="review-text">"${r.comment || 'Không có nhận xét.'}"</p>
+                            </div>
+                            <div class="review-date">${dateStr}</div>
+                        `;
+                        grid.appendChild(card);
+                    });
+                }
+            } catch(e) {
+                console.error("Lỗi khi tải đánh giá:", e);
+            }
+        }
+
+        function triggerWriteReview() {
+            const token = localStorage.getItem('token');
+            if(!token) {
+                showToast("Vui lòng đăng nhập để gửi đánh giá.", "info");
+                showView('auth');
+                openAuthView('login');
+            } else {
+                openReviewModal();
+            }
+        }
+
         // ================= ADMIN USER DETAILS =================
         function closeAdminUserModal() {
             document.getElementById('adminUserModal').classList.remove('active');
@@ -3967,6 +4179,7 @@
 
         // ================= ANIMATIONS =================
         document.addEventListener('DOMContentLoaded', () => {
+            loadLandingReviews();
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
