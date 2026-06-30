@@ -1894,6 +1894,9 @@
                             <button class="dropdown-item" onclick="openProfileModal(); closeAllDropdowns();">
                                 <span class="item-icon">👤</span> Hồ sơ của tôi
                             </button>
+                            <button class="dropdown-item" onclick="openTransactionHistoryModal(); closeAllDropdowns();">
+                                <span class="item-icon">💳</span> Lịch sử giao dịch
+                            </button>
                             <button class="dropdown-item" onclick="openReviewModal(); closeAllDropdowns();" style="color: var(--accent);">
                                 <span class="item-icon">⭐</span> Gửi đánh giá
                             </button>
@@ -2593,6 +2596,19 @@
             <input type="password" id="profileOldPass" class="form-control" placeholder="Mật khẩu cũ..." style="margin-bottom: 10px;">
             <input type="password" id="profileNewPass" class="form-control" placeholder="Mật khẩu mới..." style="margin-bottom: 15px;">
             <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="updateProfile()">Cập nhật mật khẩu</button>
+        </div>
+    </div>
+
+    <!-- ================= TRANSACTION HISTORY MODAL ================= -->
+    <div class="modal" id="transactionHistoryModal">
+        <div class="modal-card" style="max-width: 500px;">
+            <button class="modal-close" onclick="closeTransactionHistoryModal()">&times;</button>
+            <h3 style="margin-bottom: 20px;">💳 Lịch sử giao dịch của tôi</h3>
+            <div id="modalTransactionHistoryContainer" style="max-height: 300px; overflow-y: auto; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 12px;">
+                <div id="modalTransactionHistoryList" style="font-size: 0.85rem;">
+                    <!-- Nạp động qua JS -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -4086,8 +4102,8 @@
             document.getElementById('profileOldPass').value = '';
             document.getElementById('profileNewPass').value = '';
             
-            // Load transaction history
-            loadTransactionHistory();
+            // Load transaction history inside profile modal
+            loadTransactionHistory('transactionHistoryList');
             
             document.getElementById('profileModal').classList.add('active');
         }
@@ -4096,8 +4112,17 @@
             document.getElementById('profileModal').classList.remove('active');
         }
 
-        async function loadTransactionHistory() {
-            const container = document.getElementById('transactionHistoryList');
+        function openTransactionHistoryModal() {
+            loadTransactionHistory('modalTransactionHistoryList');
+            document.getElementById('transactionHistoryModal').classList.add('active');
+        }
+
+        function closeTransactionHistoryModal() {
+            document.getElementById('transactionHistoryModal').classList.remove('active');
+        }
+
+        async function loadTransactionHistory(containerId = 'transactionHistoryList') {
+            const container = document.getElementById(containerId);
             if (!container) return;
             container.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 10px;">Đang tải lịch sử giao dịch...</div>';
             
