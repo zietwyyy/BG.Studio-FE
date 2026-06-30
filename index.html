@@ -4419,18 +4419,6 @@
             }, { threshold: 0.1 });
             
             document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
-            
-            // Re-trigger observer if view changes (for SPA navigation)
-            const originalShowView = window.showView;
-            window.showView = function(viewId, pushState) {
-                originalShowView(viewId, pushState);
-                if (viewId === 'landing') {
-                    // Force IntersectionObserver to evaluate visible elements immediately
-                    setTimeout(() => {
-                        window.dispatchEvent(new Event('scroll'));
-                    }, 50);
-                }
-            };
         });
     </script>
 </body>
