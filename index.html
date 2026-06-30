@@ -1873,7 +1873,7 @@
                     <div class="usage-container" id="usageContainer">
                         <div class="usage-text">
                             <span id="usageLabel">Lượt dùng:</span>
-                            <span id="usageValue">0/30</span>
+                            <span id="usageValue">0/5</span>
                         </div>
                         <div class="usage-bar-bg">
                             <div class="usage-bar-fill" id="usageBarFill"></div>
@@ -2010,7 +2010,7 @@
                         49,000đ <span>/ tháng</span>
                     </div>
                     <ul class="pricing-features">
-                        <li>Mở rộng lên đến 30 ảnh / ngày</li>
+                        <li>Mở rộng lên đến 10 ảnh / ngày (300 ảnh/tháng)</li>
                         <li>Tải ảnh chất lượng Full HD</li>
                         <li>Mở khóa kho phông nền AI đa dạng</li>
                         <li>Tìm phông nền tùy thích qua Unsplash</li>
@@ -2918,7 +2918,7 @@
             const limitBarEl = document.getElementById('usageBarFill');
             const limitTextEl = document.getElementById('usageValue');
             
-            let limit = loggedInUserPro ? 30 : 10;
+            let limit = loggedInUserPro ? 10 : 5;
             
             let todayCount = 0;
             try {
@@ -3842,7 +3842,7 @@
             if (customMessage) {
                 msgEl.textContent = customMessage;
             } else {
-                msgEl.textContent = "Nâng cấp lên gói PRO 👑 chỉ với 49,000 VND / tháng để mở khóa giới hạn 30 ảnh/ngày, lưu trữ đám mây Cloudinary vĩnh viễn và thoải mái ghép phông nền AI nghệ thuật!";
+                msgEl.textContent = "Nâng cấp lên gói PRO 👑 chỉ với 49,000 VND / tháng để mở khóa giới hạn 10 ảnh/ngày (300 ảnh/tháng), lưu trữ đám mây Cloudinary vĩnh viễn và thoải mái ghép phông nền AI nghệ thuật!";
             }
             
             if (!token) {
