@@ -4331,7 +4331,7 @@
                             const displayUrl = r.imageUrl.startsWith('http') ? r.imageUrl : `${API_URL.replace('/api', '')}${r.imageUrl}`;
                             imgHtml = `
                                 <div class="review-image-container" style="margin-top: 12px; margin-bottom: 8px; border-radius: 8px; overflow: hidden; max-height: 120px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2);">
-                                    <img src="${displayUrl}" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" onclick="window.open('${displayUrl}', '_blank')" alt="Review Proof">
+                                    <img src="${displayUrl}" onerror="this.parentElement.style.display='none'" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" onclick="window.open('${displayUrl}', '_blank')" alt="Review Proof">
                                 </div>
                             `;
                         }

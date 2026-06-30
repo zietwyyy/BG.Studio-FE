@@ -1233,7 +1233,7 @@
                             const displayUrl = r.imageUrl.startsWith('http') ? r.imageUrl : `${API_URL.replace('/api', '')}${r.imageUrl}`;
                             imgHtml = `
                                 <a href="${displayUrl}" target="_blank">
-                                    <img src="${displayUrl}" style="height: 40px; width: 60px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;" alt="Review proof">
+                                    <img src="${displayUrl}" onerror="this.outerHTML='Không có'" style="height: 40px; width: 60px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;" alt="Review proof">
                                 </a>
                             `;
                         }
