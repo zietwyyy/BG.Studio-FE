@@ -151,6 +151,13 @@
             z-index: 1;
             overflow: hidden;
         }
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            pointer-events: none;
+            transform: none !important;
+            box-shadow: none !important;
+        }
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: #ffffff;
@@ -324,6 +331,115 @@
         .btn-logout:hover {
             opacity: 0.8;
             transform: scale(1.02);
+        }
+
+        /* Profile Dropdown Styling */
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-dropdown-trigger {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .profile-dropdown-trigger:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .profile-avatar {
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .dropdown-arrow {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+        }
+        .profile-dropdown-trigger.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        .profile-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(10, 15, 26, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            min-width: 200px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            padding: 8px 0;
+            animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .profile-dropdown-menu.active {
+            display: flex;
+        }
+        @keyframes dropdownFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .dropdown-user-header {
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dropdown-divider {
+            border: 0;
+            height: 1px;
+            background: var(--border);
+            margin: 6px 0;
+        }
+        .dropdown-item {
+            padding: 10px 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            text-align: left;
+            background: none;
+            border: none;
+            width: 100%;
+        }
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+        }
+        .dropdown-item.logout {
+            color: var(--danger);
+        }
+        .dropdown-item.logout:hover {
+            background: rgba(255, 74, 74, 0.08);
+            color: var(--danger);
+        }
+        .item-icon {
+            font-size: 1rem;
         }
 
         /* Daily limits progress bar */
@@ -1725,6 +1841,17 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
         }
+        /* Skeleton Loading CSS */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 4px;
+        }
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
     </style>
 </head>
 <body>
@@ -1758,11 +1885,30 @@
                             <div class="usage-bar-fill" id="usageBarFill"></div>
                         </div>
                     </div>
-                    <button class="btn btn-secondary" id="btnUpgradeProNav" onclick="showPaymentModal()" style="font-size:0.8rem; padding: 6px 14px;">Nâng cấp PRO 👑</button>
-                    <span class="user-badge" id="userBadge">FREE</span>
-                    <span class="username-display" id="displayUsername"></span>
-                    <a class="profile-link" onclick="openProfileModal()">Hồ sơ</a>
-                    <button class="btn-logout" id="btnLogout" onclick="handleLogout()">Đăng xuất</button>
+                    <button class="btn btn-secondary" id="btnUpgradeProNav" onclick="showPaymentModal()" style="font-size:0.8rem; padding: 6px 14px; margin-right: 10px; display: inline-flex;">Nâng cấp PRO 👑</button>
+                    <div class="profile-dropdown">
+                        <button class="profile-dropdown-trigger" onclick="toggleProfileDropdown(event)">
+                            <div class="profile-avatar" id="avatarInitials">U</div>
+                            <span class="username-display" id="displayUsername">User</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="profile-dropdown-menu" id="profileDropdownMenu">
+                            <div class="dropdown-user-header">
+                                <span class="user-badge" id="userBadge">FREE</span>
+                            </div>
+                            <hr class="dropdown-divider">
+                            <button class="dropdown-item" onclick="openProfileModal(); closeAllDropdowns();">
+                                <span class="item-icon">👤</span> Hồ sơ của tôi
+                            </button>
+                            <button class="dropdown-item" onclick="openReviewModal(); closeAllDropdowns();" style="color: var(--accent);">
+                                <span class="item-icon">⭐</span> Gửi đánh giá
+                            </button>
+                            <hr class="dropdown-divider">
+                            <button class="dropdown-item logout" onclick="handleLogout(); closeAllDropdowns();">
+                                <span class="item-icon">🚪</span> Đăng xuất
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1874,13 +2020,130 @@
                         <li>Lưu trữ Cloud đám mây ổn định</li>
                     </ul>
                     <button class="btn btn-primary" style="width: 100%; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--accent));" onclick="openAuthView('login')">Nâng Cấp PRO Ngay</button>
+            </div>
+        </div>
+
+        <!-- Dynamic Customer Reviews -->
+        <style>
+            .reviews-section {
+                margin-top: 100px;
+                padding: 0 20px;
+            }
+            .reviews-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+                max-width: 1200px;
+                margin: 30px auto 0 auto;
+            }
+            .review-card {
+                background: rgba(25, 32, 50, 0.4);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 24px;
+                backdrop-filter: blur(12px);
+                transition: all 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                min-height: 180px;
+            }
+            .review-card:hover {
+                transform: translateY(-4px);
+                border-color: rgba(168, 85, 247, 0.4);
+                box-shadow: 0 10px 25px rgba(168, 85, 247, 0.15);
+            }
+            .review-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+            .review-user {
+                font-weight: 700;
+                color: #fff;
+                font-size: 0.95rem;
+            }
+            .review-stars {
+                color: #eab308;
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+            .review-text {
+                font-size: 0.88rem;
+                color: #e2e8f0;
+                line-height: 1.6;
+                font-style: italic;
+                margin-bottom: 15px;
+            }
+            .review-date {
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                text-align: right;
+            }
+        </style>
+
+        <div class="reviews-section">
+            <h2 class="section-title animate-on-scroll">💬 Đánh giá từ khách hàng</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-top: -15px; margin-bottom: 30px; font-size: 0.9rem;">
+                Ý kiến đóng góp chân thực từ những thành viên đã đồng hành cùng FaceIn.
+            </p>
+            
+            <div id="landingReviewsGrid" class="reviews-grid animate-on-scroll delay-200">
+                <!-- Skeleton Card 1 -->
+                <div class="review-card" style="min-height: 150px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <div class="skeleton" style="width: 100px; height: 16px;"></div>
+                            <div class="skeleton" style="width: 80px; height: 16px;"></div>
+                        </div>
+                        <div class="skeleton" style="width: 100%; height: 12px; margin-bottom: 8px;"></div>
+                        <div class="skeleton" style="width: 90%; height: 12px; margin-bottom: 8px;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: auto;">
+                        <div class="skeleton" style="width: 60px; height: 12px;"></div>
+                    </div>
                 </div>
+                <!-- Skeleton Card 2 -->
+                <div class="review-card" style="min-height: 150px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <div class="skeleton" style="width: 120px; height: 16px;"></div>
+                            <div class="skeleton" style="width: 80px; height: 16px;"></div>
+                        </div>
+                        <div class="skeleton" style="width: 95%; height: 12px; margin-bottom: 8px;"></div>
+                        <div class="skeleton" style="width: 80%; height: 12px; margin-bottom: 8px;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: auto;">
+                        <div class="skeleton" style="width: 60px; height: 12px;"></div>
+                    </div>
+                </div>
+                <!-- Skeleton Card 3 -->
+                <div class="review-card" style="min-height: 150px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <div class="skeleton" style="width: 90px; height: 16px;"></div>
+                            <div class="skeleton" style="width: 80px; height: 16px;"></div>
+                        </div>
+                        <div class="skeleton" style="width: 100%; height: 12px; margin-bottom: 8px;"></div>
+                        <div class="skeleton" style="width: 70%; height: 12px; margin-bottom: 8px;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: auto;">
+                        <div class="skeleton" style="width: 60px; height: 12px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;" class="animate-on-scroll delay-300">
+                <button class="btn btn-secondary" onclick="triggerWriteReview()" style="padding: 12px 28px; font-weight: 700; border-radius: 12px; display: inline-flex; align-items: center; gap: 8px; margin: 0 auto;">
+                    ✍️ Viết đánh giá của bạn
+                </button>
             </div>
         </div>
 
         <!-- Landing Footer -->
         <footer style="margin-top: 100px; border-top: 1px solid var(--border); padding: 30px; text-align: center; color: var(--text-muted);">
-            <p>© 2026 FaceIn · Nền tảng thiết kế ảnh AI cho Startup môn EXE201</p>
+            <p>© 2026 FaceIn · Nền tảng tách nền và thiết kế ảnh chuyên nghiệp</p>
         </footer>
     </section>
 
@@ -1904,7 +2167,7 @@
                     </ul>
                 </div>
                 <div style="color: var(--text-muted); font-size: 0.85rem;">
-                    © 2026 FaceIn Việt Nam · Sản phẩm phục vụ môn học EXE201
+                    © 2026 FaceIn Việt Nam · Bản quyền thuộc về FaceIn Group
                 </div>
             </div>
 
@@ -2378,6 +2641,47 @@
         </div>
     </div>
 
+    <!-- ================= RATING / REVIEW MODAL ================= -->
+    <div class="modal" id="reviewModal">
+        <div class="modal-card" style="max-width: 400px;">
+            <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+            <h3 style="margin-bottom: 15px;">Đánh giá & Góp ý</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Chia sẻ trải nghiệm của bạn để giúp FaceIn cải thiện tốt hơn.</p>
+            
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">Số sao đánh giá:</label>
+                <div style="display: flex; gap: 8px; font-size: 1.8rem; cursor: pointer; color: var(--text-muted);" id="ratingStarsSelector">
+                    <span onclick="selectRatingStar(1)" class="rating-star" style="color: #eab308;">★</span>
+                    <span onclick="selectRatingStar(2)" class="rating-star" style="color: #eab308;">★</span>
+                    <span onclick="selectRatingStar(3)" class="rating-star" style="color: #eab308;">★</span>
+                    <span onclick="selectRatingStar(4)" class="rating-star" style="color: #eab308;">★</span>
+                    <span onclick="selectRatingStar(5)" class="rating-star" style="color: #eab308;">★</span>
+                </div>
+                <input type="hidden" id="reviewRatingVal" value="5">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">Bình luận / Góp ý:</label>
+                <textarea id="reviewCommentVal" class="form-control" placeholder="Ứng dụng rất tuyệt vời..." style="height: 80px; resize: none;"></textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">Đính kèm ảnh minh họa (tùy chọn):</label>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="position: relative; display: flex; align-items: center; justify-content: center; border: 1.5px dashed rgba(255, 255, 255, 0.15); border-radius: 12px; height: 100px; cursor: pointer; background: rgba(0,0,0,0.25); overflow: hidden; transition: border-color 0.2s;" onclick="document.getElementById('reviewImgInput').click()" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='rgba(255, 255, 255, 0.15)'">
+                        <span id="reviewImgPlaceholder" style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+                            📷 Chọn ảnh hoặc chụp màn hình
+                        </span>
+                        <img id="reviewImgPreview" style="display: none; height: 100%; width: 100%; object-fit: contain;" alt="Review Preview">
+                    </div>
+                    <input type="file" id="reviewImgInput" accept="image/*" style="display: none;" onchange="handleReviewImageChange(this)">
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="submitUserReview()">Gửi đánh giá</button>
+        </div>
+    </div>
+
     <!-- ================= ADMIN USER HISTORY MODAL ================= -->
     <div class="modal" id="adminUserModal">
         <div class="modal-card" style="max-width: 800px; max-height: 80vh; display: flex; flex-direction: column;">
@@ -2435,7 +2739,7 @@
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         // State variables
-        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
             ? 'http://localhost:5096/api'
             : 'https://bg-studio-be.onrender.com/api';
         let selectedFile = null;
@@ -2536,6 +2840,9 @@
                 localStorage.setItem('activeView', viewId);
             }
 
+            // Cuộn trang về đầu khi chuyển view
+            window.scrollTo(0, 0);
+
             if (viewId === 'landing') {
                 document.getElementById('view-landing').style.display = 'block';
             } else if (viewId === 'auth') {
@@ -2547,8 +2854,7 @@
                     switchWorkspaceTab('workspace');
                 }
             } else if (viewId === 'admin') {
-                document.getElementById('view-admin').style.display = 'block';
-                loadAdminStats();
+                window.location.href = 'admin.html';
             }
         }
 
@@ -2592,6 +2898,10 @@
         function updateAuthUI() {
             if (token && loggedInUser) {
                 document.getElementById('displayUsername').textContent = loggedInUser;
+                const avatarEl = document.getElementById('avatarInitials');
+                if (avatarEl) {
+                    avatarEl.textContent = loggedInUser.substring(0, 2).toUpperCase();
+                }
                 document.getElementById('userInfo').style.display = 'flex';
                 document.getElementById('btnShowAuth').style.display = 'none';
                 
@@ -2607,6 +2917,28 @@
                 if (document.getElementById('navAdmin')) document.getElementById('navAdmin').style.display = 'none';
             }
         }
+
+        /* Profile Dropdown Toggle Logic */
+        function toggleProfileDropdown(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('profileDropdownMenu');
+            menu.classList.toggle('active');
+            
+            const trigger = event.currentTarget;
+            trigger.classList.toggle('active');
+        }
+
+        function closeAllDropdowns() {
+            const menu = document.getElementById('profileDropdownMenu');
+            if (menu) menu.classList.remove('active');
+            
+            const trigger = document.querySelector('.profile-dropdown-trigger');
+            if (trigger) trigger.classList.remove('active');
+        }
+
+        window.addEventListener('click', function() {
+            closeAllDropdowns();
+        });
 
         async function updateUserUsageDisplay() {
             if (!token) return;
@@ -2745,7 +3077,9 @@
                     throw new Error(errorMsg || "Gửi mã thất bại.");
                 }
 
-                showToast("✅ Mã xác minh đã được gửi qua email của bạn.");
+                const data = await response.json();
+                const isFallback = data.message && data.message.includes("Mã xác minh tạm thời");
+                showToast(data.message || "✅ Mã xác minh đã được gửi qua email của bạn.", isFallback ? "error" : "success");
                 
                 let countdown = 60;
                 const interval = setInterval(() => {
@@ -3655,11 +3989,51 @@
                 // Xử lý callback tự động từ trang thanh toán PayOS thật
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.get('payment') === 'success') {
-                    loggedInUserPro = true;
-                    localStorage.setItem('isPro', 'true');
-                    showToast("Giao dịch PayOS thành công! Cảm ơn bạn đã nâng cấp gói PRO 👑", "success");
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    if (token) updateUserUsageDisplay();
+                    const orderCode = urlParams.get('order');
+                    if (orderCode) {
+                        // Hiển thị loading overlay trong lúc xác thực
+                        loaderOverlay.style.display = 'flex';
+                        loaderMessage.textContent = 'Đang xác thực giao dịch PayOS, vui lòng đợi...';
+                        
+                        fetch(`${API_URL}/payment/verify/${orderCode}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            }
+                        })
+                        .then(res => {
+                            if (!res.ok) throw new Error("Không thể xác thực giao dịch với máy chủ.");
+                            return res.json();
+                        })
+                        .then(data => {
+                            if (data.status === 'PAID' || data.isPro) {
+                                loggedInUserPro = true;
+                                localStorage.setItem('isPro', 'true');
+                                if (data.expiresAt) {
+                                    localStorage.setItem('subscriptionExpiresAt', data.expiresAt);
+                                }
+                                showToast("Giao dịch PayOS thành công! Cảm ơn bạn đã nâng cấp gói PRO 👑", "success");
+                                updateAuthUI();
+                            } else {
+                                showToast("Giao dịch chưa được thanh toán thành công hoặc đang xử lý.", "error");
+                            }
+                        })
+                        .catch(err => {
+                            showToast(err.message, "error");
+                        })
+                        .finally(() => {
+                            loaderOverlay.style.display = 'none';
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                        });
+                    } else {
+                        // Fallback cũ nếu không có order code
+                        loggedInUserPro = true;
+                        localStorage.setItem('isPro', 'true');
+                        showToast("Giao dịch PayOS thành công! Cảm ơn bạn đã nâng cấp gói PRO 👑", "success");
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        if (token) updateUserUsageDisplay();
+                    }
                 } else if (urlParams.get('payment') === 'cancel') {
                     showToast("Bạn đã hủy giao dịch thanh toán PayOS.", "error");
                     window.history.replaceState({}, document.title, window.location.pathname);
@@ -3911,6 +4285,161 @@
             }
         }
 
+        // ================= USER REVIEWS =================
+        function handleReviewImageChange(input) {
+            const preview = document.getElementById('reviewImgPreview');
+            const placeholder = document.getElementById('reviewImgPlaceholder');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+                placeholder.style.display = 'flex';
+            }
+        }
+
+        function openReviewModal() {
+            if(!token) {
+                showToast("Bạn cần đăng nhập để thực hiện đánh giá.", "error");
+                return;
+            }
+            document.getElementById('reviewCommentVal').value = '';
+            
+            const imgInput = document.getElementById('reviewImgInput');
+            if (imgInput) imgInput.value = '';
+            
+            const preview = document.getElementById('reviewImgPreview');
+            if (preview) {
+                preview.src = '';
+                preview.style.display = 'none';
+            }
+            
+            const placeholder = document.getElementById('reviewImgPlaceholder');
+            if (placeholder) placeholder.style.display = 'flex';
+
+            selectRatingStar(5);
+            document.getElementById('reviewModal').classList.add('active');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('active');
+        }
+
+        function selectRatingStar(rating) {
+            document.getElementById('reviewRatingVal').value = rating;
+            const stars = document.querySelectorAll('#ratingStarsSelector .rating-star');
+            stars.forEach((star, idx) => {
+                if(idx < rating) {
+                    star.style.color = '#eab308';
+                } else {
+                    star.style.color = '#475569';
+                }
+            });
+        }
+
+        async function submitUserReview() {
+            const rating = parseInt(document.getElementById('reviewRatingVal').value);
+            const comment = document.getElementById('reviewCommentVal').value.trim();
+            const token = localStorage.getItem('token');
+            const imgInput = document.getElementById('reviewImgInput');
+
+            if(!token) return showToast("Vui lòng đăng nhập lại.", "error");
+
+            const formData = new FormData();
+            formData.append('rating', rating);
+            formData.append('comment', comment);
+            if (imgInput && imgInput.files && imgInput.files[0]) {
+                formData.append('file', imgInput.files[0]);
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/admin/review`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+
+                if(res.ok) {
+                    showToast("Cảm ơn bạn đã gửi đánh giá! ❤️", "success");
+                    closeReviewModal();
+                    loadLandingReviews();
+                } else {
+                    const txt = await res.text();
+                    showToast(txt || "Lỗi khi gửi đánh giá.", "error");
+                }
+            } catch(e) {
+                showToast("Lỗi kết nối máy chủ.", "error");
+            }
+        }
+
+        async function loadLandingReviews() {
+            try {
+                const res = await fetch(`${API_URL}/admin/reviews`);
+                if(res.ok) {
+                    const reviews = await res.json();
+                    const grid = document.getElementById('landingReviewsGrid');
+                    if (!grid) return;
+                    grid.innerHTML = '';
+                    if(reviews.length === 0) {
+                        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">Chưa có đánh giá nào. Hãy là người đầu tiên!</div>`;
+                        return;
+                    }
+                    reviews.slice(0, 6).forEach(r => {
+                        const starsText = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                        const card = document.createElement('div');
+                        card.className = 'review-card';
+                        
+                        const d = new Date(r.createdAt);
+                        const dateStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+
+                        let imgHtml = '';
+                        if (r.imageUrl) {
+                            const displayUrl = r.imageUrl.startsWith('http') ? r.imageUrl : `${API_URL.replace('/api', '')}${r.imageUrl}`;
+                            imgHtml = `
+                                <div class="review-image-container" style="margin-top: 12px; margin-bottom: 8px; border-radius: 8px; overflow: hidden; max-height: 120px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2);">
+                                    <img src="${displayUrl}" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" onclick="window.open('${displayUrl}', '_blank')" alt="Review Proof">
+                                </div>
+                            `;
+                        }
+
+                        card.innerHTML = `
+                            <div>
+                                <div class="review-card-header">
+                                    <span class="review-user">${r.username}</span>
+                                    <span class="review-stars">${starsText}</span>
+                                </div>
+                                <p class="review-text">"${r.comment || 'Không có nhận xét.'}"</p>
+                                ${imgHtml}
+                            </div>
+                            <div class="review-date">${dateStr}</div>
+                        `;
+                        grid.appendChild(card);
+                    });
+                }
+            } catch(e) {
+                console.error("Lỗi khi tải đánh giá:", e);
+            }
+        }
+
+        function triggerWriteReview() {
+            const token = localStorage.getItem('token');
+            if(!token) {
+                showToast("Vui lòng đăng nhập để gửi đánh giá.", "info");
+                showView('auth');
+                openAuthView('login');
+            } else {
+                openReviewModal();
+            }
+        }
+
         // ================= ADMIN USER DETAILS =================
         function closeAdminUserModal() {
             document.getElementById('adminUserModal').classList.remove('active');
@@ -4054,6 +4583,7 @@
 
         // ================= ANIMATIONS =================
         document.addEventListener('DOMContentLoaded', () => {
+            loadLandingReviews();
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -4069,11 +4599,9 @@
             window.showView = function(viewId, pushState) {
                 originalShowView(viewId, pushState);
                 if (viewId === 'landing') {
+                    // Force IntersectionObserver to evaluate visible elements immediately
                     setTimeout(() => {
-                        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-                            el.classList.remove('show');
-                            observer.observe(el);
-                        });
+                        window.dispatchEvent(new Event('scroll'));
                     }, 50);
                 }
             };
