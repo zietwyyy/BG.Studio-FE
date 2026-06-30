@@ -3986,60 +3986,8 @@
             }
 
             try {
-                // Xử lý callback tự động từ trang thanh toán PayOS thật
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('payment') === 'success') {
-                    const orderCode = urlParams.get('order');
-                    if (orderCode) {
-                        // Hiển thị loading overlay trong lúc xác thực
-                        loaderOverlay.style.display = 'flex';
-                        loaderMessage.textContent = 'Đang xác thực giao dịch PayOS, vui lòng đợi...';
-                        
-                        fetch(`${API_URL}/payment/verify/${orderCode}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${token}`
-                            }
-                        })
-                        .then(res => {
-                            if (!res.ok) throw new Error("Không thể xác thực giao dịch với máy chủ.");
-                            return res.json();
-                        })
-                        .then(data => {
-                            if (data.status === 'PAID' || data.isPro) {
-                                loggedInUserPro = true;
-                                localStorage.setItem('isPro', 'true');
-                                if (data.expiresAt) {
-                                    localStorage.setItem('subscriptionExpiresAt', data.expiresAt);
-                                }
-                                showToast("Giao dịch PayOS thành công! Cảm ơn bạn đã nâng cấp gói PRO 👑", "success");
-                                updateAuthUI();
-                            } else {
-                                showToast("Giao dịch chưa được thanh toán thành công hoặc đang xử lý.", "error");
-                            }
-                        })
-                        .catch(err => {
-                            showToast(err.message, "error");
-                        })
-                        .finally(() => {
-                            loaderOverlay.style.display = 'none';
-                            window.history.replaceState({}, document.title, window.location.pathname);
-                        });
-                    } else {
-                        // Fallback cũ nếu không có order code
-                        loggedInUserPro = true;
-                        localStorage.setItem('isPro', 'true');
-                        showToast("Giao dịch PayOS thành công! Cảm ơn bạn đã nâng cấp gói PRO 👑", "success");
-                        window.history.replaceState({}, document.title, window.location.pathname);
-                        if (token) updateUserUsageDisplay();
-                    }
-                } else if (urlParams.get('payment') === 'cancel') {
-                    showToast("Bạn đã hủy giao dịch thanh toán PayOS.", "error");
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                }
-
                 // Mở khung đăng nhập nếu có tham số auth=login từ trang khác chuyển qua
+                const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.get('auth') === 'login') {
                     openAuthView('login');
                     window.history.replaceState({}, document.title, window.location.pathname);
@@ -4544,13 +4492,58 @@
                     window.history.replaceState({}, document.title, window.location.pathname);
 
                     if (paymentStatus === 'success') {
-                        showToast(`💳 Nâng cấp PRO thành công cho đơn hàng #${orderCode}!`, 'success');
-                        localStorage.setItem('isPro', 'true');
+                        if (orderCode) {
+                            // Hiển thị loading overlay trong lúc xác thực
+                            setTimeout(() => {
+                                const overlay = document.getElementById('loaderOverlay');
+                                const msg = document.getElementById('loaderMessage');
+                                if (overlay && msg) {
+                                    overlay.style.display = 'flex';
+                                    msg.textContent = 'Đang xác thực giao dịch PayOS, vui lòng đợi...';
+                                }
+                            }, 50);
+
+                            fetch(`${API_URL}/payment/verify/${orderCode}`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${savedToken || token}`
+                                }
+                            })
+                            .then(res => {
+                                if (!res.ok) throw new Error("Không thể xác thực giao dịch với máy chủ.");
+                                return res.json();
+                            })
+                            .then(data => {
+                                if (data.status === 'PAID' || data.isPro) {
+                                    loggedInUserPro = true;
+                                    localStorage.setItem('isPro', 'true');
+                                    if (data.expiresAt) {
+                                        localStorage.setItem('subscriptionExpiresAt', data.expiresAt);
+                                    }
+                                    showToast(`💳 Nâng cấp PRO thành công cho đơn hàng #${orderCode}!`, 'success');
+                                    updateAuthUI();
+                                } else {
+                                    showToast("Giao dịch chưa được thanh toán thành công hoặc đang xử lý.", "error");
+                                }
+                            })
+                            .catch(err => {
+                                showToast(err.message, "error");
+                            })
+                            .finally(() => {
+                                const overlay = document.getElementById('loaderOverlay');
+                                if (overlay) overlay.style.display = 'none';
+                            });
+                        } else {
+                            // Fallback nếu không có order code
+                            showToast(`💳 Nâng cấp PRO thành công!`, 'success');
+                            localStorage.setItem('isPro', 'true');
+                            loggedInUserPro = true;
+                        }
                         token = savedToken || token;
                         loggedInUser = savedUser || loggedInUser;
-                        loggedInUserPro = true;
                     } else if (paymentStatus === 'cancel') {
-                        showToast(`❌ Thanh toán đơn hàng #${orderCode} đã bị hủy.`, 'error');
+                        showToast(`❌ Thanh toán đơn hàng #${orderCode || ''} đã bị hủy.`, 'error');
                     }
                 }
 
