@@ -900,18 +900,20 @@
             margin-bottom: 45px;
         }
         .hero-banner h2 {
-            font-size: 2.4rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 40%, var(--primary) 100%);
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 30%, #a78bfa 70%, #f472b6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 12px;
+            text-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+            letter-spacing: -0.5px;
         }
         .hero-banner p {
             color: var(--text-muted);
             max-width: 600px;
             margin: 0 auto;
-            font-size: 1rem;
+            font-size: 1.05rem;
         }
 
         .workspace-grid {
@@ -926,19 +928,31 @@
             }
         }
         .panel-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 28px;
             padding: 35px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03);
-            backdrop-filter: blur(12px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             display: flex;
             flex-direction: column;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        .panel-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            pointer-events: none;
         }
         .panel-card:hover {
-            border-color: rgba(255,255,255,0.12);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
         }
         .panel-card h3 {
             font-size: 1.25rem;
@@ -957,31 +971,48 @@
         }
 
         .upload-area {
-            border: 2px dashed var(--border);
+            border: 2px dashed rgba(255,255,255,0.2);
             border-radius: 18px;
             padding: 50px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            background: rgba(255,255,255,0.005);
+            background: rgba(255,255,255,0.02);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 280px;
+            position: relative;
+        }
+        .upload-area::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            box-shadow: 0 0 0px rgba(59, 130, 246, 0);
+            transition: box-shadow 0.3s ease;
         }
         .upload-area:hover {
             border-color: var(--accent);
-            background: rgba(59, 130, 246, 0.02);
-            box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);
+            background: rgba(59, 130, 246, 0.05);
+        }
+        .upload-area:hover::after {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
         }
         .upload-icon {
             font-size: 3.2rem;
             margin-bottom: 18px;
-            transition: transform 0.3s;
+            transition: transform 0.3s, filter 0.3s;
+        }
+        @keyframes floatPulse {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-6px) scale(1.05); }
+            100% { transform: translateY(0) scale(1); }
         }
         .upload-area:hover .upload-icon {
-            transform: scale(1.08) translateY(-4px);
+            animation: floatPulse 1.5s infinite ease-in-out;
+            filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.4));
         }
         .upload-text h4 {
             font-size: 1.1rem;
@@ -2584,17 +2615,10 @@
                 <p style="margin-top: 10px;"><strong>Trạng thái:</strong> <span id="profileProStatus"></span></p>
             </div>
             
-            <!-- Lịch sử giao dịch -->
-            <h4 style="margin-bottom: 12px; font-size: 1rem; display: flex; align-items: center; gap: 8px;">💳 Lịch sử giao dịch</h4>
-            <div id="transactionHistoryContainer" style="max-height: 180px; overflow-y: auto; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 20px;">
-                <div id="transactionHistoryList" style="font-size: 0.85rem;">
-                    <!-- Nạp động qua JS -->
-                </div>
-            </div>
-            
             <h4 style="margin-bottom: 15px; font-size: 1rem;">Đổi mật khẩu</h4>
             <input type="password" id="profileOldPass" class="form-control" placeholder="Mật khẩu cũ..." style="margin-bottom: 10px;">
-            <input type="password" id="profileNewPass" class="form-control" placeholder="Mật khẩu mới..." style="margin-bottom: 15px;">
+            <input type="password" id="profileNewPass" class="form-control" placeholder="Mật khẩu mới..." style="margin-bottom: 10px;">
+            <input type="password" id="profileConfirmNewPass" class="form-control" placeholder="Xác nhận mật khẩu mới..." style="margin-bottom: 15px;">
             <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="updateProfile()">Cập nhật mật khẩu</button>
         </div>
     </div>
@@ -4089,9 +4113,7 @@
                 : 'FREE';
             document.getElementById('profileOldPass').value = '';
             document.getElementById('profileNewPass').value = '';
-            
-            // Load transaction history inside profile modal
-            loadTransactionHistory('transactionHistoryList');
+            document.getElementById('profileConfirmNewPass').value = '';
             
             document.getElementById('profileModal').classList.add('active');
         }
@@ -4187,8 +4209,10 @@
         async function updateProfile() {
             const oldPass = document.getElementById('profileOldPass').value;
             const newPass = document.getElementById('profileNewPass').value;
+            const confirmPass = document.getElementById('profileConfirmNewPass').value;
             const token = localStorage.getItem('token');
-            if(!oldPass || !newPass) return showToast('Vui lòng nhập mật khẩu', 'error');
+            if(!oldPass || !newPass || !confirmPass) return showToast('Vui lòng nhập đầy đủ thông tin mật khẩu.', 'error');
+            if(newPass !== confirmPass) return showToast('Mật khẩu mới và xác nhận không khớp.', 'error');
 
             try {
                 const res = await fetch(`${API_URL}/auth/profile`, {
