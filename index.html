@@ -2572,13 +2572,21 @@
 
     <!-- ================= PROFILE MODAL ================= -->
     <div class="modal" id="profileModal">
-        <div class="modal-card" style="max-width: 400px;">
+        <div class="modal-card" style="max-width: 500px;">
             <button class="modal-close" onclick="closeProfileModal()">&times;</button>
             <h3 style="margin-bottom: 20px;">Hồ sơ của tôi</h3>
             
             <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 <p><strong>Tên người dùng:</strong> <span id="profileUsername"></span></p>
                 <p style="margin-top: 10px;"><strong>Trạng thái:</strong> <span id="profileProStatus"></span></p>
+            </div>
+            
+            <!-- Lịch sử giao dịch -->
+            <h4 style="margin-bottom: 12px; font-size: 1rem; display: flex; align-items: center; gap: 8px;">💳 Lịch sử giao dịch</h4>
+            <div id="transactionHistoryContainer" style="max-height: 180px; overflow-y: auto; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 20px;">
+                <div id="transactionHistoryList" style="font-size: 0.85rem;">
+                    <!-- Nạp động qua JS -->
+                </div>
             </div>
             
             <h4 style="margin-bottom: 15px; font-size: 1rem;">Đổi mật khẩu</h4>
@@ -4073,15 +4081,94 @@
         function openProfileModal() {
             document.getElementById('profileUsername').textContent = localStorage.getItem('username');
             document.getElementById('profileProStatus').innerHTML = localStorage.getItem('isPro') === 'true' 
-                ? '<span style="color: #eab308; font-weight: bold;">PRO</span>' 
+                ? '<span style="color: #eab308; font-weight: bold;">PRO 👑</span>' 
                 : 'FREE';
             document.getElementById('profileOldPass').value = '';
             document.getElementById('profileNewPass').value = '';
+            
+            // Load transaction history
+            loadTransactionHistory();
+            
             document.getElementById('profileModal').classList.add('active');
         }
 
         function closeProfileModal() {
             document.getElementById('profileModal').classList.remove('active');
+        }
+
+        async function loadTransactionHistory() {
+            const container = document.getElementById('transactionHistoryList');
+            if (!container) return;
+            container.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 10px;">Đang tải lịch sử giao dịch...</div>';
+            
+            const savedToken = localStorage.getItem('token');
+            if (!savedToken) {
+                container.innerHTML = '<div style="color: var(--danger); text-align: center; padding: 10px;">Vui lòng đăng nhập.</div>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/payment/history`, {
+                    headers: { 'Authorization': `Bearer ${savedToken}` }
+                });
+                
+                if (!response.ok) {
+                    throw new Error("Không thể tải lịch sử giao dịch.");
+                }
+                
+                const data = await response.json();
+                container.innerHTML = '';
+                
+                if (data.length === 0) {
+                    container.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 10px;">Chưa có giao dịch nào.</div>';
+                } else {
+                    const table = document.createElement('table');
+                    table.style.width = '100%';
+                    table.style.borderCollapse = 'collapse';
+                    table.style.marginTop = '5px';
+                    table.innerHTML = `
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border); font-size: 0.8rem; color: var(--text-muted); text-align: left;">
+                                <th style="padding: 6px 4px;">Mã đơn</th>
+                                <th style="padding: 6px 4px;">Số tiền</th>
+                                <th style="padding: 6px 4px;">Trạng thái</th>
+                                <th style="padding: 6px 4px; text-align: right;">Ngày tạo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    `;
+                    const tbody = table.querySelector('tbody');
+                    
+                    data.forEach(item => {
+                        const tr = document.createElement('tr');
+                        tr.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                        
+                        const date = new Date(item.createdAt).toLocaleDateString('vi-VN', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        });
+                        
+                        let statusBadge = '';
+                        if (item.status === 'PAID') {
+                            statusBadge = '<span style="background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">ĐÃ THANH TOÁN</span>';
+                        } else {
+                            statusBadge = `<span style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">${item.status}</span>`;
+                        }
+                        
+                        tr.innerHTML = `
+                            <td style="padding: 8px 4px; font-weight: 600;">#${item.orderCode}</td>
+                            <td style="padding: 8px 4px;">${item.amount.toLocaleString()}đ</td>
+                            <td style="padding: 8px 4px;">${statusBadge}</td>
+                            <td style="padding: 8px 4px; text-align: right; color: var(--text-muted);">${date}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                    container.appendChild(table);
+                }
+            } catch (err) {
+                container.innerHTML = `<div style="color: var(--danger); text-align: center; padding: 10px;">${err.message}</div>`;
+            }
         }
 
         async function updateProfile() {
