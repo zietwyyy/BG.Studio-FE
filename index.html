@@ -97,10 +97,15 @@
             transform: translateY(30px);
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, transform;
+            animation: fallbackReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+        }
+        @keyframes fallbackReveal {
+            to { opacity: 1; transform: translateY(0); }
         }
         .animate-on-scroll.show {
             opacity: 1;
             transform: translateY(0);
+            animation: none;
         }
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
