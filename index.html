@@ -3331,7 +3331,9 @@
             btnExtract.disabled = true;
             btnReset.disabled = true;
             btnExtract.classList.add('processing');
-            btnExtract.querySelector('span').textContent = 'Đang xử lý...';
+            const spanEl = btnExtract.querySelector('span');
+            if (spanEl) spanEl.textContent = 'Đang xử lý...';
+            else btnExtract.textContent = 'Đang xử lý...';
             
             // Show scanning laser
             const laser = document.getElementById('scannerLaser');
@@ -3414,7 +3416,9 @@
                 btnExtract.disabled = false;
                 btnReset.disabled = false;
                 btnExtract.classList.remove('processing');
-                btnExtract.querySelector('span').textContent = '✂ Tách Nền Ngay';
+                const spanEl = btnExtract.querySelector('span');
+                if (spanEl) spanEl.textContent = '✂ Tách Nền Ngay';
+                else btnExtract.textContent = '✂ Tách Nền Ngay';
                 
                 // Hide scanning laser
                 const laser = document.getElementById('scannerLaser');
