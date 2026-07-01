@@ -97,10 +97,15 @@
             transform: translateY(30px);
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, transform;
+            animation: fallbackReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+        }
+        @keyframes fallbackReveal {
+            to { opacity: 1; transform: translateY(0); }
         }
         .animate-on-scroll.show {
             opacity: 1;
             transform: translateY(0);
+            animation: none;
         }
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
@@ -110,19 +115,49 @@
         .glow-orb {
             position: fixed;
             border-radius: 50%;
-            filter: blur(140px);
+            filter: blur(120px);
             z-index: -1;
-            opacity: 0.18;
+            opacity: 0.25;
             pointer-events: none;
             mix-blend-mode: screen;
         }
         .orb-1 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            animation: orb-float-1 15s ease-in-out infinite alternate;
+        }
+        .orb-2 {
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-            top: -150px;
-            left: -150px;
-            animation: orb-float-1 12s ease-in-out infinite;
+            background: radial-gradient(circle, #a78bfa 0%, transparent 70%);
+            bottom: -150px;
+            right: -150px;
+            animation: orb-float-2 18s ease-in-out infinite alternate-reverse;
+        }
+        .orb-3 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #f472b6 0%, transparent 70%);
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: orb-float-3 20s ease-in-out infinite alternate;
+            opacity: 0.15;
+        }
+        @keyframes orb-float-1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 100px) scale(1.1); }
+        }
+        @keyframes orb-float-2 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-100px, -50px) scale(1.2); }
+        }
+        @keyframes orb-float-3 {
+            0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            100% { transform: translate(-30%, -60%) scale(1.3) rotate(45deg); }
         }
         .orb-2 {
             width: 700px;
@@ -182,6 +217,40 @@
         }
         .btn-primary:active {
             transform: translateY(0) scale(0.98);
+        }
+        
+        /* PROCESSING STATE FOR BUTTON (ROTATING BORDER) */
+        .btn-primary.processing {
+            position: relative;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+        .btn-primary.processing::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, #ffffff);
+            animation: rotateGlow 1.5s linear infinite;
+            z-index: 1;
+            opacity: 0.5;
+        }
+        .btn-primary.processing::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: inherit;
+            z-index: 2;
+        }
+        .btn-primary.processing span {
+            position: relative;
+            z-index: 3;
+        }
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .btn-secondary {
             background: rgba(255, 255, 255, 0.05);
@@ -895,18 +964,20 @@
             margin-bottom: 45px;
         }
         .hero-banner h2 {
-            font-size: 2.4rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 40%, var(--primary) 100%);
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 30%, #a78bfa 70%, #f472b6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 12px;
+            text-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+            letter-spacing: -0.5px;
         }
         .hero-banner p {
             color: var(--text-muted);
             max-width: 600px;
             margin: 0 auto;
-            font-size: 1rem;
+            font-size: 1.05rem;
         }
 
         .workspace-grid {
@@ -921,19 +992,31 @@
             }
         }
         .panel-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 28px;
             padding: 35px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03);
-            backdrop-filter: blur(12px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             display: flex;
             flex-direction: column;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        .panel-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            pointer-events: none;
         }
         .panel-card:hover {
-            border-color: rgba(255,255,255,0.12);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
         }
         .panel-card h3 {
             font-size: 1.25rem;
@@ -952,31 +1035,48 @@
         }
 
         .upload-area {
-            border: 2px dashed var(--border);
+            border: 2px dashed rgba(255,255,255,0.2);
             border-radius: 18px;
             padding: 50px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            background: rgba(255,255,255,0.005);
+            background: rgba(255,255,255,0.02);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 280px;
+            position: relative;
+        }
+        .upload-area::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            box-shadow: 0 0 0px rgba(59, 130, 246, 0);
+            transition: box-shadow 0.3s ease;
         }
         .upload-area:hover {
             border-color: var(--accent);
-            background: rgba(59, 130, 246, 0.02);
-            box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);
+            background: rgba(59, 130, 246, 0.05);
+        }
+        .upload-area:hover::after {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
         }
         .upload-icon {
             font-size: 3.2rem;
             margin-bottom: 18px;
-            transition: transform 0.3s;
+            transition: transform 0.3s, filter 0.3s;
+        }
+        @keyframes floatPulse {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-6px) scale(1.05); }
+            100% { transform: translateY(0) scale(1); }
         }
         .upload-area:hover .upload-icon {
-            transform: scale(1.08) translateY(-4px);
+            animation: floatPulse 1.5s infinite ease-in-out;
+            filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.4));
         }
         .upload-text h4 {
             font-size: 1.1rem;
@@ -1004,6 +1104,27 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
+        }
+        
+        /* SCANNING LASER EFFECT */
+        .scanner-laser {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 4px;
+            background: #3b82f6;
+            box-shadow: 0 0 20px 5px rgba(59, 130, 246, 0.6);
+            z-index: 10;
+            animation: scanLaser 2s linear infinite alternate;
+            pointer-events: none;
+            display: none;
+        }
+        @keyframes scanLaser {
+            0% { top: 0%; opacity: 0.8; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: calc(100% - 4px); opacity: 0.8; }
         }
 
         /* Comparison Slider */
@@ -1841,22 +1962,12 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
         }
-        /* Skeleton Loading CSS */
-        .skeleton {
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
-            border-radius: 4px;
-        }
-        @keyframes skeleton-loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
     </style>
 </head>
 <body>
     <div class="glow-orb orb-1"></div>
     <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
 
     <!-- Main Dynamic Header for SPA navigation (Visible in Workspace, History, Admin) -->
     <header id="appHeader" style="display: none;">
@@ -1879,7 +1990,7 @@
                     <div class="usage-container" id="usageContainer">
                         <div class="usage-text">
                             <span id="usageLabel">Lượt dùng:</span>
-                            <span id="usageValue">0/30</span>
+                            <span id="usageValue">0/5</span>
                         </div>
                         <div class="usage-bar-bg">
                             <div class="usage-bar-fill" id="usageBarFill"></div>
@@ -1899,6 +2010,9 @@
                             <hr class="dropdown-divider">
                             <button class="dropdown-item" onclick="openProfileModal(); closeAllDropdowns();">
                                 <span class="item-icon">👤</span> Hồ sơ của tôi
+                            </button>
+                            <button class="dropdown-item" onclick="openTransactionHistoryModal(); closeAllDropdowns();">
+                                <span class="item-icon">💳</span> Lịch sử giao dịch
                             </button>
                             <button class="dropdown-item" onclick="openReviewModal(); closeAllDropdowns();" style="color: var(--accent);">
                                 <span class="item-icon">⭐</span> Gửi đánh giá
@@ -1995,7 +2109,7 @@
                         0đ <span>/ tháng</span>
                     </div>
                     <ul class="pricing-features">
-                        <li>Tách nền tối đa 10 ảnh / ngày</li>
+                        <li>Tách nền tối đa 5 ảnh / ngày (150 ảnh/tháng)</li>
                         <li>Tải ảnh chất lượng tiêu chuẩn</li>
                         <li>Chạy thử phông nền AI mẫu</li>
                         <li>Lịch sử lưu trữ cục bộ</li>
@@ -2010,10 +2124,10 @@
                         <p>Dành cho Freelancer & Nhóm thiết kế</p>
                     </div>
                     <div class="pricing-price">
-                        20,000đ <span>/ tháng</span>
+                        49,000đ <span>/ tháng</span>
                     </div>
                     <ul class="pricing-features">
-                        <li>Mở rộng lên đến 30 ảnh / ngày</li>
+                        <li>Mở rộng lên đến 10 ảnh / ngày (300 ảnh/tháng)</li>
                         <li>Tải ảnh chất lượng Full HD</li>
                         <li>Mở khóa kho phông nền AI đa dạng</li>
                         <li>Tìm phông nền tùy thích qua Unsplash</li>
@@ -2090,47 +2204,8 @@
             </p>
             
             <div id="landingReviewsGrid" class="reviews-grid animate-on-scroll delay-200">
-                <!-- Skeleton Card 1 -->
-                <div class="review-card" style="min-height: 150px; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                            <div class="skeleton" style="width: 100px; height: 16px;"></div>
-                            <div class="skeleton" style="width: 80px; height: 16px;"></div>
-                        </div>
-                        <div class="skeleton" style="width: 100%; height: 12px; margin-bottom: 8px;"></div>
-                        <div class="skeleton" style="width: 90%; height: 12px; margin-bottom: 8px;"></div>
-                    </div>
-                    <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-                        <div class="skeleton" style="width: 60px; height: 12px;"></div>
-                    </div>
-                </div>
-                <!-- Skeleton Card 2 -->
-                <div class="review-card" style="min-height: 150px; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                            <div class="skeleton" style="width: 120px; height: 16px;"></div>
-                            <div class="skeleton" style="width: 80px; height: 16px;"></div>
-                        </div>
-                        <div class="skeleton" style="width: 95%; height: 12px; margin-bottom: 8px;"></div>
-                        <div class="skeleton" style="width: 80%; height: 12px; margin-bottom: 8px;"></div>
-                    </div>
-                    <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-                        <div class="skeleton" style="width: 60px; height: 12px;"></div>
-                    </div>
-                </div>
-                <!-- Skeleton Card 3 -->
-                <div class="review-card" style="min-height: 150px; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                            <div class="skeleton" style="width: 90px; height: 16px;"></div>
-                            <div class="skeleton" style="width: 80px; height: 16px;"></div>
-                        </div>
-                        <div class="skeleton" style="width: 100%; height: 12px; margin-bottom: 8px;"></div>
-                        <div class="skeleton" style="width: 70%; height: 12px; margin-bottom: 8px;"></div>
-                    </div>
-                    <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-                        <div class="skeleton" style="width: 60px; height: 12px;"></div>
-                    </div>
+                <div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">
+                    Đang tải danh sách đánh giá hệ thống...
                 </div>
             </div>
 
@@ -2293,6 +2368,7 @@
 
                         <div class="image-container" id="sourceImageContainer">
                             <img id="imgSrc" alt="Source Preview">
+                            <div class="scanner-laser" id="scannerLaser"></div>
                         </div>
                         
                         <div class="actions-bar">
@@ -2626,18 +2702,24 @@
                 <p style="margin-top: 10px;"><strong>Trạng thái:</strong> <span id="profileProStatus"></span></p>
             </div>
             
-            <!-- Lịch sử giao dịch -->
-            <h4 style="margin-bottom: 12px; font-size: 1rem; display: flex; align-items: center; gap: 8px;">💳 Lịch sử giao dịch</h4>
-            <div id="transactionHistoryContainer" style="max-height: 180px; overflow-y: auto; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 20px;">
-                <div id="transactionHistoryList" style="font-size: 0.85rem;">
+            <h4 style="margin-bottom: 15px; font-size: 1rem;">Đổi mật khẩu</h4>
+            <input type="password" id="profileOldPass" class="form-control" placeholder="Mật khẩu cũ..." style="margin-bottom: 10px;">
+            <input type="password" id="profileNewPass" class="form-control" placeholder="Mật khẩu mới..." style="margin-bottom: 10px;">
+            <input type="password" id="profileConfirmNewPass" class="form-control" placeholder="Xác nhận mật khẩu mới..." style="margin-bottom: 15px;">
+            <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="updateProfile()">Cập nhật mật khẩu</button>
+        </div>
+    </div>
+
+    <!-- ================= TRANSACTION HISTORY MODAL ================= -->
+    <div class="modal" id="transactionHistoryModal">
+        <div class="modal-card" style="max-width: 500px;">
+            <button class="modal-close" onclick="closeTransactionHistoryModal()">&times;</button>
+            <h3 style="margin-bottom: 20px;">💳 Lịch sử giao dịch của tôi</h3>
+            <div id="modalTransactionHistoryContainer" style="max-height: 300px; overflow-y: auto; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 12px;">
+                <div id="modalTransactionHistoryList" style="font-size: 0.85rem;">
                     <!-- Nạp động qua JS -->
                 </div>
             </div>
-            
-            <h4 style="margin-bottom: 15px; font-size: 1rem;">Đổi mật khẩu</h4>
-            <input type="password" id="profileOldPass" class="form-control" placeholder="Mật khẩu cũ..." style="margin-bottom: 10px;">
-            <input type="password" id="profileNewPass" class="form-control" placeholder="Mật khẩu mới..." style="margin-bottom: 15px;">
-            <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="updateProfile()">Cập nhật mật khẩu</button>
         </div>
     </div>
 
@@ -2947,7 +3029,7 @@
             const limitBarEl = document.getElementById('usageBarFill');
             const limitTextEl = document.getElementById('usageValue');
             
-            let limit = loggedInUserPro ? 30 : 10;
+            let limit = loggedInUserPro ? 10 : 5;
             
             let todayCount = 0;
             try {
@@ -3077,9 +3159,7 @@
                     throw new Error(errorMsg || "Gửi mã thất bại.");
                 }
 
-                const data = await response.json();
-                const isFallback = data.message && data.message.includes("Mã xác minh tạm thời");
-                showToast(data.message || "✅ Mã xác minh đã được gửi qua email của bạn.", isFallback ? "error" : "success");
+                showToast("✅ Mã xác minh đã được gửi qua email của bạn.");
                 
                 let countdown = 60;
                 const interval = setInterval(() => {
@@ -3246,6 +3326,16 @@
         btnExtract.addEventListener('click', async () => {
             if (!selectedFile) return;
 
+            // Update UI to Processing state
+            btnExtract.disabled = true;
+            btnReset.disabled = true;
+            btnExtract.classList.add('processing');
+            btnExtract.querySelector('span').textContent = 'Đang xử lý...';
+            
+            // Show scanning laser
+            const laser = document.getElementById('scannerLaser');
+            if (laser) laser.style.display = 'block';
+
             loaderOverlay.style.display = 'flex';
             loaderMessage.textContent = 'Đang tiến hành tách nền ảnh...';
             resetOutputView();
@@ -3320,6 +3410,15 @@
                 }
                 resetOutputView();
             } finally {
+                btnExtract.disabled = false;
+                btnReset.disabled = false;
+                btnExtract.classList.remove('processing');
+                btnExtract.querySelector('span').textContent = '✂ Tách Nền Ngay';
+                
+                // Hide scanning laser
+                const laser = document.getElementById('scannerLaser');
+                if (laser) laser.style.display = 'none';
+                
                 loaderOverlay.style.display = 'none';
             }
         });
@@ -3873,7 +3972,7 @@
             if (customMessage) {
                 msgEl.textContent = customMessage;
             } else {
-                msgEl.textContent = "Nâng cấp lên gói PRO 👑 chỉ với 20,000 VND / tháng để mở khóa giới hạn 30 ảnh/ngày, lưu trữ đám mây Cloudinary vĩnh viễn và thoải mái ghép phông nền AI nghệ thuật!";
+                msgEl.textContent = "Nâng cấp lên gói PRO 👑 chỉ với 49,000 VND / tháng để mở khóa giới hạn 10 ảnh/ngày (300 ảnh/tháng), lưu trữ đám mây Cloudinary vĩnh viễn và thoải mái ghép phông nền AI nghệ thuật!";
             }
             
             if (!token) {
@@ -4120,9 +4219,7 @@
                 : 'FREE';
             document.getElementById('profileOldPass').value = '';
             document.getElementById('profileNewPass').value = '';
-            
-            // Load transaction history
-            loadTransactionHistory();
+            document.getElementById('profileConfirmNewPass').value = '';
             
             document.getElementById('profileModal').classList.add('active');
         }
@@ -4131,8 +4228,17 @@
             document.getElementById('profileModal').classList.remove('active');
         }
 
-        async function loadTransactionHistory() {
-            const container = document.getElementById('transactionHistoryList');
+        function openTransactionHistoryModal() {
+            loadTransactionHistory('modalTransactionHistoryList');
+            document.getElementById('transactionHistoryModal').classList.add('active');
+        }
+
+        function closeTransactionHistoryModal() {
+            document.getElementById('transactionHistoryModal').classList.remove('active');
+        }
+
+        async function loadTransactionHistory(containerId = 'transactionHistoryList') {
+            const container = document.getElementById(containerId);
             if (!container) return;
             container.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 10px;">Đang tải lịch sử giao dịch...</div>';
             
@@ -4209,8 +4315,10 @@
         async function updateProfile() {
             const oldPass = document.getElementById('profileOldPass').value;
             const newPass = document.getElementById('profileNewPass').value;
+            const confirmPass = document.getElementById('profileConfirmNewPass').value;
             const token = localStorage.getItem('token');
-            if(!oldPass || !newPass) return showToast('Vui lòng nhập mật khẩu', 'error');
+            if(!oldPass || !newPass || !confirmPass) return showToast('Vui lòng nhập đầy đủ thông tin mật khẩu.', 'error');
+            if(newPass !== confirmPass) return showToast('Mật khẩu mới và xác nhận không khớp.', 'error');
 
             try {
                 const res = await fetch(`${API_URL}/auth/profile`, {
@@ -4353,7 +4461,7 @@
                             const displayUrl = r.imageUrl.startsWith('http') ? r.imageUrl : `${API_URL.replace('/api', '')}${r.imageUrl}`;
                             imgHtml = `
                                 <div class="review-image-container" style="margin-top: 12px; margin-bottom: 8px; border-radius: 8px; overflow: hidden; max-height: 120px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2);">
-                                    <img src="${displayUrl}" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" onclick="window.open('${displayUrl}', '_blank')" alt="Review Proof">
+                                    <img src="${displayUrl}" onerror="this.parentElement.style.display='none'" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" onclick="window.open('${displayUrl}', '_blank')" alt="Review Proof">
                                 </div>
                             `;
                         }
@@ -4586,18 +4694,6 @@
             }, { threshold: 0.1 });
             
             document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
-            
-            // Re-trigger observer if view changes (for SPA navigation)
-            const originalShowView = window.showView;
-            window.showView = function(viewId, pushState) {
-                originalShowView(viewId, pushState);
-                if (viewId === 'landing') {
-                    // Force IntersectionObserver to evaluate visible elements immediately
-                    setTimeout(() => {
-                        window.dispatchEvent(new Event('scroll'));
-                    }, 50);
-                }
-            };
         });
     </script>
 </body>
