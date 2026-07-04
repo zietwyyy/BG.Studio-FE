@@ -3970,6 +3970,7 @@
 
         /* ================= VIETQR PAYOS MOCK PAYMENT MODAL ================= */
         let currentOrderCode = null;
+        let isCreatingPayment = false;
 
         function showPaymentModal(customMessage = null) {
             const msgEl = document.getElementById('paymentMessage');
@@ -3984,6 +3985,9 @@
                 openAuthView('login');
                 return;
             }
+
+            if (isCreatingPayment) return; // Prevent spam clicks
+            isCreatingPayment = true;
 
             const returnUrl = window.location.origin + window.location.pathname + `?payment=success`;
             const cancelUrl = window.location.origin + window.location.pathname + `?payment=cancel`;
@@ -4002,6 +4006,7 @@
                 return res.json();
             })
             .then(data => {
+                isCreatingPayment = false;
                 currentOrderCode = data.orderCode;
                 
                 if (data.isMock) {
@@ -4028,6 +4033,7 @@
                 document.getElementById('paymentModal').classList.add('active');
             })
             .catch(err => {
+                isCreatingPayment = false;
                 showToast(err.message, "error");
             });
         }
