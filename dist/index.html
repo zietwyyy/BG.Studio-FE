@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +11,10 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    
+
     <style>
         :root {
             --bg-dark: #05070f;
@@ -51,11 +53,13 @@
         .app-view {
             animation: viewFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
         @keyframes viewFadeIn {
             from {
                 opacity: 0;
                 transform: translateY(15px) scale(0.995);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -64,34 +68,91 @@
 
         /* Custom Scroll Animations */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
+
         @keyframes arrowPulse {
-            0%, 100% { transform: translateX(0); opacity: 0.5; }
-            50% { transform: translateX(6px); opacity: 1; }
+
+            0%,
+            100% {
+                transform: translateX(0);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: translateX(6px);
+                opacity: 1;
+            }
         }
+
         @keyframes orb-float-1 {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(40px, -60px) scale(1.05); }
-            66% { transform: translate(-30px, 30px) scale(0.95); }
-            100% { transform: translate(0px, 0px) scale(1); }
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(40px, -60px) scale(1.05);
+            }
+
+            66% {
+                transform: translate(-30px, 30px) scale(0.95);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
         }
+
         @keyframes orb-float-2 {
-            0% { transform: translate(0px, 0px) scale(1); }
-            50% { transform: translate(-50px, 50px) scale(1.1); }
-            100% { transform: translate(0px, 0px) scale(1); }
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            50% {
+                transform: translate(-50px, 50px) scale(1.1);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
         }
+
         @keyframes pulseGlow {
-            0% { box-shadow: 0 0 15px var(--primary-glow); }
-            50% { box-shadow: 0 0 35px var(--primary), 0 0 12px var(--accent); }
-            100% { box-shadow: 0 0 15px var(--primary-glow); }
+            0% {
+                box-shadow: 0 0 15px var(--primary-glow);
+            }
+
+            50% {
+                box-shadow: 0 0 35px var(--primary), 0 0 12px var(--accent);
+            }
+
+            100% {
+                box-shadow: 0 0 15px var(--primary-glow);
+            }
         }
+
         .animate-on-scroll {
             opacity: 0;
             transform: translateY(30px);
@@ -102,14 +163,24 @@
         @keyframes fallbackReveal {
             to { opacity: 1; transform: translateY(0); }
         }
+
         .animate-on-scroll.show {
             opacity: 1;
             transform: translateY(0);
             animation: none;
         }
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
+
+        .delay-100 {
+            transition-delay: 100ms;
+        }
+
+        .delay-200 {
+            transition-delay: 200ms;
+        }
+
+        .delay-300 {
+            transition-delay: 300ms;
+        }
 
         /* Ambient Glow Background */
         .glow-orb {
@@ -121,6 +192,7 @@
             pointer-events: none;
             mix-blend-mode: screen;
         }
+
         .orb-1 {
             width: 700px;
             height: 700px;
@@ -159,6 +231,7 @@
             0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
             100% { transform: translate(-30%, -60%) scale(1.3) rotate(45deg); }
         }
+
         .orb-2 {
             width: 700px;
             height: 700px;
@@ -198,23 +271,29 @@
             color: #ffffff;
             box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
         }
+
         .btn-primary::before {
             content: '';
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(135deg, var(--accent), var(--primary));
             opacity: 0;
             z-index: -1;
             transition: opacity 0.4s ease;
         }
+
         .btn-primary:hover::before {
             opacity: 1;
         }
+
         .btn-primary:hover {
             transform: translateY(-2px) scale(1.02);
             box-shadow: 0 8px 25px rgba(168, 85, 247, 0.45);
         }
+
         .btn-primary:active {
             transform: translateY(0) scale(0.98);
         }
@@ -258,12 +337,14 @@
             color: var(--text-main);
             backdrop-filter: blur(10px);
         }
+
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.12);
             border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
         }
+
         .btn-secondary:active {
             transform: translateY(0);
         }
@@ -279,6 +360,7 @@
             padding: 16px 40px;
             transition: all 0.3s;
         }
+
         .nav-container {
             max-width: 1300px;
             margin: 0 auto;
@@ -286,6 +368,7 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .logo {
             font-size: 1.5rem;
             font-weight: 800;
@@ -298,9 +381,11 @@
             cursor: pointer;
             transition: transform 0.3s;
         }
+
         .logo:hover {
             transform: scale(1.02);
         }
+
         .logo-symbol {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             width: 34px;
@@ -315,6 +400,7 @@
             -webkit-text-fill-color: #fff !important;
             box-shadow: 0 4px 15px var(--primary-glow);
         }
+
         nav {
             display: flex;
             align-items: center;
@@ -324,6 +410,7 @@
             border-radius: 12px;
             border: 1px solid var(--border);
         }
+
         .nav-link {
             color: var(--text-muted);
             text-decoration: none;
@@ -335,20 +422,25 @@
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid transparent;
         }
-        .nav-link:hover, .nav-link.active {
+
+        .nav-link:hover,
+        .nav-link.active {
             color: #fff;
             background: rgba(255, 255, 255, 0.06);
         }
+
         .nav-link.active {
             background: rgba(255, 255, 255, 0.08);
             border-color: rgba(255, 255, 255, 0.08);
             color: var(--accent);
         }
+
         .user-auth-area {
             display: flex;
             align-items: center;
             gap: 15px;
         }
+
         .profile-link {
             color: var(--text-muted);
             text-decoration: none;
@@ -357,19 +449,23 @@
             cursor: pointer;
             transition: color 0.2s, text-shadow 0.2s;
         }
+
         .profile-link:hover {
             color: var(--accent);
             text-shadow: 0 0 10px var(--accent-glow);
         }
+
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
+
         .username-display {
             font-weight: 600;
             color: var(--text-main);
         }
+
         .user-badge {
             font-size: 0.7rem;
             padding: 4px 10px;
@@ -378,16 +474,19 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
         .user-badge.free {
             background: rgba(255, 255, 255, 0.08);
             color: var(--text-muted);
             border: 1px solid var(--border);
         }
+
         .user-badge.pro {
             background: linear-gradient(135deg, #eab308, #ca8a04);
             color: #000;
             box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
         }
+
         .btn-logout {
             background: none;
             border: none;
@@ -397,6 +496,7 @@
             font-size: 0.9rem;
             transition: opacity 0.2s, transform 0.2s;
         }
+
         .btn-logout:hover {
             opacity: 0.8;
             transform: scale(1.02);
@@ -519,6 +619,7 @@
             width: 160px;
             margin-right: 10px;
         }
+
         .usage-text {
             font-size: 0.75rem;
             color: var(--text-muted);
@@ -526,6 +627,7 @@
             justify-content: space-between;
             font-weight: 500;
         }
+
         .usage-bar-bg {
             width: 100%;
             height: 6px;
@@ -534,6 +636,7 @@
             overflow: hidden;
             border: 1px solid var(--border);
         }
+
         .usage-bar-fill {
             height: 100%;
             background: var(--accent);
@@ -548,12 +651,14 @@
             margin: 0 auto;
             padding: 40px 20px 80px 20px;
         }
+
         .hero {
             text-align: center;
             margin-top: 40px;
             margin-bottom: 90px;
             position: relative;
         }
+
         .hero h1 {
             font-size: 4.2rem;
             font-weight: 800;
@@ -564,6 +669,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .hero p {
             font-size: 1.25rem;
             color: var(--text-muted);
@@ -571,6 +677,7 @@
             margin: 0 auto 40px auto;
             line-height: 1.6;
         }
+
         .hero-showcase {
             display: flex;
             justify-content: center;
@@ -579,6 +686,7 @@
             margin-top: 60px;
             flex-wrap: wrap;
         }
+
         .showcase-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -589,16 +697,19 @@
             backdrop-filter: blur(12px);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
         }
+
         .showcase-card:hover {
             transform: translateY(-8px) scale(1.02);
             border-color: rgba(168, 85, 247, 0.3);
         }
+
         .showcase-card img {
             width: 100%;
             height: 220px;
             object-fit: cover;
             border-radius: 16px;
         }
+
         .showcase-card span {
             display: block;
             margin-top: 12px;
@@ -612,6 +723,7 @@
         .features {
             margin-bottom: 110px;
         }
+
         .section-title {
             text-align: center;
             font-size: 2.4rem;
@@ -621,11 +733,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
+
         .feature-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -634,11 +748,13 @@
             backdrop-filter: blur(12px);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .feature-card:hover {
             transform: translateY(-6px);
             border-color: var(--primary);
             box-shadow: 0 15px 35px var(--border-glow);
         }
+
         .feature-icon {
             font-size: 2.8rem;
             margin-bottom: 24px;
@@ -647,11 +763,13 @@
             -webkit-text-fill-color: transparent;
             display: inline-block;
         }
+
         .feature-card h3 {
             font-size: 1.35rem;
             margin-bottom: 12px;
             font-weight: 700;
         }
+
         .feature-card p {
             color: var(--text-muted);
             font-size: 0.95rem;
@@ -662,6 +780,7 @@
         .pricing {
             margin-bottom: 90px;
         }
+
         .pricing-grid {
             display: flex;
             justify-content: center;
@@ -670,6 +789,7 @@
             margin: 0 auto;
             flex-wrap: wrap;
         }
+
         .pricing-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -682,18 +802,22 @@
             backdrop-filter: blur(12px);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .pricing-card:hover {
             transform: translateY(-8px);
             border-color: rgba(255, 255, 255, 0.2);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
+
         .pricing-card.pro-card {
             border-color: var(--primary);
             box-shadow: 0 10px 30px var(--primary-glow);
         }
+
         .pricing-card.pro-card:hover {
             box-shadow: 0 20px 45px rgba(168, 85, 247, 0.35);
         }
+
         .pricing-card.pro-card::before {
             content: "POPULAR / RECOMMENDED";
             position: absolute;
@@ -709,15 +833,18 @@
             box-shadow: 0 4px 15px var(--primary-glow);
             letter-spacing: 0.8px;
         }
+
         .pricing-header h3 {
             font-size: 1.5rem;
             font-weight: 800;
             margin-bottom: 8px;
         }
+
         .pricing-header p {
             font-size: 0.9rem;
             color: var(--text-muted);
         }
+
         .pricing-price {
             font-size: 2.8rem;
             font-weight: 800;
@@ -725,17 +852,20 @@
             display: flex;
             align-items: baseline;
         }
+
         .pricing-price span {
             font-size: 1rem;
             font-weight: 500;
             color: var(--text-muted);
             margin-left: 6px;
         }
+
         .pricing-features {
             list-style: none;
             margin: 10px 0 35px 0;
             flex-grow: 1;
         }
+
         .pricing-features li {
             margin-bottom: 16px;
             display: flex;
@@ -744,6 +874,7 @@
             color: var(--text-muted);
             font-size: 0.95rem;
         }
+
         .pricing-features li::before {
             content: "✓";
             color: var(--success);
@@ -765,10 +896,11 @@
             width: 100vw;
             background: var(--bg-dark);
         }
+
         .auth-marketing-side {
             width: 50%;
-            background: linear-gradient(135deg, rgba(8, 12, 24, 0.96) 0%, rgba(3, 5, 12, 0.98) 100%), 
-                        url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=1200&auto=format&fit=crop') no-repeat center/cover;
+            background: linear-gradient(135deg, rgba(8, 12, 24, 0.96) 0%, rgba(3, 5, 12, 0.98) 100%),
+                url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=1200&auto=format&fit=crop') no-repeat center/cover;
             padding: 80px;
             display: flex;
             flex-direction: column;
@@ -777,17 +909,21 @@
             overflow: hidden;
             border-right: 1px solid var(--border);
         }
+
         @media (max-width: 960px) {
             .auth-marketing-side {
                 display: none;
             }
+
             .auth-form-side {
                 width: 100% !important;
             }
         }
+
         .auth-marketing-header .logo {
             margin-bottom: 50px;
         }
+
         .auth-marketing-content h2 {
             font-size: 3rem;
             font-weight: 800;
@@ -797,10 +933,12 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .auth-marketing-features {
             list-style: none;
             margin-top: 40px;
         }
+
         .auth-marketing-features li {
             margin-bottom: 24px;
             display: flex;
@@ -809,6 +947,7 @@
             font-size: 1.1rem;
             color: var(--text-main);
         }
+
         .auth-marketing-features li span {
             background: rgba(59, 130, 246, 0.15);
             color: var(--accent);
@@ -833,6 +972,7 @@
             position: relative;
             background: radial-gradient(circle at center, rgba(13, 18, 36, 0.4) 0%, rgba(5, 7, 15, 1) 100%);
         }
+
         .auth-box {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -840,19 +980,29 @@
             padding: 50px;
             width: 100%;
             max-width: 480px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             animation: authBoxPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
         @keyframes authBoxPop {
-            from { opacity: 0; transform: translateY(20px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
+
         .auth-tabs {
             display: flex;
-            border-bottom: 2px solid rgba(255,255,255,0.04);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.04);
             margin-bottom: 35px;
         }
+
         .auth-tab {
             flex: 1;
             text-align: center;
@@ -865,17 +1015,21 @@
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             margin-bottom: -2px;
         }
+
         .auth-tab:hover {
             color: var(--text-main);
         }
+
         .auth-tab.active {
             color: var(--text-main);
             border-bottom-color: var(--primary);
             text-shadow: 0 0 15px var(--primary-glow);
         }
+
         .form-group {
             margin-bottom: 24px;
         }
+
         .form-group label {
             display: block;
             font-size: 0.85rem;
@@ -884,6 +1038,7 @@
             color: var(--text-muted);
             letter-spacing: 0.3px;
         }
+
         .form-control {
             width: 100%;
             background: rgba(0, 0, 0, 0.35);
@@ -895,18 +1050,22 @@
             outline: none;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .form-control:focus {
             background: rgba(0, 0, 0, 0.5);
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
         }
+
         .password-wrapper {
             position: relative;
             width: 100%;
         }
+
         .password-wrapper .form-control {
             padding-right: 45px;
         }
+
         .password-toggle {
             position: absolute;
             right: 15px;
@@ -920,10 +1079,12 @@
             align-items: center;
             transition: opacity 0.2s, transform 0.2s;
         }
+
         .password-toggle:hover {
             opacity: 1;
             transform: translateY(-50%) scale(1.1);
         }
+
         .btn-form {
             width: 100%;
             padding: 14px;
@@ -938,19 +1099,31 @@
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 4px 15px var(--primary-glow);
         }
+
         .btn-form:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px var(--primary-glow);
         }
+
         .btn-form:active {
             transform: translateY(0);
         }
-        #formLogin, #formRegister {
+
+        #formLogin,
+        #formRegister {
             animation: formFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
         @keyframes formFadeIn {
-            from { opacity: 0; transform: translateX(-15px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(-15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         /* ---------------- VIEW 3: WORKSPACE & HISTORY ---------------- */
@@ -959,10 +1132,12 @@
             margin: 0 auto;
             padding: 40px 20px;
         }
+
         .hero-banner {
             text-align: center;
             margin-bottom: 45px;
         }
+
         .hero-banner h2 {
             font-size: 2.8rem;
             font-weight: 900;
@@ -973,6 +1148,7 @@
             text-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
             letter-spacing: -0.5px;
         }
+
         .hero-banner p {
             color: var(--text-muted);
             max-width: 600px;
@@ -986,11 +1162,13 @@
             gap: 30px;
             margin-bottom: 40px;
         }
+
         @media (max-width: 960px) {
             .workspace-grid {
                 grid-template-columns: 1fr;
             }
         }
+
         .panel-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1013,11 +1191,13 @@
             background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
             pointer-events: none;
         }
+
         .panel-card:hover {
             border-color: rgba(59, 130, 246, 0.3);
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.15);
             transform: translateY(-2px);
         }
+
         .panel-card h3 {
             font-size: 1.25rem;
             font-weight: 700;
@@ -1026,6 +1206,7 @@
             align-items: center;
             gap: 12px;
         }
+
         .panel-card h3 span {
             display: inline-block;
             width: 4px;
@@ -1057,6 +1238,7 @@
             box-shadow: 0 0 0px rgba(59, 130, 246, 0);
             transition: box-shadow 0.3s ease;
         }
+
         .upload-area:hover {
             border-color: var(--accent);
             background: rgba(59, 130, 246, 0.05);
@@ -1064,6 +1246,7 @@
         .upload-area:hover::after {
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
         }
+
         .upload-icon {
             font-size: 3.2rem;
             margin-bottom: 18px;
@@ -1074,22 +1257,27 @@
             50% { transform: translateY(-6px) scale(1.05); }
             100% { transform: translateY(0) scale(1); }
         }
+
         .upload-area:hover .upload-icon {
             animation: floatPulse 1.5s infinite ease-in-out;
             filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.4));
         }
+
         .upload-text h4 {
             font-size: 1.1rem;
             margin-bottom: 6px;
             font-weight: 700;
         }
+
         .upload-text p {
             color: var(--text-muted);
             font-size: 0.85rem;
         }
+
         .file-input {
             display: none;
         }
+
         .image-container {
             display: none;
             width: 100%;
@@ -1100,6 +1288,7 @@
             border: 1px solid var(--border);
             position: relative;
         }
+
         .image-container img {
             width: 100%;
             height: 100%;
@@ -1136,8 +1325,9 @@
             overflow: hidden;
             border: 1px solid var(--border);
             display: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
+
         .slider-image {
             position: absolute;
             top: 0;
@@ -1145,6 +1335,7 @@
             width: 100%;
             height: 100%;
         }
+
         .slider-image img {
             width: 100%;
             height: 100%;
@@ -1152,9 +1343,11 @@
             user-select: none;
             pointer-events: none;
         }
+
         .original-img {
             background-color: #04060c;
         }
+
         .processed-img {
             width: 50%;
             overflow: hidden;
@@ -1163,6 +1356,7 @@
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
         }
+
         .slider-range {
             position: absolute;
             top: 0;
@@ -1174,6 +1368,7 @@
             cursor: ew-resize;
             z-index: 10;
         }
+
         .slider-line {
             position: absolute;
             top: 0;
@@ -1183,8 +1378,9 @@
             background: linear-gradient(to bottom, var(--primary), var(--accent));
             z-index: 8;
             pointer-events: none;
-            box-shadow: 0 0 10px rgba(139,92,246,0.8);
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.8);
         }
+
         .slider-handle {
             position: absolute;
             top: 50%;
@@ -1200,12 +1396,13 @@
             justify-content: center;
             font-weight: 800;
             font-size: 1.1rem;
-            box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 8px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 8px 20px rgba(0, 0, 0, 0.4);
             z-index: 9;
             pointer-events: none;
             transition: transform 0.2s;
         }
-        .slider-range:hover ~ .slider-handle {
+
+        .slider-range:hover~.slider-handle {
             transform: translate(-50%, -50%) scale(1.08);
         }
 
@@ -1215,6 +1412,7 @@
             display: flex;
             gap: 15px;
         }
+
         .actions-bar .btn {
             flex: 1;
             justify-content: center;
@@ -1237,8 +1435,9 @@
             align-items: center;
             gap: 8px;
             z-index: 15;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
+
         .engine-badge {
             font-size: 0.7rem;
             padding: 3px 8px;
@@ -1246,11 +1445,13 @@
             font-weight: 700;
             text-transform: uppercase;
         }
+
         .engine-badge.local {
             background: rgba(168, 85, 247, 0.15);
             color: #c084fc;
             border: 1px solid rgba(168, 85, 247, 0.3);
         }
+
         .engine-badge.cloud {
             background: rgba(59, 130, 246, 0.15);
             color: #60a5fa;
@@ -1273,6 +1474,7 @@
             z-index: 20;
             border-radius: 26px;
         }
+
         .loader-overlay::before {
             content: '';
             position: absolute;
@@ -1285,12 +1487,27 @@
             animation: scan-laser 2.5s infinite ease-in-out;
             z-index: 2;
         }
+
         @keyframes scan-laser {
-            0% { top: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
+            0% {
+                top: 0%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
         }
+
         .spinner {
             width: 60px;
             height: 60px;
@@ -1302,9 +1519,13 @@
             margin-bottom: 24px;
             box-shadow: 0 0 20px var(--primary-glow);
         }
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
+
         .loader-overlay p {
             font-weight: 600;
             font-size: 1rem;
@@ -1321,6 +1542,7 @@
             margin-bottom: 20px;
             gap: 12px;
         }
+
         .panel-tab {
             background: none;
             border: none;
@@ -1333,9 +1555,11 @@
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             margin-bottom: -1px;
         }
+
         .panel-tab:hover {
             color: var(--text-main);
         }
+
         .panel-tab.active {
             color: var(--accent);
             border-bottom-color: var(--accent);
@@ -1352,17 +1576,19 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
         }
+
         #aiCanvas {
             max-width: 100%;
             height: auto;
             border-radius: 12px;
             cursor: move;
             background: #020308;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .canvas-tip {
             font-size: 0.8rem;
             color: var(--text-muted);
@@ -1370,22 +1596,28 @@
             text-align: center;
             font-weight: 500;
         }
-        .presets-section, .search-bg-section {
+
+        .presets-section,
+        .search-bg-section {
             margin-top: 20px;
             margin-bottom: 20px;
         }
-        .presets-section h4, .search-bg-section h4 {
+
+        .presets-section h4,
+        .search-bg-section h4 {
             font-size: 0.85rem;
             color: var(--text-main);
             margin-bottom: 10px;
             font-weight: 700;
             letter-spacing: 0.3px;
         }
+
         .presets-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
         }
+
         .preset-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
@@ -1398,6 +1630,7 @@
             text-align: center;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .preset-card img {
             width: 100%;
             height: 44px;
@@ -1405,24 +1638,29 @@
             border-radius: 8px;
             margin-bottom: 6px;
         }
+
         .preset-card span {
             font-size: 0.7rem;
             font-weight: 600;
             color: var(--text-muted);
         }
+
         .preset-card:hover {
-            border-color: rgba(255,255,255,0.25);
-            background: rgba(255,255,255,0.08);
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.08);
             transform: translateY(-2px);
         }
+
         .preset-card.active {
             border-color: var(--accent);
             background: rgba(59, 130, 246, 0.15);
             box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
         }
+
         .preset-card.active span {
             color: #60a5fa;
         }
+
         .canvas-controls {
             background: rgba(255, 255, 255, 0.015);
             border-radius: 12px;
@@ -1430,18 +1668,21 @@
             border: 1px solid var(--border);
             margin-top: 15px;
         }
+
         .control-group {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 15px;
         }
+
         .control-group label {
             font-size: 0.85rem;
             color: var(--text-muted);
             white-space: nowrap;
             font-weight: 600;
         }
+
         .control-group input[type="range"] {
             flex-grow: 1;
             accent-color: var(--accent);
@@ -1458,20 +1699,23 @@
             gap: 30px;
             margin-top: 30px;
         }
+
         .history-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             backdrop-filter: blur(12px);
         }
+
         .history-card:hover {
             transform: translateY(-6px);
             border-color: var(--border-glow);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         }
+
         .history-preview {
             position: relative;
             height: 190px;
@@ -1481,18 +1725,22 @@
             background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
             transition: background-color 0.3s;
         }
+
         .history-preview img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .history-card:hover .history-preview img {
             transform: scale(1.04);
         }
+
         .history-info {
             padding: 20px;
         }
+
         .history-info h4 {
             font-size: 1rem;
             margin-bottom: 8px;
@@ -1501,6 +1749,7 @@
             white-space: nowrap;
             font-weight: 700;
         }
+
         .history-meta {
             font-size: 0.8rem;
             color: var(--text-muted);
@@ -1508,6 +1757,7 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .history-actions {
             padding: 12px 20px;
             background: rgba(0, 0, 0, 0.35);
@@ -1516,7 +1766,9 @@
             justify-content: space-between;
             align-items: center;
         }
-        .history-actions a, .history-actions button {
+
+        .history-actions a,
+        .history-actions button {
             color: var(--text-muted);
             text-decoration: none;
             font-size: 0.8rem;
@@ -1526,14 +1778,17 @@
             cursor: pointer;
             transition: color 0.2s, transform 0.2s;
         }
+
         .history-actions a:hover {
             color: var(--accent);
             transform: scale(1.05);
         }
+
         .history-actions button:hover {
             color: var(--danger);
             transform: scale(1.05);
         }
+
         .unauth-placeholder {
             text-align: center;
             background: var(--bg-card);
@@ -1541,14 +1796,16 @@
             border-radius: 28px;
             padding: 80px 40px;
             margin-top: 40px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(12px);
         }
+
         .unauth-placeholder h3 {
             font-size: 1.6rem;
             margin-bottom: 12px;
             font-weight: 800;
         }
+
         .unauth-placeholder p {
             color: var(--text-muted);
             font-size: 0.95rem;
@@ -1561,36 +1818,42 @@
             gap: 20px;
             margin-bottom: 35px;
         }
+
         @media (max-width: 960px) {
             .admin-stat-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
         .admin-stat-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 24px;
             padding: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(12px);
             transition: all 0.3s;
         }
+
         .admin-stat-card:hover {
-            border-color: rgba(255,255,255,0.15);
+            border-color: rgba(255, 255, 255, 0.15);
             transform: translateY(-4px);
         }
+
         .admin-stat-card .icon {
             font-size: 2.2rem;
             margin-bottom: 12px;
         }
+
         .admin-stat-card .label {
             font-size: 0.85rem;
             color: var(--text-muted);
             font-weight: 600;
             letter-spacing: 0.3px;
         }
+
         .admin-stat-card .num {
             font-size: 2rem;
             font-weight: 800;
@@ -1599,25 +1862,29 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .admin-details-grid {
             display: grid;
             grid-template-columns: 2.2fr 1fr 1fr;
             gap: 25px;
             margin-top: 35px;
         }
+
         @media (max-width: 1100px) {
             .admin-details-grid {
                 grid-template-columns: 1fr;
             }
         }
+
         .admin-table-container {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 24px;
             padding: 28px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(12px);
         }
+
         .admin-table-container h4 {
             font-size: 1.15rem;
             font-weight: 800;
@@ -1626,45 +1893,55 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .admin-table {
             width: 100%;
             border-collapse: collapse;
         }
-        .admin-table th, .admin-table td {
+
+        .admin-table th,
+        .admin-table td {
             padding: 14px;
             text-align: left;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             font-size: 0.9rem;
         }
+
         .admin-table th {
             color: var(--text-muted);
             font-weight: 700;
-            background: rgba(255,255,255,0.015);
+            background: rgba(255, 255, 255, 0.015);
             text-transform: uppercase;
             font-size: 0.75rem;
             letter-spacing: 0.5px;
         }
+
         .admin-table td {
             color: #e2e8f0;
         }
+
         .admin-table tr:hover td {
             background: rgba(255, 255, 255, 0.02);
         }
+
         .admin-link {
             color: var(--accent);
             text-decoration: none;
             font-weight: 600;
             transition: text-shadow 0.2s;
         }
+
         .admin-link:hover {
             text-decoration: underline;
             text-shadow: 0 0 8px var(--accent-glow);
         }
+
         .daily-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
+
         .daily-item {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border);
@@ -1675,13 +1952,16 @@
             align-items: center;
             transition: background 0.2s;
         }
+
         .daily-item:hover {
             background: rgba(255, 255, 255, 0.05);
         }
+
         .daily-date {
             font-weight: 600;
             font-size: 0.9rem;
         }
+
         .daily-count {
             background: rgba(59, 130, 246, 0.15);
             color: #60a5fa;
@@ -1704,10 +1984,12 @@
             align-items: center;
             justify-content: center;
         }
+
         .modal.active {
             display: flex;
             animation: modalOverlayFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
         .modal-card {
             background: rgba(13, 20, 35, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -1719,22 +2001,40 @@
             position: relative;
             z-index: 1001;
         }
+
         .modal.active .modal-card {
             animation: modalPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
+
         @keyframes modalOverlayFadeIn {
-            from { background: rgba(3, 4, 8, 0); backdrop-filter: blur(0px); }
-            to { background: rgba(3, 4, 8, 0.82); backdrop-filter: blur(16px); }
+            from {
+                background: rgba(3, 4, 8, 0);
+                backdrop-filter: blur(0px);
+            }
+
+            to {
+                background: rgba(3, 4, 8, 0.82);
+                backdrop-filter: blur(16px);
+            }
         }
+
         @keyframes modalPopIn {
-            from { opacity: 0; transform: scale(0.92) translateY(25px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
+
         .modal-close {
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 1.5rem;
@@ -1748,12 +2048,14 @@
             transition: all 0.2s;
             line-height: 1;
         }
+
         .modal-close:hover {
             color: #fff;
-            background: rgba(255,255,255,0.12);
-            border-color: rgba(255,255,255,0.25);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
             transform: rotate(90deg);
         }
+
         .modal-title {
             font-size: 1.6rem;
             font-weight: 800;
@@ -1771,9 +2073,10 @@
             flex-direction: column;
             align-items: center;
             margin: 25px 0;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .vietqr-header {
             width: 100%;
             display: flex;
@@ -1783,15 +2086,18 @@
             padding-bottom: 14px;
             margin-bottom: 18px;
         }
+
         .vietqr-header img {
             height: 30px;
         }
+
         .vietqr-header .bank-name {
             font-weight: 800;
             color: #00529b;
             font-size: 1.15rem;
             letter-spacing: -0.5px;
         }
+
         .vietqr-qr-img {
             width: 190px;
             height: 190px;
@@ -1802,6 +2108,7 @@
             border-radius: 12px;
             border: 1px solid #edf2f7;
         }
+
         .vietqr-details {
             width: 100%;
             font-size: 0.85rem;
@@ -1810,20 +2117,24 @@
             row-gap: 10px;
             color: #475569;
         }
+
         .vietqr-label {
             font-weight: 600;
         }
+
         .vietqr-val {
             font-weight: 700;
             color: #0f172a;
             text-align: right;
         }
+
         .vietqr-val.copyable {
             cursor: pointer;
             color: var(--accent);
             text-decoration: none;
             transition: opacity 0.2s;
         }
+
         .vietqr-val.copyable:hover {
             opacity: 0.85;
             text-decoration: underline;
@@ -1839,12 +2150,13 @@
             gap: 12px;
             z-index: 9999;
         }
+
         .toast {
             background: rgba(15, 23, 42, 0.9);
             border: 1px solid var(--border);
             padding: 16px 28px;
             border-radius: 16px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             gap: 12px;
@@ -1853,22 +2165,32 @@
             transform: translateX(120%);
             animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
         }
+
         @keyframes slideIn {
-            to { transform: translateX(0); }
+            to {
+                transform: translateX(0);
+            }
         }
+
         .toast.success {
             border-left: 4px solid var(--success);
             box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
         }
+
         .toast.error {
             border-left: 4px solid var(--danger);
             box-shadow: 0 10px 25px rgba(239, 68, 68, 0.15);
         }
+
         .toast.hide {
             animation: slideOut 0.35s ease-in forwards;
         }
+
         @keyframes slideOut {
-            to { transform: translateX(120%); opacity: 0; }
+            to {
+                transform: translateX(120%);
+                opacity: 0;
+            }
         }
 
         /* Footer */
@@ -1891,11 +2213,13 @@
             margin-top: 12px;
             margin-bottom: 12px;
         }
+
         @media (max-width: 768px) {
             .search-results-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
         }
+
         .search-result-card {
             border-radius: 8px;
             overflow: hidden;
@@ -1903,20 +2227,23 @@
             border: 2px solid transparent;
             transition: all 0.2s ease-in-out;
             aspect-ratio: 4 / 3;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.2);
             position: relative;
         }
+
         .search-result-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
+
         .search-result-card:hover {
             transform: scale(1.05);
             border-color: var(--accent);
             box-shadow: 0 0 10px var(--accent-glow);
         }
+
         .search-result-card.active {
             border-color: var(--primary);
             box-shadow: 0 0 12px var(--primary-glow);
@@ -1930,6 +2257,7 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
+
         .prompt-generator-section h4 {
             font-size: 1rem;
             font-weight: 700;
@@ -1939,11 +2267,13 @@
             align-items: center;
             gap: 8px;
         }
+
         .prompt-input-wrapper {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
+
         .prompt-textarea {
             width: 100%;
             height: 80px;
@@ -1957,6 +2287,7 @@
             resize: none;
             transition: all 0.2s;
         }
+
         .prompt-textarea:focus {
             background: rgba(0, 0, 0, 0.5);
             border-color: var(--primary);
@@ -1964,6 +2295,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="glow-orb orb-1"></div>
     <div class="glow-orb orb-2"></div>
@@ -1978,13 +2310,14 @@
             <nav>
                 <div class="nav-link active" id="linkWorkspace">Tách nền ảnh</div>
                 <div class="nav-link" id="linkHistory">Lịch sử của bạn</div>
-                <a href="community.html" class="nav-link" id="linkCommunity" style="text-decoration: none;">Cộng đồng</a>
+                <a href="community.html" class="nav-link" id="linkCommunity" style="text-decoration: none;">Cộng
+                    đồng</a>
                 <a class="nav-link" id="navAdmin" style="display: none;" onclick="showView('admin')">Quản trị</a>
             </nav>
             <div class="user-auth-area">
                 <!-- Unauthenticated -->
                 <button class="btn btn-secondary" id="btnShowAuth" onclick="showView('auth')">Đăng nhập</button>
-                
+
                 <!-- Authenticated -->
                 <div class="user-info" id="userInfo" style="display: none;">
                     <div class="usage-container" id="usageContainer">
@@ -2011,6 +2344,9 @@
                             <button class="dropdown-item" onclick="openProfileModal(); closeAllDropdowns();">
                                 <span class="item-icon">👤</span> Hồ sơ của tôi
                             </button>
+                            <button class="dropdown-item" onclick="toggleAiApiUrl(); closeAllDropdowns();">
+                                <span class="item-icon">⚙️</span> Cấu hình AI URL
+                            </button>
                             <button class="dropdown-item" onclick="openTransactionHistoryModal(); closeAllDropdowns();">
                                 <span class="item-icon">💳</span> Lịch sử giao dịch
                             </button>
@@ -2035,39 +2371,58 @@
             <div class="logo" onclick="showView('landing')">
                 <div class="logo-symbol">FI</div> FaceIn
             </div>
-            <div style="display: flex; gap: 15px;">
-                <a href="community.html" class="btn btn-secondary" style="text-decoration: none; border: none; background: transparent; box-shadow: none;">Cộng đồng</a>
-                <button class="btn btn-secondary" onclick="openAuthView('login')">Đăng nhập</button>
-                <button class="btn btn-primary" onclick="openAuthView('register')">Bắt đầu ngay ⚡</button>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <a href="community.html" class="btn btn-secondary"
+                    style="text-decoration: none; border: none; background: transparent; box-shadow: none;">Cộng
+                    đồng</a>
+                <button class="btn btn-secondary" id="btnLandingLogin" onclick="openAuthView('login')">Đăng nhập</button>
+                <button class="btn btn-primary" id="btnLandingRegister" onclick="openAuthView('register')">Bắt đầu ngay ⚡</button>
+                <button class="btn btn-primary" id="btnLandingWorkspace" style="display: none;" onclick="showView('workspace')">Vào Workspace ➔</button>
+                <button class="btn btn-secondary" id="btnLandingLogout" style="display: none;" onclick="logout()">Đăng xuất</button>
             </div>
         </div>
 
         <!-- Hero -->
         <div class="hero animate-on-scroll">
             <h1>Xóa Nền Ảnh & Ghép Phông AI<br>Chỉ Trong 3 Giây</h1>
-            <p>Trải nghiệm công nghệ tách nền tự động thông minh bằng AI Cục Bộ (Local rembg) tích hợp Studio phông nền nghệ thuật. Không cần kỹ năng photoshop, tạo ảnh chuyên nghiệp tức thì.</p>
+            <p>Trải nghiệm công nghệ tách nền tự động thông minh bằng AI Cục Bộ (Local rembg) tích hợp Studio phông nền
+                nghệ thuật. Không cần kỹ năng photoshop, tạo ảnh chuyên nghiệp tức thì.</p>
             <div style="display: flex; gap: 15px; justify-content: center;">
-                <button class="btn btn-primary" style="font-size: 1.1rem; padding: 14px 30px;" onclick="openAuthView('register')">Bắt đầu miễn phí ngay 🚀</button>
-                <button class="btn btn-secondary" style="font-size: 1.1rem; padding: 14px 30px;" onclick="scrollToSection('landingPricing')">Xem Bảng Giá 💰</button>
+                <button class="btn btn-primary" style="font-size: 1.1rem; padding: 14px 30px;"
+                    onclick="startApp()">Bắt đầu miễn phí ngay 🚀</button>
+                <button class="btn btn-secondary" style="font-size: 1.1rem; padding: 14px 30px;"
+                    onclick="scrollToSection('landingPricing')">Xem Bảng Giá 💰</button>
             </div>
 
             <div class="hero-showcase animate-on-scroll delay-100">
                 <div class="showcase-card">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop" alt="Original Image">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop"
+                        alt="Original Image">
                     <span>Ảnh gốc của bạn</span>
                 </div>
-                <div class="step-arrow" style="color: var(--accent); display: flex; align-items: center; justify-content: center; animation: arrowPulse 2s infinite ease-in-out;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <div class="step-arrow"
+                    style="color: var(--accent); display: flex; align-items: center; justify-content: center; animation: arrowPulse 2s infinite ease-in-out;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" style="width: 32px; height: 32px;">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
                 </div>
                 <div class="showcase-card">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop&bg=transparent" alt="Removed BG" style="background: linear-gradient(45deg, #131926 25%, transparent 25%), linear-gradient(-45deg, #131926 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #131926 75%), linear-gradient(-45deg, transparent 75%, #131926 75%); background-size: 20px 20px;">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop&bg=transparent"
+                        alt="Removed BG"
+                        style="background: linear-gradient(45deg, #131926 25%, transparent 25%), linear-gradient(-45deg, #131926 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #131926 75%), linear-gradient(-45deg, transparent 75%, #131926 75%); background-size: 20px 20px;">
                     <span>Tách nền hoàn hảo</span>
                 </div>
-                <div class="step-arrow" style="color: var(--primary); display: flex; align-items: center; justify-content: center; animation: arrowPulse 2s infinite ease-in-out; animation-delay: 0.5s;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <div class="step-arrow"
+                    style="color: var(--primary); display: flex; align-items: center; justify-content: center; animation: arrowPulse 2s infinite ease-in-out; animation-delay: 0.5s;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" style="width: 32px; height: 32px;">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
                 </div>
                 <div class="showcase-card">
-                    <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?q=80&w=600&auto=format&fit=crop" alt="Composite Image">
+                    <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?q=80&w=600&auto=format&fit=crop"
+                        alt="Composite Image">
                     <span>Phông nền AI ấn tượng</span>
                 </div>
             </div>
@@ -2080,17 +2435,20 @@
                 <div class="feature-card">
                     <div class="feature-icon">🧠</div>
                     <h3>AI Tách Nền Siêu Việt</h3>
-                    <p>Sử dụng thuật toán học máy rembg cục bộ tự động phát hiện đối tượng chân dung, sản phẩm để tách viền cực mịn chỉ trong tích tắc.</p>
+                    <p>Sử dụng thuật toán học máy rembg cục bộ tự động phát hiện đối tượng chân dung, sản phẩm để tách
+                        viền cực mịn chỉ trong tích tắc.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🎨</div>
                     <h3>AI Background Studio</h3>
-                    <p>Dễ dàng ghép mình vào các phông nền chất lượng cao: Studio chụp ảnh, Cyberpunk neon, bãi biển nhiệt đới hoặc tìm kiếm phông nền tùy ý.</p>
+                    <p>Dễ dàng ghép mình vào các phông nền chất lượng cao: Studio chụp ảnh, Cyberpunk neon, bãi biển
+                        nhiệt đới hoặc tìm kiếm phông nền tùy ý.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">💸</div>
                     <h3>Tiết kiệm & Tiện lợi</h3>
-                    <p>Tối ưu hóa chi phí nhờ AI xử lý trực tiếp tại Local, giúp hệ thống hoạt động ổn định và giá thành gói nâng cấp PRO siêu rẻ.</p>
+                    <p>Tối ưu hóa chi phí nhờ AI xử lý trực tiếp tại Local, giúp hệ thống hoạt động ổn định và giá thành
+                        gói nâng cấp PRO siêu rẻ.</p>
                 </div>
             </div>
         </div>
@@ -2114,7 +2472,8 @@
                         <li>Chạy thử phông nền AI mẫu</li>
                         <li>Lịch sử lưu trữ cục bộ</li>
                     </ul>
-                    <button class="btn btn-secondary" style="width: 100%; justify-content: center;" onclick="openAuthView('register')">Bắt Đầu Trải Nghiệm</button>
+                    <button class="btn btn-secondary" style="width: 100%; justify-content: center;"
+                        onclick="startApp()">Bắt Đầu Trải Nghiệm</button>
                 </div>
 
                 <!-- Pro Plan -->
@@ -2133,7 +2492,7 @@
                         <li>Tìm phông nền tùy thích qua Unsplash</li>
                         <li>Lưu trữ Cloud đám mây ổn định</li>
                     </ul>
-                    <button class="btn btn-primary" style="width: 100%; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--accent));" onclick="openAuthView('login')">Nâng Cấp PRO Ngay</button>
+                    <button class="btn btn-primary" style="width: 100%; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--accent));" onclick="upgradePricingClick()">Nâng Cấp PRO Ngay</button>
             </div>
         </div>
 
@@ -2217,8 +2576,9 @@
         </div>
 
         <!-- Landing Footer -->
-        <footer style="margin-top: 100px; border-top: 1px solid var(--border); padding: 30px; text-align: center; color: var(--text-muted);">
-            <p>© 2026 FaceIn · Nền tảng tách nền và thiết kế ảnh chuyên nghiệp</p>
+        <footer
+            style="margin-top: 100px; border-top: 1px solid var(--border); padding: 30px; text-align: center; color: var(--text-muted);">
+            <p>© 2026 FaceIn · Nền tảng thiết kế ảnh AI cho Startup môn EXE201</p>
         </footer>
     </section>
 
@@ -2248,7 +2608,8 @@
 
             <!-- Right Panel (Forms) -->
             <div class="auth-form-side">
-                <button onclick="showView('landing')" style="position: absolute; top: 30px; left: 30px; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <button onclick="showView('landing')"
+                    style="position: absolute; top: 30px; left: 30px; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                     ← Quay lại Trang chủ
                 </button>
 
@@ -2262,39 +2623,37 @@
                     <form id="formLogin" onsubmit="handleLogin(event)">
                         <div class="form-group">
                             <label for="loginUser">Tên đăng nhập</label>
-                            <input type="text" id="loginUser" class="form-control" required placeholder="Nhập tên đăng nhập...">
+                            <input type="text" id="loginUser" class="form-control" required
+                                placeholder="Nhập tên đăng nhập...">
                         </div>
                         <div class="form-group">
                             <label for="loginPass">Mật khẩu</label>
                             <div class="password-wrapper">
-                                <input type="password" id="loginPass" class="form-control" required placeholder="Nhập mật khẩu...">
-                                <span class="password-toggle" onclick="togglePasswordVisibility('loginPass', this)">👁️</span>
+                                <input type="password" id="loginPass" class="form-control" required
+                                    placeholder="Nhập mật khẩu...">
+                                <span class="password-toggle"
+                                    onclick="togglePasswordVisibility('loginPass', this)">👁️</span>
                             </div>
                             <div style="text-align: right; margin-top: 5px;">
-                                <a href="#" onclick="openForgotPasswordModal()" style="color: var(--accent); font-size: 0.8rem; text-decoration: none;">Quên mật khẩu?</a>
+                                <a href="#" onclick="openForgotPasswordModal()"
+                                    style="color: var(--accent); font-size: 0.8rem; text-decoration: none;">Quên mật
+                                    khẩu?</a>
                             </div>
                         </div>
                         <button type="submit" class="btn-form">Đăng nhập</button>
-                        
-                        <div style="text-align: center; margin: 15px 0; color: var(--text-muted); font-size: 0.85rem;">HOẶC</div>
-                        
+
+                        <div style="text-align: center; margin: 15px 0; color: var(--text-muted); font-size: 0.85rem;">
+                            HOẶC</div>
+
                         <!-- Google Sign-In Button (official rendered button) -->
                         <div id="g_id_onload"
-                             data-client_id="522918119520-efsff0oe6n6ak0emi9i2mf4f1mt6tjh9.apps.googleusercontent.com"
-                             data-context="signin"
-                             data-ux_mode="popup"
-                             data-callback="handleGoogleCredentialResponse"
-                             data-auto_prompt="false">
+                            data-client_id="522918119520-efsff0oe6n6ak0emi9i2mf4f1mt6tjh9.apps.googleusercontent.com"
+                            data-context="signin" data-ux_mode="popup" data-callback="handleGoogleCredentialResponse"
+                            data-auto_prompt="false">
                         </div>
-                        <div class="g_id_signin"
-                             data-type="standard"
-                             data-shape="rectangular"
-                             data-theme="outline"
-                             data-text="signin_with"
-                             data-size="large"
-                             data-locale="vi"
-                             data-width="360"
-                             style="display: flex; justify-content: center; margin-top: 5px;">
+                        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+                            data-text="signin_with" data-size="large" data-locale="vi" data-width="360"
+                            style="display: flex; justify-content: center; margin-top: 5px;">
                         </div>
                     </form>
 
@@ -2302,36 +2661,47 @@
                     <form id="formRegister" onsubmit="handleRegister(event)" style="display: none;">
                         <div class="form-group">
                             <label for="regUser">Tên đăng nhập mới</label>
-                            <input type="text" id="regUser" class="form-control" required placeholder="Tối thiểu 3 ký tự...">
+                            <input type="text" id="regUser" class="form-control" required
+                                placeholder="Tối thiểu 3 ký tự...">
                         </div>
                         <div class="form-group">
                             <label for="regEmail">Email khôi phục</label>
                             <div style="display: flex; gap: 8px;">
-                                <input type="email" id="regEmail" class="form-control" required placeholder="Nhập email..." style="flex: 1;">
-                                <button type="button" id="btnSendRegCode" onclick="sendRegisterCode()" style="background: var(--accent); color: var(--bg-dark); border: none; padding: 0 15px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.85rem; min-width: 90px; transition: all 0.2s; white-space: nowrap;">Gửi mã</button>
+                                <input type="email" id="regEmail" class="form-control" required
+                                    placeholder="Nhập email..." style="flex: 1;">
+                                <button type="button" id="btnSendRegCode" onclick="sendRegisterCode()"
+                                    style="background: var(--accent); color: var(--bg-dark); border: none; padding: 0 15px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.85rem; min-width: 90px; transition: all 0.2s; white-space: nowrap;">Gửi
+                                    mã</button>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="regCode">Mã xác minh (6 số)</label>
-                            <input type="text" id="regCode" class="form-control" required placeholder="Nhập mã xác minh từ Email..." maxlength="6">
+                            <input type="text" id="regCode" class="form-control" required
+                                placeholder="Nhập mã xác minh từ Email..." maxlength="6">
                         </div>
                         <div class="form-group">
                             <label for="regPass">Mật khẩu</label>
                             <div class="password-wrapper">
-                                <input type="password" id="regPass" class="form-control" required placeholder="Tối thiểu 6 ký tự...">
-                                <span class="password-toggle" onclick="togglePasswordVisibility('regPass', this)">👁️</span>
+                                <input type="password" id="regPass" class="form-control" required
+                                    placeholder="Tối thiểu 6 ký tự...">
+                                <span class="password-toggle"
+                                    onclick="togglePasswordVisibility('regPass', this)">👁️</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="regConfirm">Xác nhận mật khẩu</label>
                             <div class="password-wrapper">
-                                <input type="password" id="regConfirm" class="form-control" required placeholder="Nhập lại mật khẩu...">
-                                <span class="password-toggle" onclick="togglePasswordVisibility('regConfirm', this)">👁️</span>
+                                <input type="password" id="regConfirm" class="form-control" required
+                                    placeholder="Nhập lại mật khẩu...">
+                                <span class="password-toggle"
+                                    onclick="togglePasswordVisibility('regConfirm', this)">👁️</span>
                             </div>
                         </div>
                         <button type="submit" class="btn-form">Đăng ký tài khoản</button>
                         <div style="text-align: right; margin-top: 10px;">
-                            <a href="#" onclick="openForgotPasswordModal()" style="color: var(--accent); font-size: 0.8rem; text-decoration: none;">Quên mật khẩu?</a>
+                            <a href="#" onclick="openForgotPasswordModal()"
+                                style="color: var(--accent); font-size: 0.8rem; text-decoration: none;">Quên mật
+                                khẩu?</a>
                         </div>
                     </form>
                 </div>
@@ -2341,22 +2711,36 @@
 
     <!-- ================= VIEW 3: WORKSPACE & HISTORY ================= -->
     <section id="view-workspace" class="app-view" style="display: none;">
-        
+
         <!-- Workspace Layout -->
         <div class="workspace-wrapper">
-            
+
             <!-- Section 1: Upload Workspace -->
             <div id="sectionWorkspaceContent">
                 <div class="hero-banner">
                     <h2>Studio Xóa & Ghép Nền AI</h2>
-                    <p>Chọn phông nền AI nghệ thuật để thay thế hình nền ảnh của bạn một cách nhanh chóng.</p>
+                    <p style="margin-bottom: 15px;">Chọn phông nền AI nghệ thuật để thay thế hình nền ảnh của bạn một
+                        cách nhanh chóng.</p>
+
+                    <!-- Kaggle Ngrok API config input -->
+                    <div class="ngrok-config-container"
+                        style="display: none; gap: 8px; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 8px 16px; border-radius: 12px; backdrop-filter: blur(10px); margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                        <span
+                            style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 5px;">🔗
+                            AI API URL (Ngrok):</span>
+                        <input type="text" id="inputAiApiUrl" class="form-control"
+                            placeholder="https://xxxx.ngrok-free.dev"
+                            style="width: 280px; padding: 6px 12px; margin-bottom: 0; font-size: 0.8rem; height: 32px; background: rgba(0,0,0,0.4);">
+                        <button class="btn btn-primary" onclick="saveAiApiUrl()"
+                            style="padding: 0 15px; font-size: 0.8rem; height: 32px; font-weight: 700; border-radius: 8px; line-height: 32px;">Lưu</button>
+                    </div>
                 </div>
 
                 <div class="workspace-grid">
                     <!-- Col 1: Original input -->
                     <div class="panel-card">
                         <h3><span></span>Ảnh Gốc (Input)</h3>
-                        
+
                         <div class="upload-area" id="dropZone">
                             <div class="upload-icon">📁</div>
                             <div class="upload-text">
@@ -2370,10 +2754,10 @@
                             <img id="imgSrc" alt="Source Preview">
                             <div class="scanner-laser" id="scannerLaser"></div>
                         </div>
-                        
+
                         <div class="actions-bar">
-                            <button class="btn btn-secondary" id="btnReset" disabled>🔄 Làm lại</button>
-                            <button class="btn btn-primary" id="btnExtract" disabled>✂️ Tách Nền Ngay</button>
+                            <button class="btn btn-secondary" id="btnReset" disabled>Làm lại</button>
+                            <button class="btn btn-primary" id="btnExtract" disabled>Tách Nền Ngay</button>
                         </div>
                     </div>
 
@@ -2386,13 +2770,19 @@
                         </div>
 
                         <div class="panel-header-tabs">
-                            <button class="panel-tab active" id="tabTransparent" onclick="switchOutputTab('transparent')">Ảnh Trong Suốt</button>
-                            <button class="panel-tab" id="tabAiBackground" onclick="switchOutputTab('aibg')">Phông Nền AI 🎨</button>
+                            <button class="panel-tab active" id="tabTransparent"
+                                onclick="switchOutputTab('transparent')">Ảnh Trong Suốt</button>
+                            <button class="panel-tab" id="tabAiBackground" onclick="switchOutputTab('aibg')">Phông Nền
+                                AI 🎨</button>
+                            <button class="panel-tab" id="tabAiAvatar" onclick="switchOutputTab('aiavatar')">Avatar AI
+                                👑</button>
                         </div>
+
 
                         <!-- Sub-tab 1: Transparent Slider -->
                         <div id="contentTransparent">
-                            <div class="upload-area" id="resultPlaceholder" style="cursor: default; border-style: solid; background: none;">
+                            <div class="upload-area" id="resultPlaceholder"
+                                style="cursor: default; border-style: solid; background: none;">
                                 <div class="upload-icon" style="opacity: 0.3;">✨</div>
                                 <div class="upload-text" style="color: var(--text-muted);">
                                     <h4>Đang chờ ảnh đầu vào...</h4>
@@ -2404,7 +2794,7 @@
                                 <div class="source-tag" id="sourceTag">
                                     ⚙️ Engine: <span id="sourceTagName" class="engine-badge local">Local rembg</span>
                                 </div>
-                                
+
                                 <div class="slider-image original-img">
                                     <img id="sliderImgOriginal" alt="Original Image">
                                 </div>
@@ -2417,7 +2807,9 @@
                             </div>
 
                             <div class="actions-bar">
-                                <button class="btn btn-secondary" id="btnDownload" disabled style="background: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.3); color: #22d3ee; width: 100%;">📥 Tải ảnh tách nền (.png)</button>
+                                <button class="btn btn-secondary" id="btnDownload" disabled
+                                    style="background: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.3); color: #22d3ee; width: 100%;">📥
+                                    Tải ảnh tách nền (.png)</button>
                             </div>
                         </div>
 
@@ -2425,70 +2817,239 @@
                         <div id="contentAiBackground" style="display: none;">
                             <div class="canvas-editor-container">
                                 <canvas id="aiCanvas" width="600" height="400"></canvas>
-                                <p class="canvas-tip">💡 Kéo thả chuột trên canvas để di chuyển ảnh người. Dùng thanh trượt để chỉnh tỷ lệ.</p>
+                                <p class="canvas-tip">💡 Kéo thả chuột trên canvas để di chuyển ảnh người. Dùng thanh
+                                    trượt để chỉnh tỷ lệ.</p>
                             </div>
 
                             <!-- Preset Styles -->
                             <div class="presets-section">
                                 <h4>⚡ Chọn phông nền sẵn có:</h4>
                                 <div class="presets-grid">
-                                    <div class="preset-card active" onclick="selectPresetBackground('studio', 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=800&auto=format&fit=crop')">
-                                        <img src="https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=80&auto=format&fit=crop" alt="Studio">
+                                    <div class="preset-card active"
+                                        onclick="selectPresetBackground('studio', 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=800&auto=format&fit=crop')">
+                                        <img src="https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=80&auto=format&fit=crop"
+                                            alt="Studio">
                                         <span>Studio</span>
                                     </div>
-                                    <div class="preset-card" onclick="selectPresetBackground('nature', 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=800&auto=format&fit=crop')">
-                                        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=80&auto=format&fit=crop" alt="Nature">
+                                    <div class="preset-card"
+                                        onclick="selectPresetBackground('nature', 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=800&auto=format&fit=crop')">
+                                        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=80&auto=format&fit=crop"
+                                            alt="Nature">
                                         <span>Nature</span>
                                     </div>
-                                    <div class="preset-card" onclick="selectPresetBackground('cyberpunk', 'https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800&auto=format&fit=crop')">
-                                        <img src="https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=80&auto=format&fit=crop" alt="Cyberpunk">
+                                    <div class="preset-card"
+                                        onclick="selectPresetBackground('cyberpunk', 'https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800&auto=format&fit=crop')">
+                                        <img src="https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=80&auto=format&fit=crop"
+                                            alt="Cyberpunk">
                                         <span>Neon AI</span>
                                     </div>
-                                    <div class="preset-card" onclick="selectPresetBackground('beach', 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop')">
-                                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=80&auto=format&fit=crop" alt="Beach">
+                                    <div class="preset-card"
+                                        onclick="selectPresetBackground('beach', 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop')">
+                                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=80&auto=format&fit=crop"
+                                            alt="Beach">
                                         <span>Beach</span>
                                     </div>
-                                    <div class="preset-card" onclick="selectPresetBackground('office', 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop')">
-                                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=80&auto=format&fit=crop" alt="Office">
+                                    <div class="preset-card"
+                                        onclick="selectPresetBackground('office', 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop')">
+                                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=80&auto=format&fit=crop"
+                                            alt="Office">
                                         <span>Office</span>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Upload custom template background -->
+                            <div class="upload-bg-section"
+                                style="margin-top: 20px; margin-bottom: 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 16px; padding: 15px;">
+                                <h4>📁 Tải lên phông nền riêng (Template):</h4>
+                                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="file" id="inputCustomBgFile" accept="image/*"
+                                            style="display: none;" onchange="handleCustomBgUpload(this)">
+                                        <button class="btn btn-secondary"
+                                            onclick="document.getElementById('inputCustomBgFile').click()"
+                                            style="flex-grow: 1; justify-content: center; width: 100%;">
+                                            📁 Chọn ảnh nền từ máy
+                                        </button>
+                                        <button class="btn btn-secondary" id="btnClearCustomBg"
+                                            onclick="clearCustomBg()"
+                                            style="display: none; padding: 10px; color: var(--danger);">✕ Clear</button>
+                                    </div>
+                                    <p id="customBgFileName"
+                                        style="font-size: 0.8rem; color: var(--text-muted); display: none; text-align: center; word-break: break-all; margin: 0;">
+                                    </p>
+                                </div>
+                            </div>
+
                             <!-- Search Bg -->
                             <div class="search-bg-section">
-                                <h4>🔍 Tìm hình nền AI khác (Unsplash):</h4>
+                                <h4>Tìm hình nền AI khác (Unsplash):</h4>
                                 <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-                                    <input type="text" id="inputSearchBg" class="form-control" placeholder="Eiffel Tower, coffee shop, flower garden..." style="margin-bottom: 0;">
-                                    <button class="btn btn-primary" onclick="searchCustomBackground()" style="white-space: nowrap; padding: 10px 15px;">Tìm</button>
+                                    <input type="text" id="inputSearchBg" class="form-control"
+                                        placeholder="Eiffel Tower, coffee shop, flower garden..."
+                                        style="margin-bottom: 0;">
+                                    <button class="btn btn-primary" onclick="searchCustomBackground()"
+                                        style="white-space: nowrap; padding: 10px 15px;">Tìm</button>
                                 </div>
                                 <div id="searchBgResults" class="search-results-grid" style="display: none;"></div>
                             </div>
 
                             <!-- AI Prompt Generator -->
                             <div class="prompt-generator-section">
-                                <h4>🎨 Tự tạo phông nền bằng AI Prompt:</h4>
+                                <h4>Tự tạo phông nền bằng AI Prompt:</h4>
                                 <div class="prompt-input-wrapper">
-                                    <textarea id="inputAiPrompt" class="prompt-textarea" placeholder="Mô tả phông nền bạn muốn tạo (Ví dụ bằng tiếng Anh: 'A beautiful beach at sunset, hyper-realistic, 8k')..."></textarea>
-                                    <button class="btn btn-primary" id="btnGenerateAiBg" onclick="generateAiBackground()" style="width: 100%; background: linear-gradient(135deg, var(--primary), var(--accent));">
-                                        ✨ Tạo phông nền AI
+                                    <textarea id="inputAiPrompt" class="prompt-textarea"
+                                        placeholder="Mô tả phông nền bạn muốn tạo (Ví dụ bằng tiếng Anh: 'A beautiful beach at sunset, hyper-realistic, 8k')..."></textarea>
+                                    <button class="btn btn-primary" id="btnGenerateAiBg"
+                                        onclick="generateAiBackground()"
+                                        style="width: 100%; background: linear-gradient(135deg, var(--primary), var(--accent));">
+                                        Tạo phông nền AI
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Controls Scale -->
-                            <div class="canvas-controls">
+                            <!-- Controls Scale & AI Pipeline -->
+                            <div class="canvas-controls" style="display: flex; flex-direction: column; gap: 15px;">
                                 <div class="control-group">
                                     <label>Tỷ lệ phóng to/thu nhỏ:</label>
-                                    <input type="range" id="sliderFgScale" min="0.1" max="2.0" step="0.05" value="1.0" oninput="adjustFgScale(this.value)">
+                                    <input type="range" id="sliderFgScale" min="0.1" max="2.0" step="0.05" value="1.0"
+                                        oninput="adjustFgScale(this.value)">
+                                </div>
+
+                                <!-- Shadow Controls -->
+                                <div
+                                    style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; display: flex; flex-direction: column; gap: 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <label
+                                            style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">👥
+                                            Đổ bóng nhân vật (Shadows):</label>
+                                        <input type="checkbox" id="checkEnableShadow" checked
+                                            onchange="toggleShadow(this.checked)"
+                                            style="width: 16px; height: 16px; cursor: pointer;">
+                                    </div>
+                                    <div id="shadowControlsGroup"
+                                        style="display: flex; flex-direction: column; gap: 10px;">
+                                        <div class="control-group">
+                                            <label style="font-size: 0.8rem; color: var(--text-muted);">Độ mờ
+                                                bóng:</label>
+                                            <input type="range" id="sliderShadowOpacity" min="0" max="1" step="0.05"
+                                                value="0.4" oninput="updateShadowParam('opacity', this.value)">
+                                        </div>
+                                        <div class="control-group">
+                                            <label style="font-size: 0.8rem; color: var(--text-muted);">Độ nhòe
+                                                bóng:</label>
+                                            <input type="range" id="sliderShadowBlur" min="0" max="50" step="1"
+                                                value="15" oninput="updateShadowParam('blur', this.value)">
+                                        </div>
+                                        <div class="control-group">
+                                            <label style="font-size: 0.8rem; color: var(--text-muted);">Hướng bóng
+                                                X:</label>
+                                            <input type="range" id="sliderShadowX" min="-50" max="50" step="1" value="5"
+                                                oninput="updateShadowParam('x', this.value)">
+                                        </div>
+                                        <div class="control-group">
+                                            <label style="font-size: 0.8rem; color: var(--text-muted);">Hướng bóng
+                                                Y:</label>
+                                            <input type="range" id="sliderShadowY" min="-50" max="50" step="1"
+                                                value="10" oninput="updateShadowParam('y', this.value)">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group-column"
+                                    style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px;">
+                                    <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">💡
+                                        Kiểu ánh sáng hòa hợp (AI Relighting Prompt):</label>
+                                    <input type="text" id="inputLightingPrompt" class="form-control"
+                                        placeholder="Ví dụ: natural outdoor lighting, sunset glow..."
+                                        value="natural outdoor lighting, matching shadows" style="margin-bottom: 0;">
                                 </div>
                             </div>
 
-                            <div class="actions-bar">
-                                <button class="btn btn-primary" onclick="downloadCanvasComposite()" style="width: 100%; background: linear-gradient(135deg, var(--accent), var(--primary));">📥 Tải ảnh ghép phông nền AI (.png)</button>
+                            <div class="actions-bar" style="display: flex; flex-direction: column; gap: 10px;">
+                                <!-- Instant Canvas Composite (no server needed) -->
+                                <button class="btn btn-primary" onclick="applyCanvasComposite()"
+                                    style="width: 100%; background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16,185,129,0.3);">
+                                    Ghép nền ngay (Tức thì)
+                                </button>
+                                <!-- AI Relighting - calls server -->
+                                <button class="btn btn-primary" id="btnRunAiPipeline" onclick="processAiPipeline()"
+                                    style="width: 100%; background: linear-gradient(135deg, var(--primary), var(--accent)); box-shadow: 0 4px 15px var(--primary-glow);">
+                                    AI Relighting - Cân bằng ánh sáng (~30-60s)
+                                </button>
+                                <button class="btn btn-secondary" onclick="downloadCanvasComposite()"
+                                    style="width: 100%;">
+                                    Tải ảnh ghép (Canvas)
+                                </button>
                             </div>
                         </div>
+
+                        <!-- Sub-tab 3: AI Avatar - Ghép người vào nền AI -->
+                        <div id="contentAiAvatar" style="display: none; padding-top: 15px;">
+
+                            <div style="background:rgba(34,197,94,0.05); border:1px solid rgba(34,197,94,0.25); border-radius:16px; padding:18px; margin-bottom:14px;">
+                                <h4 style="font-weight:700; margin-bottom:6px; color:#4ade80;">🧑‍🎨 Ghép Nguyên Người Vào Nền AI</h4>
+                                <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px; line-height:1.5;">
+                                    AI sẽ <strong>giữ nguyên 100% người gốc</strong> của bạn và tự động vẽ một bối cảnh hoàn toàn mới xung quanh — tạo ra bóng đổ, ánh sáng tự nhiên như ảnh chụp thật.<br>
+                                    <span style="color:#4ade80;">💡 Chỉ cần mô tả bối cảnh — AI tự giữ người gốc lại.</span>
+                                </p>
+
+                                <!-- Quick background chips -->
+                                <div style="margin-bottom:12px;">
+                                    <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:7px; font-weight:600;">⚡ Chọn nhanh bối cảnh:</p>
+                                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                                        <button onclick="document.getElementById('inputPlacePrompt').value='tropical sandy beach at golden sunset, large orange sun over the ocean, waves crashing, palm trees on the side, cinematic golden hour lighting'"
+                                            style="font-size:0.71rem; padding:5px 10px; border-radius:20px; border:1px solid rgba(34,197,94,0.4); background:rgba(34,197,94,0.08); color:#4ade80; cursor:pointer; white-space:nowrap;">
+                                            🏖️ Bãi biển hoàng hôn
+                                        </button>
+                                        <button onclick="document.getElementById('inputPlacePrompt').value='futuristic cyberpunk city at night, neon lights everywhere, rain, glowing neon signs, cinematic atmosphere'"
+                                            style="font-size:0.71rem; padding:5px 10px; border-radius:20px; border:1px solid rgba(34,197,94,0.4); background:rgba(34,197,94,0.08); color:#4ade80; cursor:pointer; white-space:nowrap;">
+                                            🌆 Thành phố cyberpunk
+                                        </button>
+                                        <button onclick="document.getElementById('inputPlacePrompt').value='surface of the moon, Earth visible in the dark sky background, dramatic space lighting, stars all around'"
+                                            style="font-size:0.71rem; padding:5px 10px; border-radius:20px; border:1px solid rgba(34,197,94,0.4); background:rgba(34,197,94,0.08); color:#4ade80; cursor:pointer; white-space:nowrap;">
+                                            🌕 Mặt trăng
+                                        </button>
+                                        <button onclick="document.getElementById('inputPlacePrompt').value='luxury modern office interior with floor-to-ceiling windows, city skyline view, warm professional lighting'"
+                                            style="font-size:0.71rem; padding:5px 10px; border-radius:20px; border:1px solid rgba(34,197,94,0.4); background:rgba(34,197,94,0.08); color:#4ade80; cursor:pointer; white-space:nowrap;">
+                                            🏢 Văn phòng hạng sang
+                                        </button>
+                                        <button onclick="document.getElementById('inputPlacePrompt').value='ancient Japanese cherry blossom garden, pink sakura petals falling gently, soft golden hour light, peaceful atmosphere'"
+                                            style="font-size:0.71rem; padding:5px 10px; border-radius:20px; border:1px solid rgba(34,197,94,0.4); background:rgba(34,197,94,0.08); color:#4ade80; cursor:pointer; white-space:nowrap;">
+                                            🌸 Vườn hoa anh đào
+                                        </button>
+                                        <button onclick="document.getElementById('inputPlacePrompt').value='snowy mountain peak, dramatic alpine landscape, clear blue sky, cinematic wide shot'"
+                                            style="font-size:0.71rem; padding:5px 10px; border-radius:20px; border:1px solid rgba(34,197,94,0.4); background:rgba(34,197,94,0.08); color:#4ade80; cursor:pointer; white-space:nowrap;">
+                                            🏔️ Đỉnh núi tuyết
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="prompt-input-wrapper">
+                                    <textarea id="inputPlacePrompt" class="prompt-textarea" rows="3"
+                                        placeholder="Mô tả bối cảnh bạn muốn đặt người vào (Ví dụ: tropical beach at sunset, cyberpunk city at night, surface of the moon...)"></textarea>
+                                    <p style="font-size:0.72rem; color:var(--text-muted); margin-top:5px;">
+                                        ✅ Chỉ cần mô tả <strong>bối cảnh/phông nền</strong> bằng tiếng Anh — AI tự giữ nguyên người gốc và hòa nhập vào.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div style="display:flex; flex-direction:column; gap:10px;">
+                                <button class="btn btn-primary" id="btnPlaceInBg" onclick="generateAvatarPlaceInBackground()"
+                                    style="width:100%; background:linear-gradient(135deg,#22c55e,#0ea5e9); box-shadow:0 4px 15px rgba(34,197,94,0.35);">
+                                    🧑‍🎨 Ghép Người Vào Nền AI (~20s)
+                                </button>
+                                <button class="btn btn-secondary" id="btnDownloadPlaceResult" disabled
+                                    onclick="downloadSwapResult()" style="width:100%;">
+                                    Tải ảnh về máy
+                                </button>
+                            </div>
+
+                        </div>
+
+
                     </div>
+
                 </div>
             </div>
 
@@ -2502,13 +3063,15 @@
                 <div class="unauth-placeholder" id="historyUnauthMessage">
                     <h3>Bạn Chưa Đăng Nhập</h3>
                     <p>Hãy đăng nhập để hệ thống tự động lưu lại lịch sử hình ảnh của bạn.</p>
-                    <button class="btn btn-primary" style="margin-top: 15px;" onclick="openAuthView('login')">Đăng nhập ngay</button>
+                    <button class="btn btn-primary" style="margin-top: 15px;" onclick="openAuthView('login')">Đăng nhập
+                        ngay</button>
                 </div>
 
                 <div class="unauth-placeholder" id="historyEmptyMessage" style="display: none;">
                     <h3>Thư viện trống</h3>
                     <p>Bạn chưa thực hiện tách nền bức ảnh nào. Hãy tải ảnh đầu tiên lên để bắt đầu!</p>
-                    <button class="btn btn-primary" style="margin-top: 15px;" onclick="switchWorkspaceTab('workspace')">Tách nền ngay</button>
+                    <button class="btn btn-primary" style="margin-top: 15px;"
+                        onclick="switchWorkspaceTab('workspace')">Tách nền ngay</button>
                 </div>
 
                 <div class="history-grid" id="historyGrid">
@@ -2528,7 +3091,9 @@
         <header>
             <div class="nav-container">
                 <div class="logo" onclick="showView('landing')">
-                    <div class="logo-symbol">FI</div> FaceIn <span style="font-size: 0.9rem; font-weight: 500; color: var(--accent); margin-left: 10px;">Quản Trị Hệ Thống</span>
+                    <div class="logo-symbol">FI</div> FaceIn <span
+                        style="font-size: 0.9rem; font-weight: 500; color: var(--accent); margin-left: 10px;">Quản Trị
+                        Hệ Thống</span>
                 </div>
                 <div class="user-auth-area">
                     <button class="btn btn-secondary" onclick="showView('workspace')">Vào Workspace ➔</button>
@@ -2540,7 +3105,8 @@
         <div class="workspace-wrapper">
             <div class="hero-banner">
                 <h2>Báo Cáo Số Liệu Hệ Thống</h2>
-                <p>Theo dõi hoạt động tải lên, người dùng đăng ký và tính toán mức chi phí tiết kiệm được nhờ AI Cục Bộ.</p>
+                <p>Theo dõi hoạt động tải lên, người dùng đăng ký và tính toán mức chi phí tiết kiệm được nhờ AI Cục Bộ.
+                </p>
             </div>
 
             <!-- KPI Summary Cards -->
@@ -2573,7 +3139,8 @@
                 <div class="admin-table-container">
                     <h4>
                         <span>📝 Giao dịch upload gần đây</span>
-                        <button class="btn btn-secondary" id="btnExportCSV" style="padding: 8px 16px; font-size: 0.8rem;">📥 Xuất CSV</button>
+                        <button class="btn btn-secondary" id="btnExportCSV"
+                            style="padding: 8px 16px; font-size: 0.8rem;">📥 Xuất CSV</button>
                     </h4>
                     <table class="admin-table">
                         <thead>
@@ -2630,13 +3197,18 @@
     <div class="modal" id="paymentModal">
         <div class="modal-card">
             <button class="modal-close" onclick="closePaymentModal()">&times;</button>
-            <h3 style="font-size: 1.3rem; font-weight: 700; text-align: center; margin-bottom: 10px;">👑 NÂNG CẤP TÀI KHOẢN PRO</h3>
-            <p id="paymentMessage" style="font-size: 0.9rem; color: var(--text-muted); text-align: center; margin-bottom: 20px; line-height: 1.5;"></p>
-            
+            <h3 style="font-size: 1.3rem; font-weight: 700; text-align: center; margin-bottom: 10px;">👑 NÂNG CẤP TÀI
+                KHOẢN PRO</h3>
+            <p id="paymentMessage"
+                style="font-size: 0.9rem; color: var(--text-muted); text-align: center; margin-bottom: 20px; line-height: 1.5;">
+            </p>
+
             <!-- Real Payment Area -->
             <div id="realPaymentContainer" style="display: none; text-align: center; padding: 20px 0;">
-                <p style="margin-bottom: 20px;">Hệ thống đang chuyển hướng bạn tới cổng thanh toán trực tuyến PayOS...</p>
-                <a href="" id="realPaymentLink" target="_blank" class="btn btn-primary" style="font-size: 1.1rem; padding: 12px 30px;">Nhấp Để Đến Trang Thanh Toán</a>
+                <p style="margin-bottom: 20px;">Hệ thống đang chuyển hướng bạn tới cổng thanh toán trực tuyến PayOS...
+                </p>
+                <a href="" id="realPaymentLink" target="_blank" class="btn btn-primary"
+                    style="font-size: 1.1rem; padding: 12px 30px;">Nhấp Để Đến Trang Thanh Toán</a>
             </div>
 
             <!-- Mock Payment Area -->
@@ -2644,27 +3216,33 @@
                 <div class="vietqr-card">
                     <div class="vietqr-header">
                         <span class="vietqr-label bank-name" id="paymentBankName">MB Bank</span>
-                        <img src="https://vietqr.net/portal-service/resources/images/vietqr_logo_stroke.png" alt="VietQR">
+                        <img src="https://vietqr.net/portal-service/resources/images/vietqr_logo_stroke.png"
+                            alt="VietQR">
                     </div>
                     <img src="" id="qrCodeImg" class="vietqr-qr-img" alt="QR code">
                     <div class="vietqr-details">
                         <span class="vietqr-label">Chủ tài khoản:</span>
                         <span class="vietqr-val" id="paymentAccountName">NGUYEN VIET HUY</span>
-                        
+
                         <span class="vietqr-label">Số tài khoản:</span>
                         <span class="vietqr-val" id="paymentAccountNumber">0386331428</span>
-                        
+
                         <span class="vietqr-label">Số tiền:</span>
-                        <span class="vietqr-val" style="color: var(--danger); font-size: 1.1rem;" id="paymentAmount">20,000 VND</span>
-                        
+                        <span class="vietqr-val" style="color: var(--danger); font-size: 1.1rem;"
+                            id="paymentAmount">20,000 VND</span>
+
                         <span class="vietqr-label">Nội dung chuyển:</span>
-                        <span class="vietqr-val copyable" id="paymentMemo" style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); padding: 2px 6px; border-radius: 4px; color: var(--primary);">FACEIN 1234</span>
+                        <span class="vietqr-val copyable" id="paymentMemo"
+                            style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); padding: 2px 6px; border-radius: 4px; color: var(--primary);">FACEIN
+                            1234</span>
                     </div>
                 </div>
                 <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-bottom: 20px;">
-                    💡 Đây là chế độ Demo/Mock chuyển khoản. Bạn có thể sử dụng ứng dụng ngân hàng quét mã QR thật (được sinh tự động đi kèm số tiền & nội dung đúng) hoặc click nút giả lập bên dưới.
+                    💡 Đây là chế độ Demo/Mock chuyển khoản. Bạn có thể sử dụng ứng dụng ngân hàng quét mã QR thật (được
+                    sinh tự động đi kèm số tiền & nội dung đúng) hoặc click nút giả lập bên dưới.
                 </p>
-                <button class="btn btn-primary" id="btnConfirmMockPayment" style="width: 100%; justify-content: center; background: linear-gradient(135deg, var(--success), #059669);">
+                <button class="btn btn-primary" id="btnConfirmMockPayment"
+                    style="width: 100%; justify-content: center; background: linear-gradient(135deg, var(--success), #059669);">
                     ✓ Xác nhận đã chuyển khoản thành công (DEMO)
                 </button>
             </div>
@@ -2676,17 +3254,23 @@
         <div class="modal-card" style="max-width: 400px;">
             <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
             <h3 style="margin-bottom: 15px;">Khôi phục mật khẩu</h3>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Nhập email của bạn để nhận mã khôi phục.</p>
-            
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Nhập email của bạn để nhận mã
+                khôi phục.</p>
+
             <div id="forgotPasswordStep1">
-                <input type="email" id="forgotEmail" class="form-control" placeholder="Email đã đăng ký..." style="margin-bottom: 15px;">
-                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="sendResetCode()">Gửi mã khôi phục</button>
+                <input type="email" id="forgotEmail" class="form-control" placeholder="Email đã đăng ký..."
+                    style="margin-bottom: 15px;">
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;"
+                    onclick="sendResetCode()">Gửi mã khôi phục</button>
             </div>
-            
+
             <div id="forgotPasswordStep2" style="display: none;">
-                <input type="text" id="resetCode" class="form-control" placeholder="Nhập mã xác nhận (6 số)..." style="margin-bottom: 10px;">
-                <input type="password" id="resetNewPass" class="form-control" placeholder="Mật khẩu mới..." style="margin-bottom: 15px;">
-                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="confirmResetPassword()">Đặt lại mật khẩu</button>
+                <input type="text" id="resetCode" class="form-control" placeholder="Nhập mã xác nhận (6 số)..."
+                    style="margin-bottom: 10px;">
+                <input type="password" id="resetNewPass" class="form-control" placeholder="Mật khẩu mới..."
+                    style="margin-bottom: 15px;">
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;"
+                    onclick="confirmResetPassword()">Đặt lại mật khẩu</button>
             </div>
         </div>
     </div>
@@ -2696,12 +3280,12 @@
         <div class="modal-card" style="max-width: 500px;">
             <button class="modal-close" onclick="closeProfileModal()">&times;</button>
             <h3 style="margin-bottom: 20px;">Hồ sơ của tôi</h3>
-            
+
             <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 <p><strong>Tên người dùng:</strong> <span id="profileUsername"></span></p>
                 <p style="margin-top: 10px;"><strong>Trạng thái:</strong> <span id="profileProStatus"></span></p>
             </div>
-            
+
             <h4 style="margin-bottom: 15px; font-size: 1rem;">Đổi mật khẩu</h4>
             <input type="password" id="profileOldPass" class="form-control" placeholder="Mật khẩu cũ..." style="margin-bottom: 10px;">
             <input type="password" id="profileNewPass" class="form-control" placeholder="Mật khẩu mới..." style="margin-bottom: 10px;">
@@ -2768,28 +3352,40 @@
     <div class="modal" id="adminUserModal">
         <div class="modal-card" style="max-width: 800px; max-height: 80vh; display: flex; flex-direction: column;">
             <button class="modal-close" onclick="closeAdminUserModal()">&times;</button>
-            <h3 style="margin-bottom: 20px;">Quản lý tài khoản & Hoạt động: <span id="adminUserModalName" style="color: var(--accent);"></span></h3>
-            
+            <h3 style="margin-bottom: 20px;">Quản lý tài khoản & Hoạt động: <span id="adminUserModalName"
+                    style="color: var(--accent);"></span></h3>
+
             <!-- Account Management Controls -->
-            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                <h4 style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px; color: #fff;">⚙️ Điều chỉnh thông tin tài khoản</h4>
+            <div
+                style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                <h4 style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px; color: #fff;">⚙️ Điều
+                    chỉnh thông tin tài khoản</h4>
                 <input type="hidden" id="adminUpdateUserId">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                     <div>
-                        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Email:</label>
-                        <input type="email" id="adminUpdateEmail" class="form-control" placeholder="Email người dùng...">
+                        <label
+                            style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Email:</label>
+                        <input type="email" id="adminUpdateEmail" class="form-control"
+                            placeholder="Email người dùng...">
                     </div>
                     <div>
-                        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Đặt mật khẩu mới (bỏ trống nếu không đổi):</label>
-                        <input type="password" id="adminUpdatePassword" class="form-control" placeholder="Mật khẩu mới...">
+                        <label
+                            style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Đặt
+                            mật khẩu mới (bỏ trống nếu không đổi):</label>
+                        <input type="password" id="adminUpdatePassword" class="form-control"
+                            placeholder="Mật khẩu mới...">
                     </div>
                 </div>
-                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+                <div
+                    style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <input type="checkbox" id="adminUpdateIsPro" style="width: 18px; height: 18px; cursor: pointer;">
-                        <label for="adminUpdateIsPro" style="font-weight: 600; cursor: pointer; color: #eab308;">Kích hoạt gói PRO 👑</label>
+                        <input type="checkbox" id="adminUpdateIsPro"
+                            style="width: 18px; height: 18px; cursor: pointer;">
+                        <label for="adminUpdateIsPro" style="font-weight: 600; cursor: pointer; color: #eab308;">Kích
+                            hoạt gói PRO 👑</label>
                     </div>
-                    <button class="btn btn-primary" onclick="updateAdminUser()" style="padding: 10px 20px; font-size: 0.9rem;">Lưu thay đổi</button>
+                    <button class="btn btn-primary" onclick="updateAdminUser()"
+                        style="padding: 10px 20px; font-size: 0.9rem;">Lưu thay đổi</button>
                 </div>
             </div>
 
@@ -2808,7 +3404,8 @@
                         <!-- Render here -->
                     </tbody>
                 </table>
-                <div id="adminUserEmpty" style="display: none; text-align: center; padding: 20px; color: var(--text-muted);">
+                <div id="adminUserEmpty"
+                    style="display: none; text-align: center; padding: 20px; color: var(--text-muted);">
                     Người dùng này chưa có hoạt động nào.
                 </div>
             </div>
@@ -2824,14 +3421,24 @@
         const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
             ? 'http://localhost:5096/api'
             : 'https://bg-studio-be.onrender.com/api';
+
+        // Python FastAPI AI Relighting Backend
+        // Using relative path '/api' - Vite proxy will forward to http://127.0.0.1:8000
+        let AI_API_URL = '/api';
         let selectedFile = null;
         let processedBlobUrl = null;
         let originalBlobUrl = null;
+        let selectedBgFile = null; // Holds uploaded custom template background file
         let token = localStorage.getItem('token') || '';
         let loggedInUser = localStorage.getItem('username') || '';
         let loggedInUserPro = localStorage.getItem('isPro') === 'true';
         let subscriptionExpiresAt = localStorage.getItem('subscriptionExpiresAt') || '';
         let lastAdminData = null; // Save admin stats data to export to CSV
+        let selectedAvatarTemplateUrl = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800';
+        let swappedBlobUrl = null;
+        let selectedAvatarMode = 'template';
+
+
 
         // Canvas variables
         let bgImage = new Image();
@@ -2842,12 +3449,19 @@
         let fgX = 0;
         let fgY = 0;
 
+        // Shadow variables
+        let enableShadow = true;
+        let shadowOpacity = 0.4;
+        let shadowBlur = 15;
+        let shadowOffsetX = 5;
+        let shadowOffsetY = 10;
+
         // DOM elements
         const appHeader = document.getElementById('appHeader');
         const linkWorkspace = document.getElementById('linkWorkspace');
         const linkHistory = document.getElementById('linkHistory');
         const linkAdmin = document.getElementById('linkAdmin');
-        
+
         const sectionWorkspaceContent = document.getElementById('sectionWorkspaceContent');
         const sectionHistoryContent = document.getElementById('sectionHistoryContent');
 
@@ -2899,7 +3513,7 @@
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            
+
             let icon = '💡';
             if (type === 'success') icon = '✅';
             if (type === 'error') icon = '❌';
@@ -2911,6 +3525,37 @@
                 toast.classList.add('hide');
                 setTimeout(() => toast.remove(), 300);
             }, 4000);
+        }
+
+        function saveAiApiUrl() {
+            let url = document.getElementById('inputAiApiUrl').value.trim();
+            if (url) {
+                try {
+                    // Extract domain origin automatically (handles trailing slashes, subpaths like /docs or /api/remove-bg)
+                    const parsedUrl = new URL(url);
+                    url = parsedUrl.origin;
+                } catch (e) {
+                    // Fallback for domains without protocol (e.g. xxxx.ngrok-free.dev)
+                    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                        try {
+                            const parsedUrl = new URL('https://' + url);
+                            url = parsedUrl.origin;
+                        } catch (err) { }
+                    }
+                }
+
+                if (url.endsWith('/')) {
+                    url = url.slice(0, -1);
+                }
+
+                localStorage.setItem('aiApiUrl', url);
+                AI_API_URL = `${url}/api`;
+                document.getElementById('inputAiApiUrl').value = url;
+                console.log('Saved AI API URL Base:', url, '| Active Endpoint:', AI_API_URL);
+                showToast("Đã lưu URL cấu hình AI API: " + url);
+            } else {
+                showToast("Vui lòng nhập URL hợp lệ.", "error");
+            }
         }
 
         /* ================= SPA VIEW ROUTING ================= */
@@ -2945,6 +3590,22 @@
             switchAuthTab(tab);
         }
 
+        function startApp() {
+            if (token && loggedInUser) {
+                showView('workspace');
+            } else {
+                openAuthView('register');
+            }
+        }
+
+        function upgradePricingClick() {
+            if (token && loggedInUser) {
+                showPaymentModal();
+            } else {
+                openAuthView('login');
+            }
+        }
+
         function scrollToSection(id) {
             const el = document.getElementById(id);
             if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -2955,10 +3616,10 @@
             if (!isRestore) {
                 localStorage.setItem('activeWorkspaceTab', tabName);
             }
-            
+
             linkWorkspace.classList.remove('active');
             linkHistory.classList.remove('active');
-            
+
             sectionWorkspaceContent.style.display = 'none';
             sectionHistoryContent.style.display = 'none';
 
@@ -2974,10 +3635,15 @@
         }
         linkWorkspace.addEventListener('click', () => switchWorkspaceTab('workspace'));
         linkHistory.addEventListener('click', () => switchWorkspaceTab('history'));
-        document.getElementById('navLogo').addEventListener('click', () => switchWorkspaceTab('workspace'));
+        document.getElementById('navLogo').addEventListener('click', () => showView('landing'));
 
         /* ================= USER INTERFACE UPDATE ================= */
         function updateAuthUI() {
+            const btnLandingLogin = document.getElementById('btnLandingLogin');
+            const btnLandingRegister = document.getElementById('btnLandingRegister');
+            const btnLandingWorkspace = document.getElementById('btnLandingWorkspace');
+            const btnLandingLogout = document.getElementById('btnLandingLogout');
+
             if (token && loggedInUser) {
                 document.getElementById('displayUsername').textContent = loggedInUser;
                 const avatarEl = document.getElementById('avatarInitials');
@@ -2986,17 +3652,27 @@
                 }
                 document.getElementById('userInfo').style.display = 'flex';
                 document.getElementById('btnShowAuth').style.display = 'none';
-                
+
                 if (loggedInUser.toLowerCase() === 'admin') {
                     document.getElementById('navAdmin').style.display = 'block';
                 } else {
                     document.getElementById('navAdmin').style.display = 'none';
                 }
                 updateUserUsageDisplay();
+
+                if (btnLandingLogin) btnLandingLogin.style.display = 'none';
+                if (btnLandingRegister) btnLandingRegister.style.display = 'none';
+                if (btnLandingWorkspace) btnLandingWorkspace.style.display = 'inline-flex';
+                if (btnLandingLogout) btnLandingLogout.style.display = 'inline-flex';
             } else {
                 document.getElementById('userInfo').style.display = 'none';
                 document.getElementById('btnShowAuth').style.display = 'inline-flex';
                 if (document.getElementById('navAdmin')) document.getElementById('navAdmin').style.display = 'none';
+
+                if (btnLandingLogin) btnLandingLogin.style.display = 'inline-flex';
+                if (btnLandingRegister) btnLandingRegister.style.display = 'inline-flex';
+                if (btnLandingWorkspace) btnLandingWorkspace.style.display = 'none';
+                if (btnLandingLogout) btnLandingLogout.style.display = 'none';
             }
         }
 
@@ -3024,13 +3700,13 @@
 
         async function updateUserUsageDisplay() {
             if (!token) return;
-            
+
             const badgeEl = document.getElementById('userBadge');
             const limitBarEl = document.getElementById('usageBarFill');
             const limitTextEl = document.getElementById('usageValue');
-            
-            let limit = loggedInUserPro ? 10 : 5;
-            
+
+            let limit = loggedInUserPro ? 30 : 10;
+
             let todayCount = 0;
             try {
                 const response = await fetch(`${API_URL}/history`, {
@@ -3044,7 +3720,7 @@
             } catch (e) {
                 console.error("Không đếm được lượt sử dụng", e);
             }
-            
+
             if (loggedInUserPro) {
                 if (badgeEl) {
                     badgeEl.textContent = "PRO 👑";
@@ -3060,7 +3736,7 @@
                 const btnPro = document.getElementById('btnUpgradeProNav');
                 if (btnPro) btnPro.style.display = 'inline-flex';
             }
-            
+
             if (limitTextEl) limitTextEl.textContent = `${todayCount}/${limit}`;
             if (limitBarEl) {
                 const pct = Math.min((todayCount / limit) * 100, 100);
@@ -3160,7 +3836,7 @@
                 }
 
                 showToast("✅ Mã xác minh đã được gửi qua email của bạn.");
-                
+
                 let countdown = 60;
                 const interval = setInterval(() => {
                     countdown--;
@@ -3224,7 +3900,7 @@
             loggedInUserPro = false;
             subscriptionExpiresAt = '';
             localStorage.clear();
-            
+
             showToast("Đã đăng xuất tài khoản.");
             showView('landing');
             updateAuthUI();
@@ -3303,7 +3979,7 @@
             sliderWrapper.style.display = 'none';
             btnDownload.disabled = true;
             sourceTag.style.display = 'none';
-            
+
             // Clear canvas state
             fgImage = new Image();
             drawCanvas();
@@ -3313,10 +3989,10 @@
             selectedFile = null;
             originalBlobUrl = null;
             imgSrc.src = '';
-            
+
             dropZone.style.display = 'flex';
             sourceImageContainer.style.display = 'none';
-            
+
             btnExtract.disabled = true;
             btnReset.disabled = true;
             fileInput.value = '';
@@ -3330,26 +4006,31 @@
             btnExtract.disabled = true;
             btnReset.disabled = true;
             btnExtract.classList.add('processing');
-            btnExtract.querySelector('span').textContent = 'Đang xử lý...';
+            const spanEl = btnExtract.querySelector('span');
+            if (spanEl) spanEl.textContent = 'Đang xử lý...';
+            else btnExtract.textContent = 'Đang xử lý...';
             
             // Show scanning laser
             const laser = document.getElementById('scannerLaser');
             if (laser) laser.style.display = 'block';
 
             loaderOverlay.style.display = 'flex';
-            loaderMessage.textContent = 'Đang tiến hành tách nền ảnh...';
+            loaderMessage.textContent = 'Đang tiến hành tách nền ảnh bằng AI...';
             resetOutputView();
 
             const formData = new FormData();
             formData.append('file', selectedFile);
 
-            const headers = {};
+            const headers = {
+                'ngrok-skip-browser-warning': 'true'
+            };
             if (token) {
                 headers['Authorization'] = `Bearer ${token}`;
             }
 
             try {
-                const response = await fetch(`${API_URL}/image/remove-bg`, {
+                // Call local Kaggle AI API directly
+                const response = await fetch(`${AI_API_URL}/remove-bg`, {
                     method: 'POST',
                     headers: headers,
                     body: formData
@@ -3382,7 +4063,7 @@
                 sliderImgProcessed.src = processedBlobUrl;
                 resultPlaceholder.style.display = 'none';
                 sliderWrapper.style.display = 'block';
-                
+
                 adjustSliderImageWidth();
                 updateSliderPosition(50);
                 sliderRange.value = 50;
@@ -3405,6 +4086,7 @@
                 };
 
             } catch (err) {
+                console.error('[Extract Error]', err);
                 if (err.message !== "Unauthenticated") {
                     showToast(err.message, "error");
                 }
@@ -3413,7 +4095,9 @@
                 btnExtract.disabled = false;
                 btnReset.disabled = false;
                 btnExtract.classList.remove('processing');
-                btnExtract.querySelector('span').textContent = '✂ Tách Nền Ngay';
+                const spanEl = btnExtract.querySelector('span');
+                if (spanEl) spanEl.textContent = '✂ Tách Nền Ngay';
+                else btnExtract.textContent = '✂ Tách Nền Ngay';
                 
                 // Hide scanning laser
                 const laser = document.getElementById('scannerLaser');
@@ -3427,8 +4111,10 @@
         function switchOutputTab(tab) {
             document.getElementById('tabTransparent').classList.remove('active');
             document.getElementById('tabAiBackground').classList.remove('active');
+            document.getElementById('tabAiAvatar').classList.remove('active');
             document.getElementById('contentTransparent').style.display = 'none';
             document.getElementById('contentAiBackground').style.display = 'none';
+            document.getElementById('contentAiAvatar').style.display = 'none';
 
             if (tab === 'transparent') {
                 document.getElementById('tabTransparent').classList.add('active');
@@ -3440,8 +4126,12 @@
                     adjustCanvasDimensions();
                     drawCanvas();
                 }, 50);
+            } else if (tab === 'aiavatar') {
+                document.getElementById('tabAiAvatar').classList.add('active');
+                document.getElementById('contentAiAvatar').style.display = 'block';
             }
         }
+
 
         /* ================= SLIDER LOGIC ================= */
         function updateSliderPosition(value) {
@@ -3514,7 +4204,20 @@
                 const x = (canvas.width - w) / 2 + fgX;
                 const y = (canvas.height - h) + fgY; // align bottom by default
 
+                // Apply shadow styling if enabled
+                if (enableShadow) {
+                    ctx.shadowColor = `rgba(0, 0, 0, ${shadowOpacity})`;
+                    ctx.shadowBlur = shadowBlur;
+                    ctx.shadowOffsetX = shadowOffsetX;
+                    ctx.shadowOffsetY = shadowOffsetY;
+                } else {
+                    ctx.shadowColor = 'transparent';
+                }
+
                 ctx.drawImage(fgImage, x, y, w, h);
+
+                // Clear shadow state so other drawings aren't affected
+                ctx.shadowColor = 'transparent';
             } else if (!bgImage.src) {
                 ctx.fillStyle = "rgba(255,255,255,0.4)";
                 ctx.font = "16px Outfit";
@@ -3523,12 +4226,32 @@
             }
         }
 
+        function restoreCutoutIfNeeded(callback) {
+            if (!fgImage.src && processedBlobUrl) {
+                const fg = new Image();
+                fg.crossOrigin = "anonymous";
+                fg.src = processedBlobUrl;
+                fg.onload = () => {
+                    fgImage = fg;
+                    if (callback) callback();
+                    else drawCanvas();
+                };
+                fg.onerror = () => {
+                    if (callback) callback();
+                    else drawCanvas();
+                };
+            } else {
+                if (callback) callback();
+                else drawCanvas();
+            }
+        }
+
         function selectPresetBackground(presetName, url) {
             document.querySelectorAll('.preset-card').forEach(el => el.classList.remove('active'));
             // Highlight card
             const cards = document.querySelectorAll('.preset-card');
             cards.forEach(card => {
-                if (card.querySelector('span').textContent.toLowerCase().includes(presetName.substring(0,3))) {
+                if (card.querySelector('span').textContent.toLowerCase().includes(presetName.substring(0, 3))) {
                     card.classList.add('active');
                 }
             });
@@ -3538,8 +4261,66 @@
             img.src = url;
             img.onload = () => {
                 bgImage = img;
-                drawCanvas();
+                restoreCutoutIfNeeded();
             };
+        }
+
+        function handleCustomBgUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                if (!file.type.startsWith('image/')) {
+                    showToast("File nền được chọn phải là ảnh.", "error");
+                    return;
+                }
+                selectedBgFile = file;
+
+                // Show file name & clear button
+                document.getElementById('customBgFileName').textContent = `Nền đã chọn: ${file.name}`;
+                document.getElementById('customBgFileName').style.display = 'block';
+                document.getElementById('btnClearCustomBg').style.display = 'block';
+
+                // Load into canvas background
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.crossOrigin = "anonymous";
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        bgImage = img;
+                        // Restore foreground cutout if needed, then redraw canvas
+                        if (!fgImage.src && processedBlobUrl) {
+                            const fg = new Image();
+                            fg.crossOrigin = "anonymous";
+                            fg.src = processedBlobUrl;
+                            fg.onload = () => {
+                                fgImage = fg;
+                                drawCanvas();
+                                showToast("Đã tải ảnh nền từ máy lên Canvas!");
+                            };
+                            fg.onerror = () => { drawCanvas(); showToast("Đã tải ảnh nền từ máy lên Canvas!"); };
+                        } else {
+                            // fgImage already set or no processed image - just redraw immediately
+                            drawCanvas();
+                            showToast("Đã tải ảnh nền từ máy lên Canvas!");
+                        }
+                    };
+                };
+                reader.readAsDataURL(file);
+
+                // De-activate presets & search active states
+                document.querySelectorAll('.preset-card').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.search-result-card').forEach(el => el.classList.remove('active'));
+            }
+        }
+
+        function clearCustomBg() {
+            selectedBgFile = null;
+            document.getElementById('inputCustomBgFile').value = '';
+            document.getElementById('customBgFileName').style.display = 'none';
+            document.getElementById('btnClearCustomBg').style.display = 'none';
+
+            // Revert background to default preset (Studio)
+            selectPresetBackground('studio', 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=800&auto=format&fit=crop');
         }
 
         function searchCustomBackground() {
@@ -3557,44 +4338,247 @@
             // Tạo 10 kết quả ảnh ngẫu nhiên với query param khác nhau từ loremflickr
             for (let i = 1; i <= 10; i++) {
                 const imgUrl = `https://loremflickr.com/800/600/${encodeURIComponent(query)}?random=${i}`;
-                
+
                 const card = document.createElement('div');
                 card.className = 'search-result-card';
                 card.innerHTML = `<img src="${imgUrl}" alt="Search result ${i}" loading="lazy">`;
-                
+
                 card.addEventListener('click', () => {
                     // Xóa class active ở các card khác
                     document.querySelectorAll('.search-result-card').forEach(el => el.classList.remove('active'));
                     card.classList.add('active');
-                    
+
                     showToast("Đang tải hình nền được chọn...");
                     const bgImg = new Image();
                     bgImg.crossOrigin = "anonymous";
                     bgImg.src = imgUrl;
                     bgImg.onload = () => {
                         bgImage = bgImg;
-                        drawCanvas();
-                        showToast("Đã thay đổi hình nền canvas!");
+                        restoreCutoutIfNeeded(() => {
+                            showToast("Đã thay đổi hình nền canvas!");
+                        });
                         // Bỏ active của preset cards
                         document.querySelectorAll('.preset-card').forEach(el => el.classList.remove('active'));
+                        // Xóa file nền tự chọn
+                        if (selectedBgFile) {
+                            selectedBgFile = null;
+                            document.getElementById('inputCustomBgFile').value = '';
+                            document.getElementById('customBgFileName').style.display = 'none';
+                            document.getElementById('btnClearCustomBg').style.display = 'none';
+                        }
                     };
                     bgImg.onerror = () => {
                         showToast("Không thể tải hình nền này, vui lòng chọn hình khác!", "error");
                     };
                 });
-                
+
                 resultsContainer.appendChild(card);
             }
             showToast("Đã hiển thị 10 gợi ý hình nền bên dưới!");
         }
 
-        async function generateAiBackground() {
-            if (!token) {
-                showToast("Vui lòng đăng nhập để sử dụng tính năng tạo ảnh bằng AI.", "error");
-                openAuthView('login');
+        /* Helper to composite the canvas elements and generate corresponding mask */
+        function getCanvasCompositeAndMask() {
+            // 1. Create a temporary canvas for the composite image
+            const compositeCanvas = document.createElement('canvas');
+            compositeCanvas.width = canvas.width;
+            compositeCanvas.height = canvas.height;
+            const compCtx = compositeCanvas.getContext('2d');
+
+            // Draw Background
+            if (bgImage.src) {
+                compCtx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+            } else {
+                compCtx.fillStyle = '#0b0f19';
+                compCtx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Draw Foreground (subject) and record coordinates
+            let hasFg = false;
+            let fgDetails = {};
+            if (fgImage.src) {
+                hasFg = true;
+                const baseHeight = canvas.height * 0.8;
+                const aspect = fgImage.width / fgImage.height;
+                const w = baseHeight * aspect * fgScale;
+                const h = baseHeight * fgScale;
+                const x = (canvas.width - w) / 2 + fgX;
+                const y = (canvas.height - h) + fgY;
+
+                // Draw shadow on composite if enabled
+                if (enableShadow) {
+                    compCtx.shadowColor = `rgba(0, 0, 0, ${shadowOpacity})`;
+                    compCtx.shadowBlur = shadowBlur;
+                    compCtx.shadowOffsetX = shadowOffsetX;
+                    compCtx.shadowOffsetY = shadowOffsetY;
+                }
+
+                compCtx.drawImage(fgImage, x, y, w, h);
+                compCtx.shadowColor = 'transparent'; // Reset
+
+                fgDetails = { x, y, w, h };
+            }
+
+            // 2. Create a temporary canvas for the mask
+            const maskCanvas = document.createElement('canvas');
+            maskCanvas.width = canvas.width;
+            maskCanvas.height = canvas.height;
+            const maskCtx = maskCanvas.getContext('2d');
+
+            // Fill mask background with black
+            maskCtx.fillStyle = '#000000';
+            maskCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw subject as white on the mask
+            if (hasFg) {
+                // Step 2a: Draw the solid white cutout of the subject on a temporary canvas
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = canvas.width;
+                tempCanvas.height = canvas.height;
+                const tempCtx = tempCanvas.getContext('2d');
+
+                tempCtx.drawImage(fgImage, fgDetails.x, fgDetails.y, fgDetails.w, fgDetails.h);
+                tempCtx.globalCompositeOperation = 'source-in';
+                tempCtx.fillStyle = '#ffffff';
+                tempCtx.fillRect(0, 0, canvas.width, canvas.height);
+                tempCtx.globalCompositeOperation = 'source-over';
+
+                // Step 2b: Draw the solid white cutout with a white shadow onto the mask canvas
+                if (enableShadow) {
+                    maskCtx.shadowColor = 'rgba(255, 255, 255, 1.0)'; // Solid white shadow for mask
+                    maskCtx.shadowBlur = shadowBlur;
+                    maskCtx.shadowOffsetX = shadowOffsetX;
+                    maskCtx.shadowOffsetY = shadowOffsetY;
+                }
+                maskCtx.drawImage(tempCanvas, 0, 0);
+                maskCtx.shadowColor = 'transparent'; // Reset shadow
+
+                // Step 2c: Draw the white subject on top again without shadow to ensure 100% white subject area
+                maskCtx.drawImage(tempCanvas, 0, 0);
+            }
+
+            return { compositeCanvas, maskCanvas };
+        }
+
+        // Instant canvas composite - no server needed, fast
+        function applyCanvasComposite() {
+            if (!fgImage.src) {
+                showToast("Vui lòng thực hiện tách nền ảnh gốc trước.", "error");
+                return;
+            }
+            // Canvas already shows the composite live, just confirm to user
+            showToast("Đã ghép nền thành công! Nhấn 'Tải ảnh ghép' để lưu.", "success");
+            // Scroll to download button
+            document.querySelector('.actions-bar')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        async function processAiPipeline() {
+            if (!fgImage.src) {
+                showToast("Vui lòng thực hiện tách nền ảnh gốc trước.", "error");
                 return;
             }
 
+            const lightingPrompt = document.getElementById('inputLightingPrompt').value.trim();
+            if (!lightingPrompt) {
+                showToast("Vui lòng nhập kiểu ánh sáng cần hòa hợp.", "error");
+                return;
+            }
+
+            const loaderOverlay = document.getElementById('loaderOverlay');
+            const loaderMessage = document.getElementById('loaderMessage');
+            loaderOverlay.style.display = 'flex';
+            loaderMessage.textContent = 'AI đang hòa hợp ánh sáng & màu sắc (~30-60s)...';
+
+            // Small delay to let the loader render
+            await new Promise(r => setTimeout(r, 50));
+
+            try {
+                // 1. Calculate subject dimensions & position on canvas
+                const baseHeight = canvas.height * 0.8;
+                const aspect = fgImage.width / fgImage.height;
+                const fgW = baseHeight * aspect * fgScale;
+                const fgH = baseHeight * fgScale;
+                const fgXpos = (canvas.width - fgW) / 2 + fgX;
+                const fgYpos = (canvas.height - fgH) + fgY;
+
+                // 2. Create the composite canvas (background + foreground)
+                const compositeCanvas = document.createElement('canvas');
+                compositeCanvas.width = canvas.width;
+                compositeCanvas.height = canvas.height;
+                const cCtx = compositeCanvas.getContext('2d');
+
+                // Draw background
+                if (bgImage.src) {
+                    cCtx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+                } else {
+                    cCtx.fillStyle = '#0b0f19';
+                    cCtx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                // Draw shadow if enabled
+                if (enableShadow) {
+                    cCtx.shadowColor = `rgba(0,0,0,${shadowOpacity})`;
+                    cCtx.shadowBlur = shadowBlur;
+                    cCtx.shadowOffsetX = shadowOffsetX;
+                    cCtx.shadowOffsetY = shadowOffsetY;
+                }
+                cCtx.drawImage(fgImage, fgXpos, fgYpos, fgW, fgH);
+                cCtx.shadowColor = 'transparent';
+
+                // 3. Create the mask canvas (white where subject is, black elsewhere)
+                const maskCanvas = document.createElement('canvas');
+                maskCanvas.width = canvas.width;
+                maskCanvas.height = canvas.height;
+                const mCtx = maskCanvas.getContext('2d');
+                mCtx.fillStyle = 'black';
+                mCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+                mCtx.drawImage(fgImage, fgXpos, fgYpos, fgW, fgH);
+                mCtx.globalCompositeOperation = 'source-in';
+                mCtx.fillStyle = 'white';
+                mCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+
+                // 4. Convert canvases to Blobs
+                const imageBlob = await new Promise(resolve => compositeCanvas.toBlob(resolve, 'image/jpeg', 0.95));
+                const maskBlob = await new Promise(resolve => maskCanvas.toBlob(resolve, 'image/png'));
+
+                // 5. Send to backend inpainting endpoint
+                const formData = new FormData();
+                formData.append('image', imageBlob, 'composite.jpg');
+                formData.append('mask_image', maskBlob, 'mask.png');
+                formData.append('lighting_prompt', lightingPrompt);
+                formData.append('strength', 0.35); // 0.35 relights the subject to match the background
+
+                console.log(`Calling inpaint endpoint at ${AI_API_URL}/process-pipeline`);
+                const response = await fetch(`${AI_API_URL}/process-pipeline`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `HTTP error! status: ${response.status}`);
+                }
+
+                const resultBlob = await response.blob();
+                const resultUrl = URL.createObjectURL(resultBlob);
+                const resultImg = new Image();
+                resultImg.onload = () => {
+                    bgImage = resultImg;
+                    fgImage = new Image(); // Merge complete, clear foreground
+                    drawCanvas();
+                    showToast("Cân bằng ánh sáng AI thành công!");
+                };
+                resultImg.src = resultUrl;
+
+            } catch (err) {
+                console.error('[AI Relighting Error]', err);
+                showToast(err.message, "error");
+            } finally {
+                loaderOverlay.style.display = 'none';
+            }
+        }
+
+        async function generateAiBackground() {
             const promptText = document.getElementById('inputAiPrompt').value.trim();
             if (!promptText) {
                 showToast("Vui lòng nhập mô tả phông nền cần tạo.", "error");
@@ -3603,62 +4587,156 @@
 
             const btn = document.getElementById('btnGenerateAiBg');
             btn.disabled = true;
-            btn.textContent = "✨ Đang tạo phông nền AI...";
+            btn.textContent = "✨ Đang tạo phông nền...";
+            const loaderOverlay = document.getElementById('loaderOverlay');
+            const loaderMessage = document.getElementById('loaderMessage');
             loaderOverlay.style.display = 'flex';
-            loaderMessage.textContent = "AI đang xử lý sinh ảnh phông nền, vui lòng đợi trong giây lát...";
 
             try {
-                const response = await fetch(`${API_URL}/Image/generate`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ prompt: promptText })
-                });
+                if (fgImage.src) {
+                    // SEAMLESS INPAINTING MODE
+                    loaderMessage.textContent = "AI đang vẽ hòa nhập nền và nhân vật (~30-60s)...";
+                    
+                    // 1. Calculate subject dimensions & position on canvas
+                    const baseHeight = canvas.height * 0.8;
+                    const aspect = fgImage.width / fgImage.height;
+                    const fgW = baseHeight * aspect * fgScale;
+                    const fgH = baseHeight * fgScale;
+                    const fgXpos = (canvas.width - fgW) / 2 + fgX;
+                    const fgYpos = (canvas.height - fgH) + fgY;
 
-                if (response.status === 402) {
-                    const data = await response.json();
-                    showToast(data.message || "Đã đạt giới hạn lượt dùng trong ngày!", "error");
-                    showPaymentModal(data.message);
-                    throw new Error("Limit reached");
-                }
+                    // 2. Create the composite canvas (background + foreground)
+                    const compositeCanvas = document.createElement('canvas');
+                    compositeCanvas.width = canvas.width;
+                    compositeCanvas.height = canvas.height;
+                    const cCtx = compositeCanvas.getContext('2d');
 
-                if (!response.ok) {
-                    const text = await response.text();
-                    throw new Error(text || "Lỗi khi sinh ảnh phông nền.");
-                }
+                    // Draw background
+                    if (bgImage.src) {
+                        cCtx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+                    } else {
+                        cCtx.fillStyle = '#0b0f19';
+                        cCtx.fillRect(0, 0, canvas.width, canvas.height);
+                    }
 
-                const data = await response.json();
-                if (data.url) {
-                    showToast("Tạo phông nền AI thành công! Đang tải hình nền lên canvas...");
-                    const img = new Image();
-                    img.crossOrigin = "anonymous";
-                    img.src = data.url.startsWith('/') ? `${API_URL.replace('/api', '')}${data.url}` : data.url;
-                    img.onload = () => {
-                        bgImage = img;
+                    // Draw shadow if enabled
+                    if (enableShadow) {
+                        cCtx.shadowColor = `rgba(0,0,0,${shadowOpacity})`;
+                        cCtx.shadowBlur = shadowBlur;
+                        cCtx.shadowOffsetX = shadowOffsetX;
+                        cCtx.shadowOffsetY = shadowOffsetY;
+                    }
+                    cCtx.drawImage(fgImage, fgXpos, fgYpos, fgW, fgH);
+                    cCtx.shadowColor = 'transparent';
+
+                    // 3. Create the mask canvas (white where subject is, black elsewhere)
+                    const maskCanvas = document.createElement('canvas');
+                    maskCanvas.width = canvas.width;
+                    maskCanvas.height = canvas.height;
+                    const mCtx = maskCanvas.getContext('2d');
+                    mCtx.fillStyle = 'black';
+                    mCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+                    mCtx.drawImage(fgImage, fgXpos, fgYpos, fgW, fgH);
+                    mCtx.globalCompositeOperation = 'source-in';
+                    mCtx.fillStyle = 'white';
+                    mCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+
+                    // 4. Convert canvases to Blobs
+                    const imageBlob = await new Promise(resolve => compositeCanvas.toBlob(resolve, 'image/jpeg', 0.95));
+                    const maskBlob = await new Promise(resolve => maskCanvas.toBlob(resolve, 'image/png'));
+
+                    // 5. Send to backend generate-context-background endpoint
+                    const formData = new FormData();
+                    formData.append('image', imageBlob, 'composite.jpg');
+                    formData.append('mask_image', maskBlob, 'mask.png');
+                    formData.append('prompt', promptText);
+
+                    console.log(`Calling generate-context-background endpoint at ${AI_API_URL}/generate-context-background`);
+                    const response = await fetch(`${AI_API_URL}/generate-context-background`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        const errData = await response.json().catch(() => ({}));
+                        throw new Error(errData.error || `HTTP error! status: ${response.status}`);
+                    }
+
+                    const resultBlob = await response.blob();
+                    const resultUrl = URL.createObjectURL(resultBlob);
+                    const resultImg = new Image();
+                    resultImg.onload = () => {
+                        bgImage = resultImg;
+                        fgImage = new Image(); // Merge complete, clear foreground
                         drawCanvas();
-                        updateUserUsageDisplay();
+                        showToast("Tạo nền hòa nhập AI thành công!");
                     };
-                    img.onerror = () => {
-                        showToast("Không thể hiển thị ảnh AI lên Canvas. Vui lòng thử lại hoặc tải lại trang.", "error");
-                    };
+                    resultImg.src = resultUrl;
+
                 } else {
-                    throw new Error("Không nhận được URL ảnh từ server.");
+                    // FLAT BACKGROUND GENERATION (No subject present)
+                    loaderMessage.textContent = "AI đang sinh ảnh phông nền (5-15 giây)...";
+                    const formData = new FormData();
+                    formData.append('prompt', promptText);
+
+                    const response = await fetch(`${AI_API_URL}/generate-background`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        const err = await response.json().catch(() => ({}));
+                        throw new Error(err.error || "Lỗi khi sinh ảnh phông nền. Vui lòng thử lại.");
+                    }
+
+                    const blob = await response.blob();
+                    const blobUrl = URL.createObjectURL(blob);
+
+                    const img = new Image();
+                    await new Promise((resolve, reject) => {
+                        img.onload = resolve;
+                        img.onerror = () => reject(new Error("Không thể hiển thị ảnh lên canvas."));
+                        img.src = blobUrl;
+                    });
+
+                    bgImage = img;
+                    drawCanvas();
+                    showToast("Tạo phông nền AI thành công!");
                 }
+                updateUserUsageDisplay();
+
             } catch (err) {
-                if (err.message !== "Limit reached") {
-                    showToast(err.message, "error");
-                }
+                console.error('[AI Background Error]', err);
+                showToast(err.message, "error");
             } finally {
                 btn.disabled = false;
-                btn.textContent = "✨ Tạo phông nền AI";
+                btn.textContent = "Tạo phông nền AI";
                 loaderOverlay.style.display = 'none';
             }
         }
 
         function adjustFgScale(val) {
             fgScale = parseFloat(val);
+            drawCanvas();
+        }
+
+        function toggleShadow(checked) {
+            enableShadow = checked;
+            const group = document.getElementById('shadowControlsGroup');
+            if (group) {
+                group.style.opacity = checked ? '1' : '0.4';
+                group.style.pointerEvents = checked ? 'auto' : 'none';
+            }
+            drawCanvas();
+        }
+
+        function updateShadowParam(param, val) {
+            const parsedVal = parseFloat(val);
+            if (param === 'opacity') shadowOpacity = parsedVal;
+            else if (param === 'blur') shadowBlur = parsedVal;
+            else if (param === 'x') shadowOffsetX = parsedVal;
+            else if (param === 'y') shadowOffsetY = parsedVal;
+
             drawCanvas();
         }
 
@@ -3739,7 +4817,7 @@
             }
 
             historyUnauthMessage.style.display = 'none';
-            
+
             try {
                 const response = await fetch(`${API_URL}/history`, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -3762,7 +4840,7 @@
                     data.forEach(item => {
                         const card = document.createElement('div');
                         card.className = 'history-card';
-                        
+
                         const date = new Date(item.createdAt).toLocaleDateString('vi-VN');
                         const badgeClass = item.source.includes('Local') ? 'local' : 'cloud';
 
@@ -3818,7 +4896,7 @@
                 fgScale = 1.0;
                 fgX = 0;
                 fgY = 0;
-                
+
                 switchWorkspaceTab('workspace');
                 switchOutputTab('aibg');
                 selectPresetBackground('studio', 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=800&auto=format&fit=crop');
@@ -3870,7 +4948,7 @@
                 document.getElementById('adminTotalUsers').textContent = data.totalUsers;
                 document.getElementById('adminTotalImages').textContent = data.totalImages;
                 document.getElementById('adminTotalRevenue').textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.totalRevenue);
-                
+
                 const totalAI = data.localImages + data.cloudImages;
                 const localPct = totalAI > 0 ? Math.round((data.localImages / totalAI) * 100) : 0;
                 document.getElementById('adminRatio').textContent = `${localPct}% Local / ${100 - localPct}% Cloud`;
@@ -3884,7 +4962,7 @@
                         const tr = document.createElement('tr');
                         const date = new Date(act.createdAt).toLocaleString('vi-VN');
                         const badgeClass = act.source.includes('Local') ? 'local' : 'cloud';
-                        
+
                         tr.innerHTML = `
                             <td style="font-weight: 600; color: var(--accent);">${act.username}</td>
                             <td title="${act.originalFileName}" style="max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${act.originalFileName}</td>
@@ -3921,7 +4999,7 @@
                 data.dailyStats.forEach(stat => {
                     const item = document.createElement('div');
                     item.className = 'daily-item';
-                    
+
                     const parts = stat.date.split('-');
                     const displayDate = `${parts[2]}/${parts[1]}`;
 
@@ -3957,7 +5035,7 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `bg_studio_report_${new Date().toISOString().slice(0,10)}.csv`);
+            link.setAttribute("download", `bg_studio_report_${new Date().toISOString().slice(0, 10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -3974,7 +5052,7 @@
             } else {
                 msgEl.textContent = "Nâng cấp lên gói PRO 👑 chỉ với 49,000 VND / tháng để mở khóa giới hạn 10 ảnh/ngày (300 ảnh/tháng), lưu trữ đám mây Cloudinary vĩnh viễn và thoải mái ghép phông nền AI nghệ thuật!";
             }
-            
+
             if (!token) {
                 showToast("Vui lòng đăng nhập trước khi thực hiện thanh toán.", "error");
                 openAuthView('login');
@@ -3987,45 +5065,45 @@
             // Gọi backend tạo hóa đơn thanh toán
             fetch(`${API_URL}/payment/create`, {
                 method: 'POST',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` 
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ returnUrl, cancelUrl })
             })
-            .then(res => {
-                if (!res.ok) throw new Error("Không thể khởi tạo hóa đơn thanh toán.");
-                return res.json();
-            })
-            .then(data => {
-                currentOrderCode = data.orderCode;
-                
-                if (data.isMock) {
-                    // Mở khung giả lập VietQR
-                    document.getElementById('qrCodeImg').src = data.qrUrl;
-                    document.getElementById('paymentBankName').textContent = data.bankName;
-                    document.getElementById('paymentAccountNumber').textContent = data.accountNumber;
-                    document.getElementById('paymentAccountName').textContent = data.accountName;
-                    document.getElementById('paymentAmount').textContent = `${data.amount.toLocaleString()} VND`;
-                    document.getElementById('paymentMemo').textContent = data.memo;
-                    
-                    document.getElementById('mockPaymentContainer').style.display = 'block';
-                    document.getElementById('realPaymentContainer').style.display = 'none';
-                } else {
-                    // Mở khung hướng dẫn chuyển hướng PayOS
-                    document.getElementById('realPaymentLink').href = data.paymentUrl;
-                    document.getElementById('mockPaymentContainer').style.display = 'none';
-                    document.getElementById('realPaymentContainer').style.display = 'block';
-                    
-                    // Tự động mở tab thanh toán của PayOS
-                    window.open(data.paymentUrl, '_blank');
-                }
-                
-                document.getElementById('paymentModal').classList.add('active');
-            })
-            .catch(err => {
-                showToast(err.message, "error");
-            });
+                .then(res => {
+                    if (!res.ok) throw new Error("Không thể khởi tạo hóa đơn thanh toán.");
+                    return res.json();
+                })
+                .then(data => {
+                    currentOrderCode = data.orderCode;
+
+                    if (data.isMock) {
+                        // Mở khung giả lập VietQR
+                        document.getElementById('qrCodeImg').src = data.qrUrl;
+                        document.getElementById('paymentBankName').textContent = data.bankName;
+                        document.getElementById('paymentAccountNumber').textContent = data.accountNumber;
+                        document.getElementById('paymentAccountName').textContent = data.accountName;
+                        document.getElementById('paymentAmount').textContent = `${data.amount.toLocaleString()} VND`;
+                        document.getElementById('paymentMemo').textContent = data.memo;
+
+                        document.getElementById('mockPaymentContainer').style.display = 'block';
+                        document.getElementById('realPaymentContainer').style.display = 'none';
+                    } else {
+                        // Mở khung hướng dẫn chuyển hướng PayOS
+                        document.getElementById('realPaymentLink').href = data.paymentUrl;
+                        document.getElementById('mockPaymentContainer').style.display = 'none';
+                        document.getElementById('realPaymentContainer').style.display = 'block';
+
+                        // Tự động mở tab thanh toán của PayOS
+                        window.open(data.paymentUrl, '_blank');
+                    }
+
+                    document.getElementById('paymentModal').classList.add('active');
+                })
+                .catch(err => {
+                    showToast(err.message, "error");
+                });
         }
 
         function closePaymentModal() {
@@ -4034,7 +5112,7 @@
 
         document.getElementById('btnConfirmMockPayment').addEventListener('click', () => {
             if (!currentOrderCode) return;
-            
+
             fetch(`${API_URL}/payment/confirm-mock`, {
                 method: 'POST',
                 headers: {
@@ -4043,29 +5121,29 @@
                 },
                 body: JSON.stringify({ orderCode: currentOrderCode })
             })
-            .then(res => {
-                if (!res.ok) throw new Error("Xác minh thanh toán giả lập thất bại.");
-                return res.json();
-            })
-            .then(data => {
-                showToast(data.message, "success");
-                closePaymentModal();
-                
-                // Cập nhật trạng thái
-                loggedInUserPro = true;
-                localStorage.setItem('isPro', 'true');
-                updateUserUsageDisplay();
-            })
-            .catch(err => {
-                showToast(err.message, "error");
-            });
+                .then(res => {
+                    if (!res.ok) throw new Error("Xác minh thanh toán giả lập thất bại.");
+                    return res.json();
+                })
+                .then(data => {
+                    showToast(data.message, "success");
+                    closePaymentModal();
+
+                    // Cập nhật trạng thái
+                    loggedInUserPro = true;
+                    localStorage.setItem('isPro', 'true');
+                    updateUserUsageDisplay();
+                })
+                .catch(err => {
+                    showToast(err.message, "error");
+                });
         });
 
         // Event listener cho nút Nâng cấp PRO trên thanh Nav (dùng onclick inline, nên không cần addEventListener ở đây)
 
         /* ================= INITIALIZATION ================= */
 
-        window.onload = function() {
+        window.onload = function () {
             try {
                 // Initialize Google Identity Services (rendered button)
                 if (window.google && window.google.accounts) {
@@ -4080,7 +5158,7 @@
                         { theme: 'outline', size: 'large', text: 'signin_with', locale: 'vi', width: 360 }
                     );
                 }
-            } catch(e) {
+            } catch (e) {
                 console.warn('[Google Init Error]', e);
             }
 
@@ -4091,7 +5169,7 @@
                     openAuthView('login');
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
-            } catch(e) {
+            } catch (e) {
                 console.warn('[Callback Error]', e);
             }
 
@@ -4100,7 +5178,7 @@
         function decodeJwtResponse(token) {
             let base64Url = token.split('.')[1];
             let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+            let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
                 return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join(''));
             return JSON.parse(jsonPayload);
@@ -4111,7 +5189,7 @@
                 const payload = decodeJwtResponse(response.credential);
                 const email = payload.email;
                 const name = payload.name;
-                
+
                 const res = await fetch(`${API_URL}/auth/google`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -4122,7 +5200,7 @@
                     const errorMsg = await res.text();
                     throw new Error(errorMsg || "Đăng nhập Google thất bại.");
                 }
-                
+
                 const data = await res.json();
                 token = data.token || data.Token || '';
                 loggedInUser = data.username || data.Username || '';
@@ -4167,23 +5245,23 @@
 
         async function sendResetCode() {
             const email = document.getElementById('forgotEmail').value;
-            if(!email) return showToast('Vui lòng nhập email', 'error');
+            if (!email) return showToast('Vui lòng nhập email', 'error');
 
             try {
                 const res = await fetch(`${API_URL}/auth/forgot-password`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ Email: email })
                 });
                 const data = await res.json();
-                if(res.ok) {
+                if (res.ok) {
                     showToast(data.message, 'success');
                     document.getElementById('forgotPasswordStep1').style.display = 'none';
                     document.getElementById('forgotPasswordStep2').style.display = 'block';
                 } else {
                     showToast(data.message || 'Lỗi gửi mã.', 'error');
                 }
-            } catch(e) {
+            } catch (e) {
                 showToast('Lỗi kết nối', 'error');
             }
         }
@@ -4191,22 +5269,22 @@
         async function confirmResetPassword() {
             const token = document.getElementById('resetCode').value;
             const newPassword = document.getElementById('resetNewPass').value;
-            if(!token || !newPassword) return showToast('Vui lòng điền đủ thông tin', 'error');
+            if (!token || !newPassword) return showToast('Vui lòng điền đủ thông tin', 'error');
 
             try {
                 const res = await fetch(`${API_URL}/auth/reset-password`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ Token: token, NewPassword: newPassword })
                 });
                 const data = await res.json();
-                if(res.ok) {
+                if (res.ok) {
                     showToast(data.message, 'success');
                     closeForgotPasswordModal();
                 } else {
                     showToast(data.message || 'Lỗi đặt lại mật khẩu.', 'error');
                 }
-            } catch(e) {
+            } catch (e) {
                 showToast('Lỗi kết nối', 'error');
             }
         }
@@ -4330,13 +5408,13 @@
                     body: JSON.stringify({ OldPassword: oldPass, NewPassword: newPass })
                 });
                 const data = await res.json();
-                if(res.ok) {
+                if (res.ok) {
                     showToast(data.message, 'success');
                     closeProfileModal();
                 } else {
                     showToast(data.message || 'Lỗi đổi mật khẩu.', 'error');
                 }
-            } catch(e) {
+            } catch (e) {
                 showToast('Lỗi kết nối', 'error');
             }
         }
@@ -4519,15 +5597,15 @@
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const data = await res.json();
-                
-                if(res.ok) {
-                    if(data.length === 0) {
+
+                if (res.ok) {
+                    if (data.length === 0) {
                         document.getElementById('adminUserEmpty').style.display = 'block';
                     } else {
                         let html = '';
                         data.forEach(item => {
                             const d = new Date(item.createdAt);
-                            const tStr = `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')} ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+                            const tStr = `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}:${d.getSeconds().toString().padStart(2, '0')} ${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
                             html += `
                             <tr>
                                 <td>#${item.id}</td>
@@ -4539,7 +5617,7 @@
                         document.getElementById('adminUserHistoryList').innerHTML = html;
                     }
                 }
-            } catch(e) {
+            } catch (e) {
                 showToast('Lỗi lấy lịch sử', 'error');
             }
         }
@@ -4570,7 +5648,7 @@
                 if (res.ok) {
                     showToast(data.message || "Cập nhật tài khoản thành công!", "success");
                     document.getElementById('adminUpdatePassword').value = '';
-                    
+
                     // Refresh stats
                     loadAdminStats();
                 } else {
@@ -4584,6 +5662,15 @@
         // ================= KHÔI PHỤC SESSION LẬP TỨC (KHÔNG CHỜ WINDOW.ONLOAD) =================
         function restoreSession() {
             try {
+                // Populate the Ngrok/Local API input with the saved value
+                const savedAiUrl = localStorage.getItem('aiApiUrl') || 'https://nauq-hna-fadein.hf.space';
+                AI_API_URL = `${savedAiUrl}/api`;
+                const inputAiEl = document.getElementById('inputAiApiUrl');
+                if (inputAiEl) {
+                    inputAiEl.value = savedAiUrl;
+                }
+
+
                 const savedToken = localStorage.getItem('token');
                 const savedUser = localStorage.getItem('username');
                 const savedIsPro = localStorage.getItem('isPro') === 'true';
@@ -4660,7 +5747,7 @@
                     loggedInUser = savedUser;
                     loggedInUserPro = localStorage.getItem('isPro') === 'true';
                     updateAuthUI();
-                    
+
                     if (savedUser.toLowerCase() === 'admin') {
                         if (savedView === 'workspace') {
                             showView('workspace', true);
@@ -4675,12 +5762,172 @@
                 } else {
                     showView('landing');
                 }
-            } catch(e) {
+            } catch (e) {
                 console.error('[Session Restore Error]', e);
                 showView('landing');
             }
         }
         restoreSession();
+
+        // ================= AI AVATAR FACE SWAP LOGIC =================
+        // (Templates section removed to prioritize custom prompts)
+
+        async function processFaceSwap() {
+            if (!selectedFile) {
+                showToast("Vui lòng chọn ảnh gốc có chứa khuôn mặt của bạn trước.", "error");
+                return;
+            }
+
+            const loaderOverlay = document.getElementById('loaderOverlay');
+            const loaderMessage = document.getElementById('loaderMessage');
+
+            try {
+                const promptText = document.getElementById('inputAvatarPrompt').value.trim();
+                if (!promptText) {
+                    showToast("Vui lòng nhập mô tả bối cảnh/trang phục bạn muốn tạo.", "error");
+                    return;
+                }
+
+                loaderMessage.innerText = "Đang kết nối tới AI để tạo cơ thể và hoán đổi khuôn mặt (~15-25s)...";
+                loaderOverlay.style.display = 'flex';
+
+                const formData = new FormData();
+                formData.append('swap_image', selectedFile);
+                formData.append('prompt', promptText);
+
+                console.log(`Calling face swap endpoint at ${AI_API_URL}/face-swap`);
+                const response = await fetch(`${AI_API_URL}/face-swap`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `HTTP error! status: ${response.status}`);
+                }
+
+                const resultBlob = await response.blob();
+                if (swappedBlobUrl) {
+                    URL.revokeObjectURL(swappedBlobUrl);
+                }
+                swappedBlobUrl = URL.createObjectURL(resultBlob);
+
+                // Set it as the processed image on the slider so the user can see it!
+                const sliderProcessed = document.getElementById('sliderImgProcessed');
+                sliderProcessed.src = swappedBlobUrl;
+
+                // Show slider container
+                document.getElementById('resultPlaceholder').style.display = 'none';
+                document.getElementById('sliderWrapper').style.display = 'block';
+
+                // Switch to transparent tab to see it
+                switchOutputTab('transparent');
+
+                // Update download buttons
+                const btnDownload = document.getElementById('btnDownload');
+                btnDownload.disabled = false;
+
+                // Also update the main download action
+                processedBlobUrl = swappedBlobUrl;
+
+                // Enable download avatar button
+                const btnDownloadSwap = document.getElementById('btnDownloadSwapResult');
+                if (btnDownloadSwap) {
+                    btnDownloadSwap.disabled = false;
+                }
+
+                showToast("Tạo Avatar AI thành công! Bạn có thể xem kết quả ở tab 'Ảnh Trong Suốt' hoặc tải về.", "success");
+            } catch (e) {
+                console.error('[Face Swap Error]', e);
+                showToast(e.message || "Tạo Avatar AI thất bại. Vui lòng kiểm tra API Key Replicate.", "error");
+            } finally {
+                loaderOverlay.style.display = 'none';
+            }
+        }
+
+        async function generateAvatarPlaceInBackground() {
+            if (!selectedFile) {
+                showToast("Vui lòng chọn ảnh gốc có người trước.", "error");
+                return;
+            }
+
+            const promptText = document.getElementById('inputPlacePrompt').value.trim();
+            if (!promptText) {
+                showToast("Vui lòng nhập hoặc chọn bối cảnh muốn ghép người vào.", "error");
+                return;
+            }
+
+            const loaderOverlay = document.getElementById('loaderOverlay');
+            const loaderMessage = document.getElementById('loaderMessage');
+
+            try {
+                loaderMessage.innerText = "AI đang tách nền và vẽ bối cảnh mới xung quanh người (~20-30s)...";
+                loaderOverlay.style.display = 'flex';
+
+                const formData = new FormData();
+                formData.append('image', selectedFile);
+                formData.append('prompt', promptText);
+                // No mask_image → backend will auto-remove background using BiRefNet
+
+                console.log(`Calling ${AI_API_URL}/generate-context-background`);
+                const response = await fetch(`${AI_API_URL}/generate-context-background`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `HTTP error! status: ${response.status}`);
+                }
+
+                const resultBlob = await response.blob();
+                if (swappedBlobUrl) URL.revokeObjectURL(swappedBlobUrl);
+                swappedBlobUrl = URL.createObjectURL(resultBlob);
+
+                // Show result in the slider
+                const sliderProcessed = document.getElementById('sliderImgProcessed');
+                sliderProcessed.src = swappedBlobUrl;
+                document.getElementById('resultPlaceholder').style.display = 'none';
+                document.getElementById('sliderWrapper').style.display = 'block';
+                switchOutputTab('transparent');
+
+                // Enable downloads
+                document.getElementById('btnDownload').disabled = false;
+                processedBlobUrl = swappedBlobUrl;
+                const btnDl = document.getElementById('btnDownloadPlaceResult');
+                if (btnDl) btnDl.disabled = false;
+
+                showToast("Ghép người vào nền AI thành công! 🎉", "success");
+            } catch (e) {
+                console.error('[Place In Background Error]', e);
+                showToast(e.message || "Thất bại. Vui lòng thử lại.", "error");
+            } finally {
+                loaderOverlay.style.display = 'none';
+            }
+        }
+
+        function downloadSwapResult() {
+
+            if (!swappedBlobUrl) return;
+            const link = document.createElement('a');
+            link.href = swappedBlobUrl;
+            link.download = 'face_swap_avatar.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function toggleAiApiUrl() {
+            const container = document.querySelector('.ngrok-config-container');
+            if (container) {
+                if (container.style.display === 'none' || !container.style.display) {
+                    container.style.display = 'inline-flex';
+                } else {
+                    container.style.display = 'none';
+                }
+            }
+        }
+
 
         // ================= ANIMATIONS =================
         document.addEventListener('DOMContentLoaded', () => {
@@ -4692,10 +5939,24 @@
                     }
                 });
             }, { threshold: 0.1 });
-            
+
             document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+            // Re-trigger observer if view changes (for SPA navigation)
+            const originalShowView = window.showView;
+            window.showView = function (viewId, pushState) {
+                originalShowView(viewId, pushState);
+                if (viewId === 'landing') {
+                    setTimeout(() => {
+                        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                            el.classList.remove('show');
+                            observer.observe(el);
+                        });
+                    }, 50);
+                }
+            };
         });
     </script>
 </body>
-</html>
 
+</html>

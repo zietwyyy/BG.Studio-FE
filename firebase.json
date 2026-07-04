@@ -1,7 +1,7 @@
 {
   "hosting": {
-    "site": "bgstudio-exe201-2026",
     "public": ".",
+
     "ignore": [
       "firebase.json",
       "**/.*",
