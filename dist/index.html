@@ -3425,6 +3425,7 @@
         // Python FastAPI AI Relighting Backend
         // Using relative path '/api' - Vite proxy will forward to http://127.0.0.1:8000
         let AI_API_URL = '/api';
+        let currentMonthUsage = 0;
         let selectedFile = null;
         let processedBlobUrl = null;
         let originalBlobUrl = null;
@@ -3720,6 +3721,7 @@
             } catch (e) {
                 console.error("Không đếm được lượt sử dụng", e);
             }
+            currentMonthUsage = monthCount;
 
             if (loggedInUserPro) {
                 if (badgeEl) {
@@ -4002,6 +4004,18 @@
         btnExtract.addEventListener('click', async () => {
             if (!selectedFile) return;
 
+            // Pre-check monthly usage limit
+            if (!token) {
+                showToast("Vui lòng đăng nhập để sử dụng tính năng tách nền.", "error");
+                openAuthView('login');
+                return;
+            }
+            let limit = loggedInUserPro ? 300 : 20;
+            if (currentMonthUsage >= limit) {
+                showPaymentModal(`Bạn đã dùng hết giới hạn ảnh trong tháng (${currentMonthUsage}/${limit} ảnh). Hãy nâng cấp lên gói PRO để tiếp tục!`);
+                return;
+            }
+
             // Update UI to Processing state
             btnExtract.disabled = true;
             btnReset.disabled = true;
@@ -4070,6 +4084,31 @@
 
                 btnDownload.disabled = false;
                 showToast("Tách nền ảnh thành công!");
+
+                // Record the processed image to the C# Backend database
+                try {
+                    const recordData = new FormData();
+                    recordData.append('originalFile', selectedFile);
+                    recordData.append('processedFile', blob, 'processed.png');
+                    recordData.append('source', source);
+
+                    const recordResponse = await fetch(`${API_URL}/image/record`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: recordData
+                    });
+
+                    if (recordResponse.ok) {
+                        console.log("Recorded processed image to C# backend successfully.");
+                    } else {
+                        console.error("Failed to record processed image to C# backend:", await recordResponse.text());
+                    }
+                } catch (recordErr) {
+                    console.error("Error recording processed image:", recordErr);
+                }
+
                 updateUserUsageDisplay();
 
                 // Setup AI Canvas Background Studio
@@ -4585,6 +4624,18 @@
                 return;
             }
 
+            // Pre-check monthly usage limit
+            if (!token) {
+                showToast("Vui lòng đăng nhập để sử dụng tính năng tạo phông nền AI.", "error");
+                openAuthView('login');
+                return;
+            }
+            let limit = loggedInUserPro ? 300 : 20;
+            if (currentMonthUsage >= limit) {
+                showPaymentModal(`Bạn đã dùng hết giới hạn ảnh trong tháng (${currentMonthUsage}/${limit} ảnh). Hãy nâng cấp lên gói PRO để tiếp tục!`);
+                return;
+            }
+
             const btn = document.getElementById('btnGenerateAiBg');
             btn.disabled = true;
             btn.textContent = "✨ Đang tạo phông nền...";
@@ -4673,6 +4724,28 @@
                     };
                     resultImg.src = resultUrl;
 
+                    // Record to C# Backend
+                    try {
+                        const recordData = new FormData();
+                        recordData.append('originalFile', imageBlob, 'original.jpg');
+                        recordData.append('processedFile', resultBlob, 'inpainted.png');
+                        recordData.append('source', 'AI Background Inpainting');
+
+                        const recordResponse = await fetch(`${API_URL}/image/record`, {
+                            method: 'POST',
+                            headers: { 'Authorization': `Bearer ${token}` },
+                            body: recordData
+                        });
+
+                        if (recordResponse.ok) {
+                            console.log("Recorded inpainted image to C# backend successfully.");
+                        } else {
+                            console.error("Failed to record inpainted image to C# backend:", await recordResponse.text());
+                        }
+                    } catch (recordErr) {
+                        console.error("Error recording inpainted image:", recordErr);
+                    }
+
                 } else {
                     // FLAT BACKGROUND GENERATION (No subject present)
                     loaderMessage.textContent = "AI đang sinh ảnh phông nền (5-15 giây)...";
@@ -4702,6 +4775,27 @@
                     bgImage = img;
                     drawCanvas();
                     showToast("Tạo phông nền AI thành công!");
+
+                    // Record to C# Backend
+                    try {
+                        const recordData = new FormData();
+                        recordData.append('processedFile', blob, 'background.png');
+                        recordData.append('source', 'AI Background Generation');
+
+                        const recordResponse = await fetch(`${API_URL}/image/record`, {
+                            method: 'POST',
+                            headers: { 'Authorization': `Bearer ${token}` },
+                            body: recordData
+                        });
+
+                        if (recordResponse.ok) {
+                            console.log("Recorded generated background to C# backend successfully.");
+                        } else {
+                            console.error("Failed to record generated background to C# backend:", await recordResponse.text());
+                        }
+                    } catch (recordErr) {
+                        console.error("Error recording generated background:", recordErr);
+                    }
                 }
                 updateUserUsageDisplay();
 
@@ -5778,6 +5872,18 @@
                 return;
             }
 
+            // Pre-check monthly usage limit
+            if (!token) {
+                showToast("Vui lòng đăng nhập để sử dụng tính năng tạo Avatar AI.", "error");
+                openAuthView('login');
+                return;
+            }
+            let limit = loggedInUserPro ? 300 : 20;
+            if (currentMonthUsage >= limit) {
+                showPaymentModal(`Bạn đã dùng hết giới hạn ảnh trong tháng (${currentMonthUsage}/${limit} ảnh). Hãy nâng cấp lên gói PRO để tiếp tục!`);
+                return;
+            }
+
             const loaderOverlay = document.getElementById('loaderOverlay');
             const loaderMessage = document.getElementById('loaderMessage');
 
@@ -5837,6 +5943,30 @@
                 }
 
                 showToast("Tạo Avatar AI thành công! Bạn có thể xem kết quả ở tab 'Ảnh Trong Suốt' hoặc tải về.", "success");
+
+                // Record the Face Swap to the C# Backend database
+                try {
+                    const recordData = new FormData();
+                    recordData.append('originalFile', selectedFile);
+                    recordData.append('processedFile', resultBlob, 'swapped.png');
+                    recordData.append('source', 'AI Face Swap');
+
+                    const recordResponse = await fetch(`${API_URL}/image/record`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` },
+                        body: recordData
+                    });
+
+                    if (recordResponse.ok) {
+                        console.log("Recorded Face Swap to C# backend successfully.");
+                    } else {
+                        console.error("Failed to record Face Swap to C# backend:", await recordResponse.text());
+                    }
+                } catch (recordErr) {
+                    console.error("Error recording Face Swap:", recordErr);
+                }
+
+                updateUserUsageDisplay();
             } catch (e) {
                 console.error('[Face Swap Error]', e);
                 showToast(e.message || "Tạo Avatar AI thất bại. Vui lòng kiểm tra API Key Replicate.", "error");
@@ -5848,6 +5978,18 @@
         async function generateAvatarPlaceInBackground() {
             if (!selectedFile) {
                 showToast("Vui lòng chọn ảnh gốc có người trước.", "error");
+                return;
+            }
+
+            // Pre-check monthly usage limit
+            if (!token) {
+                showToast("Vui lòng đăng nhập để sử dụng tính năng ghép người vào nền AI.", "error");
+                openAuthView('login');
+                return;
+            }
+            let limit = loggedInUserPro ? 300 : 20;
+            if (currentMonthUsage >= limit) {
+                showPaymentModal(`Bạn đã dùng hết giới hạn ảnh trong tháng (${currentMonthUsage}/${limit} ảnh). Hãy nâng cấp lên gói PRO để tiếp tục!`);
                 return;
             }
 
@@ -5898,6 +6040,30 @@
                 if (btnDl) btnDl.disabled = false;
 
                 showToast("Ghép người vào nền AI thành công! 🎉", "success");
+
+                // Record the Avatar Placement to the C# Backend database
+                try {
+                    const recordData = new FormData();
+                    recordData.append('originalFile', selectedFile);
+                    recordData.append('processedFile', resultBlob, 'placed.png');
+                    recordData.append('source', 'AI Avatar Placement');
+
+                    const recordResponse = await fetch(`${API_URL}/image/record`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` },
+                        body: recordData
+                    });
+
+                    if (recordResponse.ok) {
+                        console.log("Recorded Avatar Placement to C# backend successfully.");
+                    } else {
+                        console.error("Failed to record Avatar Placement to C# backend:", await recordResponse.text());
+                    }
+                } catch (recordErr) {
+                    console.error("Error recording Avatar Placement:", recordErr);
+                }
+
+                updateUserUsageDisplay();
             } catch (e) {
                 console.error('[Place In Background Error]', e);
                 showToast(e.message || "Thất bại. Vui lòng thử lại.", "error");
