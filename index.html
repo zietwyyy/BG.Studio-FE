@@ -2467,7 +2467,7 @@
                         0đ <span>/ tháng</span>
                     </div>
                     <ul class="pricing-features">
-                        <li>Tách nền tối đa 5 ảnh / ngày (150 ảnh/tháng)</li>
+                        <li>Tách nền tối đa 20 ảnh / tháng</li>
                         <li>Tải ảnh chất lượng tiêu chuẩn</li>
                         <li>Chạy thử phông nền AI mẫu</li>
                         <li>Lịch sử lưu trữ cục bộ</li>
@@ -2486,7 +2486,7 @@
                         49,000đ <span>/ tháng</span>
                     </div>
                     <ul class="pricing-features">
-                        <li>Mở rộng lên đến 10 ảnh / ngày (300 ảnh/tháng)</li>
+                        <li>Mở rộng lên đến 300 ảnh / tháng</li>
                         <li>Tải ảnh chất lượng Full HD</li>
                         <li>Mở khóa kho phông nền AI đa dạng</li>
                         <li>Tìm phông nền tùy thích qua Unsplash</li>
@@ -3705,17 +3705,17 @@
             const limitBarEl = document.getElementById('usageBarFill');
             const limitTextEl = document.getElementById('usageValue');
 
-            let limit = loggedInUserPro ? 30 : 10;
+            let limit = loggedInUserPro ? 300 : 20;
 
-            let todayCount = 0;
+            let monthCount = 0;
             try {
                 const response = await fetch(`${API_URL}/history`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (response.ok) {
                     const history = await response.json();
-                    const todayStr = new Date().toISOString().slice(0, 10);
-                    todayCount = history.filter(img => img.createdAt.slice(0, 10) === todayStr).length;
+                    const currentYearMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+                    monthCount = history.filter(img => img.createdAt.slice(0, 7) === currentYearMonth).length;
                 }
             } catch (e) {
                 console.error("Không đếm được lượt sử dụng", e);
@@ -3737,9 +3737,9 @@
                 if (btnPro) btnPro.style.display = 'inline-flex';
             }
 
-            if (limitTextEl) limitTextEl.textContent = `${todayCount}/${limit}`;
+            if (limitTextEl) limitTextEl.textContent = `${monthCount}/${limit}`;
             if (limitBarEl) {
-                const pct = Math.min((todayCount / limit) * 100, 100);
+                const pct = Math.min((monthCount / limit) * 100, 100);
                 limitBarEl.style.width = `${pct}%`;
                 if (pct >= 100) {
                     limitBarEl.style.backgroundColor = 'var(--danger)';
@@ -5050,7 +5050,7 @@
             if (customMessage) {
                 msgEl.textContent = customMessage;
             } else {
-                msgEl.textContent = "Nâng cấp lên gói PRO 👑 chỉ với 49,000 VND / tháng để mở khóa giới hạn 10 ảnh/ngày (300 ảnh/tháng), lưu trữ đám mây Cloudinary vĩnh viễn và thoải mái ghép phông nền AI nghệ thuật!";
+                msgEl.textContent = "Nâng cấp lên gói PRO 👑 chỉ với 49,000 VND / tháng để mở khóa giới hạn 300 ảnh/tháng, lưu trữ đám mây Cloudinary vĩnh viễn và thoải mái ghép phông nền AI nghệ thuật!";
             }
 
             if (!token) {
