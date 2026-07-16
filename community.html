@@ -527,9 +527,7 @@
         }
 
         /* Hover Behavior for Before/After */
-        .image-container:hover .post-img-after {
-            opacity: 0;
-        }
+        
 
         .image-container:hover .post-img-before {
             opacity: 1;
@@ -566,9 +564,7 @@
             opacity: 0;
         }
 
-        .image-container:hover .badge-after {
-            opacity: 0;
-        }
+        
 
         .image-container:hover .badge-before {
             opacity: 1;
@@ -872,7 +868,56 @@
             border: 1px solid var(--border);
             background: #020308;
         }
-    </style>
+    
+                /* --- MOBILE FIXES --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 12px;
+            }
+            .nav-container {
+                gap: 5px;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }
+            .hide-on-mobile {
+                display: none !important;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 8px 10px !important;
+            }
+            .nav-link {
+                padding: 8px !important;
+            }
+            .logo {
+                font-size: 1.2rem;
+                margin-bottom: 5px;
+            }
+            .logo-symbol {
+                width: 28px;
+                height: 28px;
+                font-size: 0.85rem;
+            }
+            .nav-link, .btn, .btn-logout, .username {
+                white-space: nowrap;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+            }
+            .post-card {
+                border-radius: 16px;
+            }
+            .hero-banner h2 {
+                font-size: 2rem;
+            }
+            .filter-bar {
+                margin-bottom: 25px;
+            }
+            .categories-wrapper {
+                padding-bottom: 10px;
+            }
+        }
+</style>
 </head>
 
 <body>
@@ -882,11 +927,11 @@
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo">
-                <div class="logo-symbol">FI</div> FaceIn
+                <div class="logo-symbol">FI</div> <span class="hide-on-mobile">FaceIn</span>
             </a>
             <div style="display: flex; align-items: center; gap: 15px;">
                 <nav>
-                    <a href="index.html" class="nav-link">← Trở về Trang chủ</a>
+                    <a href="index.html" class="nav-link"><span style="font-size:1.1rem; line-height:1;">←</span> <span class="hide-on-mobile">Trang chủ</span></a>
                 </nav>
 
                 <!-- Guest View (Not Logged In) -->
@@ -898,8 +943,7 @@
                             style="margin-right: 2px;">
                             <line x1="12" y1="5" x2="12" y2="19"></line>
                             <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Đăng tác phẩm
+                        </svg> <span class="hide-on-mobile">Đăng tác phẩm</span>
                     </button>
                     <a href="index.html?auth=login" class="btn btn-secondary"
                         style="padding: 10px 18px; font-size: 0.9rem; border-radius: 10px;">
@@ -916,16 +960,14 @@
                             style="margin-right: 2px;">
                             <line x1="12" y1="5" x2="12" y2="19"></line>
                             <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Đăng tác phẩm
+                        </svg> <span class="hide-on-mobile">Đăng tác phẩm</span>
                     </button>
                     <div
                         style="display: flex; align-items: center; gap: 10px; border-left: 1px solid var(--border); padding-left: 15px;">
                         <div class="avatar" id="userAvatar"
                             style="width: 32px; height: 32px; font-size: 0.85rem; border-radius: 50%;">U</div>
-                        <span class="username" id="headerUsername" style="font-size: 0.9rem;">User</span>
-                        <button class="btn-logout" onclick="logout()" style="margin-left: 5px; font-size: 0.85rem;">Đăng
-                            xuất</button>
+                        <span class="username hide-on-mobile" id="headerUsername" style="font-size: 0.9rem;">User</span>
+                        <button class="btn-logout" onclick="logout()" style="margin-left: 5px; font-size: 0.85rem;">Đăng xuất</button>
                     </div>
                 </div>
             </div>
@@ -971,10 +1013,9 @@
                 <div class="image-container">
                     <img src="images/card1_proc.png"
                         class="post-img post-img-after" alt="Processed">
-                    <img src="images/card1_orig.jpg"
-                        class="post-img post-img-before" alt="Original">
+                    
                     <span class="badge badge-after">Ghép nền AI</span>
-                    <span class="badge badge-before">Ảnh gốc</span>
+                    
                     <div class="hover-hint">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -987,7 +1028,7 @@
                 <div class="post-info">
                     <div class="post-user">
                         <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #3b82f6);">H</div>
-                        <div class="username">Hải Đăng</div>
+                        <div class="username hide-on-mobile">Hải Đăng</div>
                     </div>
                 </div>
                 <div class="post-actions">
@@ -1027,10 +1068,9 @@
                 <div class="image-container">
                     <img src="images/card2_proc.png"
                         class="post-img post-img-after" alt="Processed">
-                    <img src="images/card2_orig.jpg"
-                        class="post-img post-img-before" alt="Original">
+                    
                     <span class="badge badge-after">Studio Portrait</span>
-                    <span class="badge badge-before">Ảnh gốc</span>
+                    
                     <div class="hover-hint">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -1043,7 +1083,7 @@
                 <div class="post-info">
                     <div class="post-user">
                         <div class="avatar" style="background: linear-gradient(135deg, #ef4444, #f97316);">T</div>
-                        <div class="username">Tuấn Anh</div>
+                        <div class="username hide-on-mobile">Tuấn Anh</div>
                     </div>
                 </div>
                 <div class="post-actions">
@@ -1083,10 +1123,9 @@
                 <div class="image-container">
                     <img src="images/card3_proc.png"
                         class="post-img post-img-after" alt="Processed">
-                    <img src="images/card3_orig.jpg"
-                        class="post-img post-img-before" alt="Original">
+                    
                     <span class="badge badge-after">Ghép nền AI</span>
-                    <span class="badge badge-before">Ảnh gốc</span>
+                    
                     <div class="hover-hint">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -1099,7 +1138,7 @@
                 <div class="post-info">
                     <div class="post-user">
                         <div class="avatar" style="background: linear-gradient(135deg, #10b981, #3b82f6);">M</div>
-                        <div class="username">Minh Thư</div>
+                        <div class="username hide-on-mobile">Minh Thư</div>
                     </div>
                 </div>
                 <div class="post-actions">
@@ -1139,10 +1178,9 @@
                 <div class="image-container">
                     <img src="images/card4_proc.png"
                         class="post-img post-img-after" alt="Processed">
-                    <img src="images/card4_orig.jpg"
-                        class="post-img post-img-before" alt="Original">
+                    
                     <span class="badge badge-after">Ghép nền AI</span>
-                    <span class="badge badge-before">Ảnh gốc</span>
+                    
                     <div class="hover-hint">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -1155,7 +1193,7 @@
                 <div class="post-info">
                     <div class="post-user">
                         <div class="avatar" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">Q</div>
-                        <div class="username">Quang Lâm</div>
+                        <div class="username hide-on-mobile">Quang Lâm</div>
                     </div>
                 </div>
                 <div class="post-actions">
@@ -1195,10 +1233,9 @@
                 <div class="image-container">
                     <img src="images/card5_proc.png"
                         class="post-img post-img-after" alt="Processed">
-                    <img src="images/card5_orig.jpg"
-                        class="post-img post-img-before" alt="Original">
+                    
                     <span class="badge badge-after">Studio Object</span>
-                    <span class="badge badge-before">Ảnh gốc</span>
+                    
                     <div class="hover-hint">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -1211,7 +1248,7 @@
                 <div class="post-info">
                     <div class="post-user">
                         <div class="avatar" style="background: linear-gradient(135deg, #3b82f6, #10b981);">Đ</div>
-                        <div class="username">Thành Đạt</div>
+                        <div class="username hide-on-mobile">Thành Đạt</div>
                     </div>
                 </div>
                 <div class="post-actions">
@@ -1251,10 +1288,9 @@
                 <div class="image-container">
                     <img src="images/card6_proc.png"
                         class="post-img post-img-after" alt="Processed">
-                    <img src="images/card6_orig.jpg"
-                        class="post-img post-img-before" alt="Original">
+                    
                     <span class="badge badge-after">Studio Object</span>
-                    <span class="badge badge-before">Ảnh gốc</span>
+                    
                     <div class="hover-hint">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -1267,7 +1303,7 @@
                 <div class="post-info">
                     <div class="post-user">
                         <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #f43f5e);">V</div>
-                        <div class="username">Phương Vy</div>
+                        <div class="username hide-on-mobile">Phương Vy</div>
                     </div>
                 </div>
                 <div class="post-actions">
@@ -1506,16 +1542,13 @@
                     <img src="${imgSrc}" class="post-img post-img-after" alt="Processed">
                     <img src="${imgSrc}" class="post-img post-img-before" alt="Original" style="filter: brightness(0.6) contrast(1.2);">
                     <span class="badge badge-after">Tác phẩm mới</span>
-                    <span class="badge badge-before">Ảnh gốc</span>
-                    <div class="hover-hint">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                        Xem ảnh gốc (Di chuột)
-                    </div>
+                    
+                    
                 </div>
                 <div class="post-info">
                     <div class="post-user">
                         <div class="avatar" style="background: linear-gradient(135deg, var(--primary), var(--accent));">U</div>
-                        <div class="username">Bạn (Vừa xong)</div>
+                        <div class="username hide-on-mobile">Bạn (Vừa xong)</div>
                     </div>
                 </div>
                 <div class="post-actions">

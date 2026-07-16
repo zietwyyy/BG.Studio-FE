@@ -5758,6 +5758,9 @@
             try {
                 // Populate the Ngrok/Local API input with the saved value
                 const savedAiUrl = localStorage.getItem('aiApiUrl') || 'https://nauq-hna-fadein.hf.space';
+                
+                // ME0: TU DONG DANH THUC MAY CHU HUGGING FACE NGAY KHI VUA MO WEB
+                fetch(savedAiUrl + '/docs', { mode: 'no-cors' }).catch(e => console.log('Waking up AI server...'));
                 AI_API_URL = `${savedAiUrl}/api`;
                 const inputAiEl = document.getElementById('inputAiApiUrl');
                 if (inputAiEl) {
