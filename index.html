@@ -3710,8 +3710,9 @@
 
             let monthCount = 0;
             try {
-                const response = await fetch(`${API_URL}/history`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                const response = await fetch(`${API_URL}/history?t=${Date.now()}`, {
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    cache: 'no-store'
                 });
                 if (response.ok) {
                     const history = await response.json();
@@ -4101,6 +4102,7 @@
                     });
 
                     if (recordResponse.ok) {
+                        currentMonthUsage++;
                         console.log("Recorded processed image to C# backend successfully.");
                     } else {
                         console.error("Failed to record processed image to C# backend:", await recordResponse.text());
@@ -4738,6 +4740,7 @@
                         });
 
                         if (recordResponse.ok) {
+                            currentMonthUsage++;
                             console.log("Recorded inpainted image to C# backend successfully.");
                         } else {
                             console.error("Failed to record inpainted image to C# backend:", await recordResponse.text());
@@ -4789,6 +4792,7 @@
                         });
 
                         if (recordResponse.ok) {
+                            currentMonthUsage++;
                             console.log("Recorded generated background to C# backend successfully.");
                         } else {
                             console.error("Failed to record generated background to C# backend:", await recordResponse.text());
@@ -5961,6 +5965,7 @@
                     });
 
                     if (recordResponse.ok) {
+                        currentMonthUsage++;
                         console.log("Recorded Face Swap to C# backend successfully.");
                     } else {
                         console.error("Failed to record Face Swap to C# backend:", await recordResponse.text());
@@ -6058,6 +6063,7 @@
                     });
 
                     if (recordResponse.ok) {
+                        currentMonthUsage++;
                         console.log("Recorded Avatar Placement to C# backend successfully.");
                     } else {
                         console.error("Failed to record Avatar Placement to C# backend:", await recordResponse.text());
